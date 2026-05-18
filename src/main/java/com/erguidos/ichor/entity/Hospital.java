@@ -15,7 +15,7 @@ public class Hospital
 
     @Column(name = "address", nullable = false, length = 255)
     private String address;
-
+    
     /**
      * Longitude defined with a precision of 11 and a scale of 8 to follow the
      * WGS 84 (World Geodetic System 1984) standard.
@@ -31,4 +31,14 @@ public class Hospital
      */
     @Column(name = "latitude", nullable = false, precision = 10, scale = 8)
     private BigDecimal latitude;
+
+    protected Hospital() {}
+    
+    public String getName() { return this.name; }
+
+    public String getAddress() { return this.address; } 
+    
+    public BigDecimal getLongitude() { return this.longitude; }
+    
+    public BigDecimal getLatitude() { return this.latitude; }
 }

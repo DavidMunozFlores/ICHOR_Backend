@@ -7,4 +7,6 @@ import jakarta.persistence.Table;
 @Table(name = "managers")
 public class Manager
        extends User {
+    
+    protected Manager() {}
 }

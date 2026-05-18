@@ -8,4 +8,5 @@ import jakarta.persistence.Table;
 public class Doctor
        extends WorksInHospital {
     
+    protected Doctor() {}
 }

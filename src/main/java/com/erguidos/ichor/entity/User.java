@@ -11,4 +11,10 @@ public abstract class User
     
     @Column(name = "password", nullable = false, length = 255)
     private String password;
+    
+    protected User() {}
+    
+    public String getUser() { return this.username; }
+    
+    public String getPassword() { return this.password; }
 }
