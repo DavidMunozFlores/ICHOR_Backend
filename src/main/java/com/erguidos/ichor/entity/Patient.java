@@ -1,5 +1,7 @@
 package com.erguidos.ichor.entity;
 
+import com.erguidos.ichor.enums.BloodType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -22,6 +24,12 @@ public class Patient extends BaseEntity  {
 	@Column(name = "blood_type")
 	@Enumerated(EnumType.STRING)
 	private BloodType bloodType;
+	
+	@Column(name = "height")
+	private Double height;
+	
+	@Column(name = "weight")
+	private Double weight;
 	
 	protected Patient() {}
 
