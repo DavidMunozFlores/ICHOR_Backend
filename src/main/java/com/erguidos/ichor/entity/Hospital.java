@@ -12,13 +12,13 @@ import jakarta.persistence.Table;
 public class Hospital {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_hospital", nullable = false, columnDefinition = "BIGINT")
+    @Column(name = "id_hospital", nullable = false)
     private Long id;
     
-    @Column(name = "name", nullable = false, columnDefinition = "VARCHAR(255)")
+    @Column(name = "name", nullable = false, length = 255)
     private String name;
 
-    @Column(name = "address", nullable = false, columnDefinition = "VARCHAR(255)")
+    @Column(name = "address", nullable = false, length = 255)
     private String address;
 
     @Column(name = "longitude", nullable = false, columnDefinition = "DECIMAL(10,8)")
