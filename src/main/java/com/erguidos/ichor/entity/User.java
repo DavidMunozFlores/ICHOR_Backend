@@ -18,7 +18,4 @@ public abstract class User {
     
     @Column(name = "password", nullable = false, columnDefinition = "VARCHAR(255)")
     private String password;
-    
-    @Column(name = "rol", nullable = false)
-    private Role rol;
 }
