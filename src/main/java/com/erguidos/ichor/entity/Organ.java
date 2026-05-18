@@ -2,20 +2,13 @@ package com.erguidos.ichor.entity;
  
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
  
 @Entity
 @Table(name="organs")
-public class Organ {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_organ")
-	private Long id;
+public class Organ extends BaseEntity {
 	
 	@Column(name = "organ_type")
 	@Enumerated(EnumType.STRING)
