@@ -1,5 +1,7 @@
 package com.erguidos.ichor.entity;
  
+import com.erguidos.ichor.enums.OrganType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,7 +19,7 @@ public class Organ extends BaseEntity {
 	@Column(name="weight_grams")
 	private Double weightGrams;
 	
-	@Column(name="volume_c_c")
+	@Column(name="volume_cc")
 	private Double volumeCC;
 	
 	/**
