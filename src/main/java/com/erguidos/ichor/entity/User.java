@@ -10,7 +10,7 @@ import jakarta.persistence.MappedSuperclass;
 public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, columnDefinition = "BIGINT")
+    @Column(name = "id_user", nullable = false, columnDefinition = "BIGINT")
     private Long id;
     
     @Column(name = "username", nullable = false, columnDefinition = "VARCHAR(255)")
