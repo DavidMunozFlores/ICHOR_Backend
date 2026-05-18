@@ -1,5 +1,7 @@
 package com.erguidos.ichor.entity;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,9 +23,19 @@ public class Hospital {
     @Column(name = "address", nullable = false, length = 255)
     private String address;
 
-    @Column(name = "longitude", nullable = false, columnDefinition = "DECIMAL(10,8)")
-    private Double longitude;
+    /**
+     * Longitude defined with a precision of 11 and a scale of 8 to follow the
+     * WGS 84 (World Geodetic System 1984) standard.
+     * <br>As 180.XXX_XXX_XX
+     */
+    @Column(name = "longitude", nullable = false, precision = 11, scale = 8)
+    private BigDecimal longitude;
     
-    @Column(name = "latitude", nullable = false, columnDefinition = "DECIMAL(10,8)")
-    private Double latitude;
+    /**
+     * Latitude defined with a precision of 10 and a scale of 8 to follow the
+     * WGS 84 (World Geodetic System 1984) standard.
+     * <br>As 90.XXX_XXX_XX
+     */
+    @Column(name = "latitude", nullable = false, precision = 10, scale = 8)
+    private BigDecimal latitude;
 }
