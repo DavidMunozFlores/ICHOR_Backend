@@ -3,6 +3,8 @@ package com.erguidos.ichor.entity;
 import com.erguidos.ichor.enums.TraceType;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,6 +17,7 @@ public class Traces {
     
 	// TODO
 	@Column(name = "trace_type")
+	@Enumerated(EnumType.STRING)
 	private TraceType traceType;
 	
 	protected Traces() {}
