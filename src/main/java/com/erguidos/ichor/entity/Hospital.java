@@ -4,12 +4,19 @@ import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "hospitals")
-public class Hospital
-       extends BaseEntity {
+public class Hospital {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+    
     @Column(name = "name", nullable = false, length = 255)
     private String name;
 
@@ -33,6 +40,8 @@ public class Hospital
     private BigDecimal latitude;
 
     protected Hospital() {}
+    
+    public Long getId() { return this.id; }
     
     public String getName() { return this.name; }
 

@@ -6,12 +6,19 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "patients")
-public class Patient extends BaseEntity  {
-
+public class Patient  {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+    
 	@Column(name = "internal_id")
 	private String internalID;
 	
@@ -32,6 +39,8 @@ public class Patient extends BaseEntity  {
 	private Double weight;
 	
 	protected Patient() {}
+    
+	public Long getId() { return this.id; }
 
 	public String getInternalID() {
 		return internalID;

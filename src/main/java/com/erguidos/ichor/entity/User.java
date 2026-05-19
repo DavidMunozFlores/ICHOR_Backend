@@ -1,11 +1,18 @@
 package com.erguidos.ichor.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class User
-                extends BaseEntity {
+public abstract class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+    
     @Column(name = "username", nullable = false, length = 255)
     private String username;
     
@@ -13,6 +20,8 @@ public abstract class User
     private String password;
     
     protected User() {}
+    
+    public Long getId() { return this.id; }
     
     public String getUser() { return this.username; }
     

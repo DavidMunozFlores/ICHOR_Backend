@@ -7,12 +7,19 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "organ_petitions")
-public class OrganPetition extends BaseEntity {
-
+public class OrganPetition {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+    
 	@Column(name = "organ_type")
 	@Enumerated(EnumType.STRING)
 	private OrganType organType;
@@ -42,6 +49,8 @@ public class OrganPetition extends BaseEntity {
 	private Organ organ;
 	
 	protected OrganPetition() {}
+    
+	public Long getId() { return this.id; }
 
 	public OrganType getOrganType() {
 		return organType;
