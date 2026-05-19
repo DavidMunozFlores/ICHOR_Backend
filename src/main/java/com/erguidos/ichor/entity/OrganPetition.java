@@ -45,6 +45,7 @@ public class OrganPetition {
 	private Patient patient;
 	
 	@Column(name = "organ_petition_state")
+	@Enumerated(EnumType.STRING)
 	private OrganPetitionState organPetitionState;
 	
 	@OneToOne
