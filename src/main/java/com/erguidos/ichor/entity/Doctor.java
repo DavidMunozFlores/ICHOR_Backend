@@ -23,4 +23,14 @@ public class Doctor extends WorksInHospital {
 	private List<OrganPetition> organPetitions;
     
     protected Doctor() {}
+
+	public Long getId() {
+		return id;
+	}
+
+	public List<OrganPetition> getOrganPetitions() {
+		return organPetitions;
+	}
+    
+    
 }
