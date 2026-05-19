@@ -33,9 +33,6 @@ public class OrganPetition {
 	@Column(name="hla_chain")
 	private String hlaChain;
 	
-	@Column(name="")
-	private Hospital donorHospital;
-	
 	@Column(name = "")
 	private Doctor doctor;
 	
