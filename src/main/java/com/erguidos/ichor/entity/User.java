@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.OneToOne;
 
 @MappedSuperclass
 public abstract class User {
@@ -18,6 +19,9 @@ public abstract class User {
     
     @Column(name = "password", nullable = false, length = 255)
     private String password;
+    
+    @OneToOne(mappedBy = "userDischarged")
+    private DischargedUser dischargedUser;
     
     protected User() {}
     
