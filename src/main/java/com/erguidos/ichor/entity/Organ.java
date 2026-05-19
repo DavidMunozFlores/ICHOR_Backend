@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
  
 @Entity
@@ -44,6 +45,9 @@ public class Organ {
 	@Column(name="assigned")
 	private boolean assigned;
 	
+	@OneToOne(mappedBy = "organ")
+	private OrganPetition organPetition;
+	
 	protected Organ() {}
     
 	public Long getId() { return this.id; }
@@ -70,6 +74,10 @@ public class Organ {
 
 	public boolean isAssigned() {
 		return assigned;
+	}
+
+	public OrganPetition getOrganPetition() {
+		return organPetition;
 	}
 	
 	
