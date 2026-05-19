@@ -14,4 +14,10 @@ public abstract class WorksInHospital
 	private Hospital hopsital;
     
     protected WorksInHospital() {}
+
+	public Hospital getHopsital() {
+		return hopsital;
+	}
+    
+    
 }

@@ -55,4 +55,10 @@ public class Hospital {
     public BigDecimal getLongitude() { return this.longitude; }
     
     public BigDecimal getLatitude() { return this.latitude; }
+
+	public List<WorksInHospital> getWorkers() {
+		return workers;
+	}
+    
+    
 }
