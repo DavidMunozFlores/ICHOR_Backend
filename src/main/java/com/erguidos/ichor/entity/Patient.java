@@ -1,5 +1,7 @@
 package com.erguidos.ichor.entity;
 
+import java.util.List;
+
 import com.erguidos.ichor.enums.BloodType;
 
 import jakarta.persistence.Column;
@@ -9,6 +11,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -37,6 +40,9 @@ public class Patient  {
 	
 	@Column(name = "weight")
 	private Double weight;
+	
+	@OneToMany(mappedBy = "patient")
+	private List<OrganPetition> organPetitions;
 	
 	protected Patient() {}
     

@@ -39,7 +39,8 @@ public class OrganPetition {
 	@JoinColumn(name = "id_doctor")
 	private Doctor doctor;
 	
-	@Column(name="")
+	@ManyToOne
+	@JoinColumn(name = "id_patient")
 	private Patient patient;
 	
 	@Column(name = "organ_petition_state")
