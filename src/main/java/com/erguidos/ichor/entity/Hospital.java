@@ -1,12 +1,14 @@
 package com.erguidos.ichor.entity;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -38,6 +40,9 @@ public class Hospital {
      */
     @Column(name = "latitude", nullable = false, precision = 10, scale = 8)
     private BigDecimal latitude;
+    
+    @OneToMany(mappedBy = "hopsital")
+    private List<WorksInHospital> workers;
 
     protected Hospital() {}
     
