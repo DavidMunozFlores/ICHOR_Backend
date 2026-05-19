@@ -65,10 +65,6 @@ public class OrganPetition {
 		return hlaChain;
 	}
 
-	public Hospital getDonorHospital() {
-		return donorHospital;
-	}
-
 	public Patient getPatient() {
 		return patient;
 	}
