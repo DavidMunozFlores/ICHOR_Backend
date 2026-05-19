@@ -43,6 +43,9 @@ public class Hospital {
     
     @OneToMany(mappedBy = "hopsital")
     private List<WorksInHospital> workers;
+    
+    @OneToMany(mappedBy = "donorHospital")
+    private List<Organ> organs;
 
     protected Hospital() {}
     
@@ -58,6 +61,10 @@ public class Hospital {
 
 	public List<WorksInHospital> getWorkers() {
 		return workers;
+	}
+
+	public List<Organ> getOrgans() {
+		return organs;
 	}
     
     

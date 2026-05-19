@@ -9,6 +9,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
  
 @Entity
@@ -35,7 +37,8 @@ public class Organ {
 	@Column(name="hla_chain")
 	private String hlaChain;
 	
-	@Column(name="")
+	@ManyToOne
+	@JoinColumn(name = "id_hospital")
 	private Hospital donorHospital;
 	
 	@Column(name="assigned")
