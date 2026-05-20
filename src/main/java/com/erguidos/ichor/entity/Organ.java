@@ -42,6 +42,10 @@ public class Organ {
 	@JoinColumn(name = "id_hospital", nullable = false)
 	private Hospital donorHospital;
 	
+	@ManyToOne
+	@JoinColumn(name = "id_coordinator", nullable = false)
+	private Coordinator coordinator;
+	
 	@Column(name="assigned", nullable = false)
 	private boolean assigned;
 	
@@ -65,4 +69,6 @@ public class Organ {
 	public boolean isAssigned() { return assigned; }
 
 	public OrganPetition getOrganPetition() { return organPetition; }
+
+	public Coordinator getCoordinator() { return coordinator; }
 }
