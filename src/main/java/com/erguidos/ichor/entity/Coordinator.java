@@ -5,8 +5,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "coordinators")
-public class Coordinator
-       extends WorksInHospital {
+public class Coordinator extends WorksInHospital {
     
     protected Coordinator() {}
 }
