@@ -5,8 +5,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "managers")
-public class Manager
-       extends User {
+public class Manager extends User {
     
     protected Manager() {}
 }
