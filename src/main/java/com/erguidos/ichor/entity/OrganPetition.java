@@ -20,74 +20,54 @@ import jakarta.persistence.Table;
 public class OrganPetition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
     
-	@Column(name = "organ_type")
+	@Column(name = "organ_type", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private OrganType organType;
 	
-	@Column(name="weight_grams")
+	@Column(name="weight_grams", nullable = false)
 	private Double weightGrams;
 	
-	@Column(name="volume_c_c")
+	@Column(name="volume_c_c", nullable = false)
 	private Double volumeCC;
 	
-	@Column(name="hla_chain")
+	@Column(name="hla_chain",  nullable = false, length = 255)
 	private String hlaChain;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_doctor")
+	@JoinColumn(name = "id_doctor", nullable = false)
 	private Doctor doctor;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_patient")
+	@JoinColumn(name = "id_patient", nullable = false)
 	private Patient patient;
 	
-	@Column(name = "organ_petition_state")
+	@Column(name = "organ_petition_state", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private OrganPetitionState organPetitionState;
 	
 	@OneToOne
-	@JoinColumn(name = "id_organ")
+	@JoinColumn(name = "id_organ", nullable = true)
 	private Organ organ;
 	
 	protected OrganPetition() {}
     
 	public Long getId() { return this.id; }
 
-	public OrganType getOrganType() {
-		return organType;
-	}
+	public OrganType getOrganType() { return organType; }
 
-	public Double getWeightGrams() {
-		return weightGrams;
-	}
+	public Double getWeightGrams() { return weightGrams; }
 
-	public Double getVolumeCC() {
-		return volumeCC;
-	}
+	public Double getVolumeCC() { return volumeCC; }
 
-	public String getHlaChain() {
-		return hlaChain;
-	}
+	public String getHlaChain() { return hlaChain; }
 
-	public Patient getPatient() {
-		return patient;
-	}
+	public Patient getPatient() { return patient; }
 
-	public OrganPetitionState getOrganPetitionState() {
-		return organPetitionState;
-	}
+	public OrganPetitionState getOrganPetitionState() { return organPetitionState; }
 
-	public Organ getOrgan() {
-		return organ;
-	}
+	public Organ getOrgan() { return organ; }
 
-	public Doctor getDoctor() {
-		return doctor;
-	}
-	
-	
-	
+	public Doctor getDoctor() { return doctor; }
 }
