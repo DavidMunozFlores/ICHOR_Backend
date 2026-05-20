@@ -14,9 +14,9 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "hospitals")
 public class Hospital {
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
     
     @Column(name = "name", nullable = false, length = 255)
@@ -59,13 +59,7 @@ public class Hospital {
     
     public BigDecimal getLatitude() { return this.latitude; }
 
-	public List<WorksInHospital> getWorkers() {
-		return workers;
-	}
+	public List<WorksInHospital> getWorkers() { return workers; }
 
-	public List<Organ> getOrgans() {
-		return organs;
-	}
-    
-    
+	public List<Organ> getOrgans() { return organs; }
 }
