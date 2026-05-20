@@ -17,28 +17,28 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "patients")
 public class Patient  {
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
     
-	@Column(name = "internal_id")
+	@Column(name = "internal_id", nullable = false, length = 255)
 	private String internalID;
 	
-	@Column(name = "name")
+	@Column(name = "name", nullable = false, length = 255)
 	private String name;
 	
-	@Column(name = "identification")
+	@Column(name = "identification", nullable = false, length = 255)
 	private String identification;
 	
-	@Column(name = "blood_type")
+	@Column(name = "blood_type", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private BloodType bloodType;
 	
-	@Column(name = "height")
+	@Column(name = "height", nullable = false)
 	private Double height;
 	
-	@Column(name = "weight")
+	@Column(name = "weight", nullable = false)
 	private Double weight;
 	
 	@OneToMany(mappedBy = "patient")
@@ -48,21 +48,11 @@ public class Patient  {
     
 	public Long getId() { return this.id; }
 
-	public String getInternalID() {
-		return internalID;
-	}
+	public String getInternalID() { return internalID; }
 
-	public String getName() {
-		return name;
-	}
+	public String getName() { return name; }
 
-	public String getIdentification() {
-		return identification;
-	}
+	public String getIdentification() { return identification; }
 
-	public BloodType getBloodType() {
-		return bloodType;
-	}
-	
-	
+	public BloodType getBloodType() { return bloodType; }
 }
