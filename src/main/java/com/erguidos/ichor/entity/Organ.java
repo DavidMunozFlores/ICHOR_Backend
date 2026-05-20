@@ -17,32 +17,32 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="organs")
 public class Organ {
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
     
-	@Column(name = "organ_type")
+	@Column(name = "organ_type", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private OrganType organType;
 	
-	@Column(name="weight_grams")
+	@Column(name="weight_grams", nullable = false)
 	private Double weightGrams;
 	
-	@Column(name="volume_cc")
+	@Column(name="volume_cc", nullable = false)
 	private Double volumeCC;
 	
 	/**
 	 * Chain must be a six ordered hla markers to match compatibility
 	 */
-	@Column(name="hla_chain")
+	@Column(name="hla_chain",  nullable = false, length = 255)
 	private String hlaChain;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_hospital")
+	@JoinColumn(name = "id_hospital", nullable = false)
 	private Hospital donorHospital;
 	
-	@Column(name="assigned")
+	@Column(name="assigned", nullable = false)
 	private boolean assigned;
 	
 	@OneToOne(mappedBy = "organ")
@@ -52,33 +52,17 @@ public class Organ {
     
 	public Long getId() { return this.id; }
 
-	public OrganType getOrganType() {
-		return organType;
-	}
+	public OrganType getOrganType() { return organType; }
 
-	public Double getWeightGrams() {
-		return weightGrams;
-	}
+	public Double getWeightGrams() { return weightGrams; }
 
-	public Double getVolumeCC() {
-		return volumeCC;
-	}
+	public Double getVolumeCC() { return volumeCC; }
 
-	public String getHlaChain() {
-		return hlaChain;
-	}
+	public String getHlaChain() { return hlaChain; }
 
-	public Hospital getDonorHospital() {
-		return donorHospital;
-	}
+	public Hospital getDonorHospital() { return donorHospital; }
 
-	public boolean isAssigned() {
-		return assigned;
-	}
+	public boolean isAssigned() { return assigned; }
 
-	public OrganPetition getOrganPetition() {
-		return organPetition;
-	}
-	
-	
+	public OrganPetition getOrganPetition() { return organPetition; }
 }
