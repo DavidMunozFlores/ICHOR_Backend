@@ -1,5 +1,7 @@
 package com.erguidos.ichor.entity;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +16,8 @@ import jakarta.persistence.Table;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "users")
 public abstract class User {
+	private static final String EMPTY_USERNAME_MSJ = "Username cannot be empty";
+	private static final String EMPTY_PASSWORD_MSJ = "Password cannot be empty";
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +34,14 @@ public abstract class User {
     
     protected User() {}
     
+    protected User(String username, String password) {
+    	Objects.requireNonNull(username);
+    	Objects.requireNonNull(password);
+    	setUsername(username);
+    	setPassword(password);
+    }
+    
+    
     public Long getId() { return this.id; }
     
     public String getUser() { return this.username; }
@@ -39,4 +51,18 @@ public abstract class User {
 	public String getUsername() { return username; }
 
 	public DischargedUser getDischargedUser() { return dischargedUser; }
+
+	private void setUsername(String username) {
+		if(username.isEmpty())
+			throw new IllegalArgumentException(EMPTY_USERNAME_MSJ);
+		this.username = username;
+	}
+
+	private void setPassword(String password) {
+		if(password.isEmpty())
+			throw new IllegalArgumentException(EMPTY_PASSWORD_MSJ);
+		this.password = password;
+	}
+	
+	
 }
