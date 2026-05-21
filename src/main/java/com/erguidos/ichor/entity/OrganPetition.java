@@ -1,0 +1,73 @@
+package com.erguidos.ichor.entity;
+
+import com.erguidos.ichor.enums.OrganPetitionState;
+import com.erguidos.ichor.enums.OrganType;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "organ_petitions")
+public class OrganPetition {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+	@Column(name = "organ_type", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private OrganType organType;
+	
+	@Column(name="weight_grams", nullable = false)
+	private Double weightGrams;
+	
+	@Column(name="volume_c_c", nullable = false)
+	private Double volumeCC;
+	
+	@Column(name="hla_chain",  nullable = false, length = 255)
+	private String hlaChain;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_doctor", nullable = false)
+	private Doctor doctor;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_patient", nullable = false)
+	private Patient patient;
+	
+	@Column(name = "organ_petition_state", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private OrganPetitionState organPetitionState;
+	
+	@OneToOne
+	@JoinColumn(name = "id_organ", nullable = true)
+	private Organ organ;
+	
+	protected OrganPetition() {}
+    
+	public Long getId() { return this.id; }
+
+	public OrganType getOrganType() { return organType; }
+
+	public Double getWeightGrams() { return weightGrams; }
+
+	public Double getVolumeCC() { return volumeCC; }
+
+	public String getHlaChain() { return hlaChain; }
+
+	public Patient getPatient() { return patient; }
+
+	public OrganPetitionState getOrganPetitionState() { return organPetitionState; }
+
+	public Organ getOrgan() { return organ; }
+
+	public Doctor getDoctor() { return doctor; }
+}
