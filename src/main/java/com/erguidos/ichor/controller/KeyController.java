@@ -1,0 +1,32 @@
+package com.erguidos.ichor.controller;
+
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.erguidos.ichor.dto.response.PublicKeyResponse;
+import com.erguidos.ichor.service.KeyService;
+
+@RestController
+@RequestMapping("/api/v1/keys")
+public class KeyController {
+    private final KeyService keyService;
+    
+    public KeyController(KeyService keyService) {
+        this.keyService = keyService;
+    }
+    
+    @GetMapping("/public")
+    public ResponseEntity<PublicKeyResponse> getPublicKey() {
+        return ResponseEntity.ok()
+                .cacheControl(
+                    CacheControl.maxAge(24, TimeUnit.HOURS)
+                                .cachePublic()
+                )
+                .body(new PublicKeyResponse(keyService.getPublicKey()));
+    }
+}

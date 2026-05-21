@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "app.security.key.private",
+    "type": "java.lang.String",
+    "description": "Private key for security"
+  },
+  {
+    "name": "app.security.key.public",
+    "type": "java.lang.String",
+    "description": "Public key for security"
+  }
+]}
