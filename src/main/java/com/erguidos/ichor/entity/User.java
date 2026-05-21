@@ -1,21 +1,25 @@
 package com.erguidos.ichor.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "users")
 public abstract class User {
 	
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "username", nullable = false, length = 255)
+    @Column(name = "username", unique = true, nullable = false, length = 255)
     private String username;
     
     @Column(name = "password", nullable = false, length = 255)
