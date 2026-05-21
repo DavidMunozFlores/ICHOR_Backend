@@ -25,7 +25,7 @@ public class Trace {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+ /*   
 	@Column(name = "trace_type", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private TraceType traceType;
@@ -69,4 +69,5 @@ public class Trace {
 	public Organ getNotedOrgan() { return notedOrgan; }
 
 	public OrganPetition getNotedOrganPetition() { return notedOrganPetition; }
+	*/
 }
