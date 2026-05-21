@@ -55,6 +55,10 @@ public class Hospital {
 
     protected Hospital() {}
     
+    void addDoctor(Doctor doctor) {
+    	this.doctors.add(doctor);
+    }
+    
     public Long getId() { return this.id; }
     
     public String getName() { return this.name; }
