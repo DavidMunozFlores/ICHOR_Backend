@@ -21,7 +21,7 @@ public class AuthController {
 	}
 	
 	@PostMapping("/log-in")
-	public ResponseEntity<IsAuthorizedDTO> loginUser(@RequestBody UserRequestDTO userRequestDTO) {
-		return ResponseEntity.ok(authService.loginUser(userRequestDTO));
+	public ResponseEntity<IsAuthorizedDTO> isAuthorized(@RequestBody UserRequestDTO userRequestDTO) {
+		return ResponseEntity.ok(authService.isAuthorized(userRequestDTO));
 	}
 }

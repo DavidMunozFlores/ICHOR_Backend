@@ -29,7 +29,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 	
 	@Override
-	public IsAuthorizedDTO loginUser(UserRequestDTO userRequestDTO) {
+	public IsAuthorizedDTO isAuthorized(UserRequestDTO userRequestDTO) {
 		
 		User loggedUser = this.userRepository
 				.findUserByUsername(userRequestDTO.username())
