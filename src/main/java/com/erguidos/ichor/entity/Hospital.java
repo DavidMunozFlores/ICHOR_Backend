@@ -100,4 +100,53 @@ public class Hospital {
     public List<Patient> getPatients() { return this.patients; }
     public void addPatient(Patient patient) { this.patients.add(patient); }
     
+    public static HospitalBuilder builder() {
+        return new HospitalBuilder();
+    }
+    
+    public static HospitalBuilder builder(Hospital hospital) {
+        return new HospitalBuilder(hospital);
+    }
+    
+    public static class HospitalBuilder {
+        private String name = null;
+        private String address = null;
+        private BigDecimal longitude = null;
+        private BigDecimal latitude = null;
+        
+        private HospitalBuilder() {}
+        
+        private HospitalBuilder(Hospital hospital) {
+            this.name = hospital.name;
+            this.address = hospital.address;
+            this.longitude = hospital.longitude;
+            this.latitude = hospital.latitude;
+        }
+        
+        public HospitalBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+        public HospitalBuilder setAddress(String address) {
+            this.address = address;
+            return this;
+        }
+        public HospitalBuilder setLongitude(BigDecimal longitude) {
+            this.longitude = longitude;
+            return this;
+        }
+        public HospitalBuilder setLatitude(BigDecimal latitude) {
+            this.latitude = latitude;
+            return this;
+        }
+        
+        public Hospital build() {
+            return new Hospital(
+                this.name,
+                this.address,
+                this.longitude,
+                this.latitude
+            );
+        }
+    }
 }
