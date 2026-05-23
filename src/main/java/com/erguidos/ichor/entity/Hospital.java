@@ -74,6 +74,10 @@ public class Hospital {
     }
     
     public BigDecimal getLongitude() { return this.longitude; }
+    public void setLongitude(BigDecimal longitude) {
+        assert longitude != null;
+        this.longitude = longitude;
+    }
     
     public BigDecimal getLatitude() { return this.latitude; }
 
