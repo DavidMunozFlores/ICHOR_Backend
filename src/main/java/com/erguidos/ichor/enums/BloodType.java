@@ -15,22 +15,22 @@ public enum BloodType {
     AB_NEGATIVE(ABOGroup.AB, RHFactor.NEGATIVE);
 
     private enum ABOGroup {
-         O(false, false),
-         B(false,  true),
-         A( true, false),
-        AB( true,  true);
+         O(false, false), // 00
+         B(false,  true), // 01
+        A ( true, false), // 10
+        AB( true,  true); // 11
 
-        private final boolean hasAntigenA;
-        private final boolean hasAntigenB;
+        private final int antigens;
         
         ABOGroup(boolean hasAntigenA, boolean hasAntigenB) {
-            this.hasAntigenA = hasAntigenA;
-            this.hasAntigenB = hasAntigenB;
+            int antigens = 0b00;
+            if (hasAntigenA) { antigens += 0b10; }
+            if (hasAntigenB) { antigens += 0b01; }
+            this.antigens = antigens;
         }
         
         static boolean canDonate(ABOGroup donor, ABOGroup recipient) {
-            return (recipient.hasAntigenA || donor.hasAntigenA) == recipient.hasAntigenA
-                && (recipient.hasAntigenB || donor.hasAntigenB) == recipient.hasAntigenB;
+            return (recipient.antigens | donor.antigens) == recipient.antigens;
         }
     }
 
