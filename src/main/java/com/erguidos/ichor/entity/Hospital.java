@@ -41,13 +41,23 @@ public class Hospital {
     @Column(name = "latitude", nullable = false, precision = 10, scale = 8)
     private BigDecimal latitude;
     
-    @OneToMany(mappedBy = "hopsital")
-    private List<WorksInHospital> workers;
+    @OneToMany(mappedBy = "hospital")
+    private List<Doctor> doctors;
+    
+    @OneToMany(mappedBy = "hospital")
+    private List<Coordinator> coordinators;
     
     @OneToMany(mappedBy = "donorHospital")
     private List<Organ> organs;
+    
+    @OneToMany(mappedBy = "hospital")
+    private List<Patient> patients;
 
     protected Hospital() {}
+    
+    void addDoctor(Doctor doctor) {
+    	this.doctors.add(doctor);
+    }
     
     public Long getId() { return this.id; }
     
@@ -59,7 +69,9 @@ public class Hospital {
     
     public BigDecimal getLatitude() { return this.latitude; }
 
-	public List<WorksInHospital> getWorkers() { return workers; }
-
 	public List<Organ> getOrgans() { return organs; }
+
+	public List<Doctor> getDoctors() { return doctors; }
+
+	public List<Coordinator> getCoordinators() { return coordinators; }
 }

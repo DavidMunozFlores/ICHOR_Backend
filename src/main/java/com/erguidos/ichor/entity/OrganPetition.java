@@ -39,6 +39,8 @@ public class OrganPetition {
 	@JoinColumn(name = "id_doctor", nullable = false)
 	private Doctor doctor;
 	
+	// Thinking about create field Hospital patientHospital
+	// to control if patient goes to other Hospital and keep history of organ petitions clean and reliable
 	@ManyToOne
 	@JoinColumn(name = "id_patient", nullable = false)
 	private Patient patient;
