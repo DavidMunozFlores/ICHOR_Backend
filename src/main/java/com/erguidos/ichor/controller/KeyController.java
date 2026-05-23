@@ -21,7 +21,7 @@ public class KeyController {
         this.keyService = keyService;
     }
     
-    @GetMapping("/public")
+    @GetMapping("/public-key")
     public ResponseEntity<PublicKeyResponse> getPublicKey() {
         return ResponseEntity.ok()
                 .cacheControl(
