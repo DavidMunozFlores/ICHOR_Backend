@@ -89,8 +89,10 @@ public class Hospital {
     public List<Doctor> getDoctors() { return this.doctors; }
     public void addDoctor(Doctor doctor) { this.doctors.add(doctor); }
 
-	public List<Doctor> getDoctors() { return doctors; }
     public List<Coordinator> getCoordinators() { return this.coordinators; }
     public void addCoordinator(Coordinator coordinator) { this.coordinators.add(coordinator); }
 
+    public List<Patient> getPatients() { return this.patients; }
+    public void addPatient(Patient patient) { this.patients.add(patient); }
+    
 }
