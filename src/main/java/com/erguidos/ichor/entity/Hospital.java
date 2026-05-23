@@ -62,7 +62,11 @@ public class Hospital {
     public Long getId() { return this.id; }
     
     public String getName() { return this.name; }
-
+    public void setName(String name) {
+        assert name != null;
+        this.name = name;
+    }
+    
     public String getAddress() { return this.address; } 
     
     public BigDecimal getLongitude() { return this.longitude; }
