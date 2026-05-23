@@ -55,9 +55,7 @@ public class Hospital {
 
     protected Hospital() {}
     
-    void addDoctor(Doctor doctor) {
-    	this.doctors.add(doctor);
-    }
+
     
     public Long getId() { return this.id; }
     
@@ -88,6 +86,8 @@ public class Hospital {
     public List<Organ> getOrgans() { return this.organs; }
     public void addOrgan(Organ organ) { this.organs.add(organ); }
 
+    public List<Doctor> getDoctors() { return this.doctors; }
+    public void addDoctor(Doctor doctor) { this.doctors.add(doctor); }
 
 	public List<Doctor> getDoctors() { return doctors; }
 
