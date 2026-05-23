@@ -80,6 +80,10 @@ public class Hospital {
     }
     
     public BigDecimal getLatitude() { return this.latitude; }
+    public void setLatitude(BigDecimal latitude) {
+        assert latitude != null;
+        this.latitude = latitude;
+    }
 
 	public List<Organ> getOrgans() { return organs; }
 
