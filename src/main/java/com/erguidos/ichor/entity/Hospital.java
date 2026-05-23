@@ -90,6 +90,7 @@ public class Hospital {
     public void addDoctor(Doctor doctor) { this.doctors.add(doctor); }
 
 	public List<Doctor> getDoctors() { return doctors; }
+    public List<Coordinator> getCoordinators() { return this.coordinators; }
+    public void addCoordinator(Coordinator coordinator) { this.coordinators.add(coordinator); }
 
-	public List<Coordinator> getCoordinators() { return coordinators; }
 }
