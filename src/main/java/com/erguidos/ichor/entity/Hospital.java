@@ -68,6 +68,10 @@ public class Hospital {
     }
     
     public String getAddress() { return this.address; } 
+    public void setAddress(String address) {
+        assert address != null;
+        this.address = address;
+    }
     
     public BigDecimal getLongitude() { return this.longitude; }
     
