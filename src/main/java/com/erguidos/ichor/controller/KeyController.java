@@ -5,18 +5,19 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.erguidos.ichor.dto.response.PublicKeyResponse;
-import com.erguidos.ichor.service.KeyService;
+import com.erguidos.ichor.service.KeyServiceInterface;
 
 @RestController
 @RequestMapping("/api/v1/keys")
 public class KeyController {
-    private final KeyService keyService;
+    private final KeyServiceInterface keyService;
     
-    public KeyController(KeyService keyService) {
+    public KeyController(KeyServiceInterface keyService) {
         this.keyService = keyService;
     }
     
