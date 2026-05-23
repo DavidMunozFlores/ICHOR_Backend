@@ -55,7 +55,12 @@ public class Hospital {
 
     protected Hospital() {}
     
-
+    private Hospital(String name, String address, BigDecimal longitude, BigDecimal latitude) {
+        this.setName(name);
+        this.setAddress(address);
+        this.setLongitude(longitude);
+        this.setLatitude(latitude);
+    }
     
     public Long getId() { return this.id; }
     
