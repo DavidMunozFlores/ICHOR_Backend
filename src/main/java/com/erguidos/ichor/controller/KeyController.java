@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.erguidos.ichor.dto.request.DecryptRequest;
 import com.erguidos.ichor.dto.response.PublicKeyResponse;
 import com.erguidos.ichor.service.KeyServiceInterface;
 
