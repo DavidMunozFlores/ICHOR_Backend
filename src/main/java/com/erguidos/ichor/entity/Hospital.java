@@ -84,8 +84,10 @@ public class Hospital {
         assert latitude != null;
         this.latitude = latitude;
     }
+    
+    public List<Organ> getOrgans() { return this.organs; }
+    public void addOrgan(Organ organ) { this.organs.add(organ); }
 
-	public List<Organ> getOrgans() { return organs; }
 
 	public List<Doctor> getDoctors() { return doctors; }
 
