@@ -8,6 +8,7 @@ import com.erguidos.ichor.entity.Doctor;
 import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.entity.Manager;
 import com.erguidos.ichor.entity.User;
+import com.erguidos.ichor.exceptions.IncorrectPasswordException;
 import com.erguidos.ichor.exceptions.UserAlreadyExistsException;
 import com.erguidos.ichor.exceptions.UserNotFoundException;
 import com.erguidos.ichor.repository.DoctorRepository;
@@ -76,6 +77,6 @@ public class DoctorServiceImpl implements DoctorService {
 				.orElseThrow(() -> new UserNotFoundException(USER_NOT_EXISTS_MSJ));
 		
 		if(!manager.getPassword().equals(createUserRequestDTO.managerData().password()))
-			throw new IllegalArgumentException(PASSWORD_INCORRECT_MSJ);
+			throw new IncorrectPasswordException(PASSWORD_INCORRECT_MSJ);
 	}
 }
