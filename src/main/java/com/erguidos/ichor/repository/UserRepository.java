@@ -1,6 +1,6 @@
 package com.erguidos.ichor.repository;
 
-import java.util.Optional;import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties.Apiversion.Use;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
