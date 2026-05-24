@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.erguidos.ichor.dto.request.UserRequestDTO;
-import com.erguidos.ichor.dto.response.IsAuthorizedDTO;
+import com.erguidos.ichor.dto.request.LoginUserRequestDTO;
+import com.erguidos.ichor.dto.response.IsUserAuthorizedDTO;
 import com.erguidos.ichor.service.AuthService;
 
 @RestController
@@ -21,7 +21,7 @@ public class AuthController {
 	}
 	
 	@PostMapping("/log-in")
-	public ResponseEntity<IsAuthorizedDTO> isAuthorized(@RequestBody UserRequestDTO userRequestDTO) {
+	public ResponseEntity<IsUserAuthorizedDTO> isAuthorized(@RequestBody LoginUserRequestDTO userRequestDTO) {
 		return ResponseEntity.ok(authService.isAuthorized(userRequestDTO));
 	}
 }
