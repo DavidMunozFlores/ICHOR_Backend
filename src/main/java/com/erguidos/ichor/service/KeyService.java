@@ -11,6 +11,10 @@ import javax.crypto.spec.PSource;
 
 import org.springframework.stereotype.Service;
 
+import com.erguidos.ichor.dto.request.DecryptRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Service
 public class KeyService implements KeyServiceInterface {
     private static final String CIPHER_ALGORITHM = "RSA/ECB/OAEPWithSHA-256AndMGF1Padding";
@@ -21,8 +25,7 @@ public class KeyService implements KeyServiceInterface {
         this.rsaKeyProvider = rsaKeyProvider;
     }
     
-    @Override
-    public String decrypt(String base64CipherText) throws GeneralSecurityException {
+    private String decrypt(String base64CipherText) throws GeneralSecurityException {
         byte[] cipherBytes = Base64.getDecoder().decode(base64CipherText);
         Cipher cipher = Cipher.getInstance(KeyService.CIPHER_ALGORITHM);
         OAEPParameterSpec oaepParams = new OAEPParameterSpec(
@@ -43,5 +46,15 @@ public class KeyService implements KeyServiceInterface {
                              .getPublicKey()
                              .getEncoded()
                      );
+    }
+    
+    @Override
+    public <T> T decryptToObject(DecryptRequest dr, Class<T> targetClass)
+            throws GeneralSecurityException, JsonProcessingException {
+        return new ObjectMapper()
+                .readValue(
+                    this.decrypt(dr.data()),
+                    targetClass
+                );
     }
 }

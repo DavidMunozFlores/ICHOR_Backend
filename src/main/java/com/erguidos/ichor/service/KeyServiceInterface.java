@@ -2,9 +2,12 @@ package com.erguidos.ichor.service;
 
 import java.security.GeneralSecurityException;
 
+import com.erguidos.ichor.dto.request.DecryptRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 public interface KeyServiceInterface {
-    String decrypt(String base64CipherText)
-            throws GeneralSecurityException;
-    
     String getPublicKey();
+
+    <T> T decryptToObject(DecryptRequest dr, Class<T> targetClass)
+            throws GeneralSecurityException, JsonProcessingException;
 }
