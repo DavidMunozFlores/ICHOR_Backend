@@ -1,8 +1,8 @@
 package com.erguidos.ichor.service;
 
-import com.erguidos.ichor.dto.request.UserRequestDTO;
-import com.erguidos.ichor.dto.response.IsAuthorizedDTO;
+import com.erguidos.ichor.dto.request.LoginUserRequestDTO;
+import com.erguidos.ichor.dto.response.IsUserAuthorizedDTO;
 
 public interface AuthService {
-	IsAuthorizedDTO isAuthorized(UserRequestDTO userRequestDTO);
+	IsUserAuthorizedDTO isAuthorized(LoginUserRequestDTO userRequestDTO);
 }

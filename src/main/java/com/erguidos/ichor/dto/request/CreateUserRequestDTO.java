@@ -2,7 +2,7 @@ package com.erguidos.ichor.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record DoctorRequestDTO(
+public record CreateUserRequestDTO(
 		String username,
 		String password,
 		@JsonProperty(value = "id_hospital")
