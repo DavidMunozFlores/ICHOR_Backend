@@ -1,9 +1,14 @@
-package com.erguidos.ichor.service;
+package com.erguidos.ichor.service.doctor;
+
+import java.security.GeneralSecurityException;
 
 import org.springframework.stereotype.Service;
 
+import com.erguidos.ichor.dto.request.AuthenticatedRequest;
 import com.erguidos.ichor.dto.request.CreateUserRequestDTO;
 import com.erguidos.ichor.dto.request.CreateUserRequestDTOV2;
+import com.erguidos.ichor.dto.request.CreateUserRequest;
+import com.erguidos.ichor.dto.request.DecryptRequest;
 import com.erguidos.ichor.entity.Doctor;
 import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.entity.Manager;
@@ -15,12 +20,14 @@ import com.erguidos.ichor.repository.DoctorRepository;
 import com.erguidos.ichor.repository.HospitalRepository;
 import com.erguidos.ichor.repository.ManagerRepository;
 import com.erguidos.ichor.repository.UserRepository;
+import com.erguidos.ichor.service.key.KeyService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class DoctorServiceImpl implements DoctorService {
+public class DoctorService implements DoctorServiceInterface {
 	private static final String DOCTOR_EXISTS_MSJ = "The Doctor already exists";
 	private static final String HOSPITAL_NOT_EXISTS_MSJ = "The Hospital doesn't exist";
 	private static final String USER_NOT_EXISTS_MSJ = "The User doesn't exist";
@@ -30,27 +37,38 @@ public class DoctorServiceImpl implements DoctorService {
 	private DoctorRepository doctorRepository;
 	private HospitalRepository hospitalRepository;
 	private ManagerRepository managerRepository;
+	private KeyService keyService;
 	
-	DoctorServiceImpl(DoctorRepository doctorRepository, HospitalRepository hospitalRepository, ManagerRepository managerRepository) {
+	DoctorService(DoctorRepository doctorRepository, HospitalRepository hospitalRepository, ManagerRepository managerRepository, KeyService keyService) {
 		this.doctorRepository = doctorRepository;
 		this.hospitalRepository = hospitalRepository;
 		this.managerRepository = managerRepository;
+		this.keyService = keyService;
 	}
 
 	@Override
-	public void createDoctor(CreateUserRequestDTO doctorRequestDTO) {
+	public void createDoctor(DecryptRequest decReq) {
 		
-		if(doctorRepository.existsByUsername(doctorRequestDTO.username()))
-			throw new EntityExistsException(DOCTOR_EXISTS_MSJ);
+		AuthenticatedRequest<CreateUserRequest> authReq;
 		
-		Hospital doctorHospital = hospitalRepository
-				.findById(doctorRequestDTO.idHospital())
-				.orElseThrow(() -> new EntityNotFoundException(HOSPITAL_NOT_EXISTS_MSJ));
+		try {
+			authReq = keyService.decryptToObject(decReq, AuthenticatedRequest.class);
+			
+			if(doctorRepository.existsByUsername(authReq.data().username()))
+				throw new EntityExistsException(DOCTOR_EXISTS_MSJ);
+			
+			Hospital doctorHospital = hospitalRepository
+					.findById(authReq.data().idHospital())
+					.orElseThrow(() -> new EntityNotFoundException(HOSPITAL_NOT_EXISTS_MSJ));
+			
+			doctorRepository.save(
+					Doctor.create(authReq.data().username(), authReq.data().password(), doctorHospital)
+					);
+		} catch (JsonProcessingException | GeneralSecurityException e) {
+			
+		}
 		
-		// TODO bycrypt
-		doctorRepository.save(
-				Doctor.create(doctorRequestDTO.username(), doctorRequestDTO.password(), doctorHospital)
-				);
+
 	}
 	
 	@Override

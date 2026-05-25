@@ -1,8 +1,8 @@
-package com.erguidos.ichor.service;
+package com.erguidos.ichor.service.auth;
 
 import org.springframework.stereotype.Service;
 
-import com.erguidos.ichor.dto.request.LoginUserRequestDTO;
+import com.erguidos.ichor.dto.request.AuthCredentialsRequest;
 import com.erguidos.ichor.dto.response.IsUserAuthorizedDTO;
 import com.erguidos.ichor.entity.Coordinator;
 import com.erguidos.ichor.entity.Doctor;
@@ -13,7 +13,7 @@ import com.erguidos.ichor.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class AuthServiceImpl implements AuthService {
+public class AuthService implements AuthServiceInterface {
 	private static final String USER_NOT_EXISTS_MSJ = "That user doesn't exist";
 	private static final String PASSWORD_INCORRECT_MSJ = "The password isn't correct";
 	private static final String ROL_NOT_EXISTS_MSJ = "The rol doesn't exist";
@@ -24,12 +24,12 @@ public class AuthServiceImpl implements AuthService {
 	
 	private UserRepository userRepository;
 	
-	AuthServiceImpl(UserRepository userRepository) {
+	AuthService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 	
 	@Override
-	public IsUserAuthorizedDTO isAuthorized(LoginUserRequestDTO userRequestDTO) {
+	public IsUserAuthorizedDTO isAuthorized(AuthCredentialsRequest userRequestDTO) {
 		
 		User loggedUser = this.userRepository
 				.findUserByUsername(userRequestDTO.username())
