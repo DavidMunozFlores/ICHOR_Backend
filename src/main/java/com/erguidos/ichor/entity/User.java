@@ -2,6 +2,8 @@ package com.erguidos.ichor.entity;
 
 import java.util.Objects;
 
+import com.erguidos.ichor.service.Role;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,6 +43,7 @@ public abstract class User {
     	setPassword(password);
     }
     
+    public abstract Role getRole();
     
     public Long getId() { return this.id; }
     

@@ -2,6 +2,8 @@ package com.erguidos.ichor.entity;
 
 import java.util.List;
 
+import com.erguidos.ichor.service.Role;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -22,6 +24,11 @@ public class Coordinator extends User {
 	private List<Organ> registeredOrgans;
     
     protected Coordinator() {}
+    
+    @Override
+    public Role getRole() {
+        return Role.COORDINATOR;
+    }
 
 	public Hospital getHospital() { return hospital; }
 
