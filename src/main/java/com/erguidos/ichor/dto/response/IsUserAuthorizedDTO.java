@@ -1,3 +1,7 @@
 package com.erguidos.ichor.dto.response;
 
-public record IsUserAuthorizedDTO(String rol) {}
+import com.erguidos.ichor.service.Role;
+
+public record IsUserAuthorizedDTO(
+    Role role
+) {}
