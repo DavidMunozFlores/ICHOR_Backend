@@ -13,5 +13,10 @@
     "name": "app.development.stage",
     "type": "java.lang.String",
     "description": "Stage in which the app is. BACK / FRONT. Used when testing key encryption."
+  },
+  {
+    "name": "app.cors.allowed",
+    "type": "java.lang.String",
+    "description": "List of urls that are allowed to do cross origin"
   }
 ]}
