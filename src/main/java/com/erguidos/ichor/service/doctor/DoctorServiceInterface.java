@@ -1,9 +1,11 @@
 package com.erguidos.ichor.service.doctor;
 
-import com.erguidos.ichor.dto.request.CreateUserRequestDTOV2;
+import java.security.GeneralSecurityException;
+
 import com.erguidos.ichor.dto.request.DecryptRequest;
+import com.erguidos.ichor.dto.response.WorkerCreatedResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface DoctorServiceInterface {
-	void createDoctor(DecryptRequest decryptedDTO);
-	void createDoctorV2(CreateUserRequestDTOV2 doctorRequestDTO);
+	WorkerCreatedResponse createDoctor(DecryptRequest decryptedDTO) throws JsonProcessingException, GeneralSecurityException;
 }

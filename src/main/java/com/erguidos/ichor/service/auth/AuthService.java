@@ -3,7 +3,7 @@ package com.erguidos.ichor.service.auth;
 import org.springframework.stereotype.Service;
 
 import com.erguidos.ichor.dto.request.AuthCredentialsRequest;
-import com.erguidos.ichor.dto.response.IsUserAuthorizedDTO;
+import com.erguidos.ichor.dto.response.IsUserAuthorizedResponse;
 import com.erguidos.ichor.entity.Coordinator;
 import com.erguidos.ichor.entity.Doctor;
 import com.erguidos.ichor.entity.Manager;
@@ -29,7 +29,7 @@ public class AuthService implements AuthServiceInterface {
 	}
 	
 	@Override
-	public IsUserAuthorizedDTO isAuthorized(AuthCredentialsRequest userRequestDTO) {
+	public IsUserAuthorizedResponse isAuthorized(AuthCredentialsRequest userRequestDTO) {
 		
 		User loggedUser = this.userRepository
 				.findUserByUsername(userRequestDTO.username())
@@ -39,7 +39,7 @@ public class AuthService implements AuthServiceInterface {
 			throw new IllegalArgumentException(PASSWORD_INCORRECT_MSJ);
 
 		
-		return new IsUserAuthorizedDTO(rolOfUser(loggedUser));
+		return new IsUserAuthorizedResponse(rolOfUser(loggedUser));
 	}
 
 	
