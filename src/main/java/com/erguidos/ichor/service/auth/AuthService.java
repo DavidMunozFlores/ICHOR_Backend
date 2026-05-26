@@ -1,5 +1,6 @@
 package com.erguidos.ichor.service.auth;
  
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.erguidos.ichor.component.HashInterface;
@@ -20,7 +21,10 @@ public class AuthService implements AuthServiceInterface {
     private HashInterface hashComponent;
     //TODO Inyect service to transform DcryptRequest dto to AuthCredentialsRequest dto
     
-    AuthService(UserRepository userRepository, HashInterface hashComponent) {
+    AuthService(
+    		UserRepository userRepository,
+    		@Qualifier("bcryptPasswordEncoder") HashInterface hashComponent) {
+    	
         this.userRepository = userRepository;
         this.hashComponent = hashComponent;
     }
@@ -32,7 +36,7 @@ public class AuthService implements AuthServiceInterface {
                 .findUserByUsername(userRequestDTO.username())
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_EXISTS_MSJ));
        
-        if(hashComponent.matchPasswords(userRequestDTO.password(), loggedUser.getPassword()))
+        if(!hashComponent.matchPasswords(userRequestDTO.password(), loggedUser.getPassword()))
             throw new IncorrectPasswordException(PASSWORD_INCORRECT_MSJ);
  
         return new IsUserAuthorizedResponse(loggedUser.getRole());
