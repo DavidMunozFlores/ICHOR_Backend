@@ -1,8 +1,8 @@
-package com.erguidos.ichor.service;
+package com.erguidos.ichor.service.auth;
 
 import org.springframework.stereotype.Service;
 
-import com.erguidos.ichor.dto.request.LoginUserRequestDTO;
+import com.erguidos.ichor.dto.request.AuthCredentialsRequest;
 import com.erguidos.ichor.dto.response.IsUserAuthorizedDTO;
 import com.erguidos.ichor.entity.User;
 import com.erguidos.ichor.repository.UserRepository;

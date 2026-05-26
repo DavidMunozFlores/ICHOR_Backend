@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.erguidos.ichor.dto.request.CreateUserRequestDTO;
 import com.erguidos.ichor.dto.request.CreateUserRequestDTOV2;
-import com.erguidos.ichor.service.DoctorService;
+import com.erguidos.ichor.dto.request.DecryptRequest;
+import com.erguidos.ichor.service.doctor.DoctorServiceInterface;
 
 
 @RestController
@@ -18,15 +19,16 @@ import com.erguidos.ichor.service.DoctorService;
 @CrossOrigin(origins = "http://localhost:4200")
 public class DoctorController {
 	
-	private DoctorService doctorService;
+	private final DoctorServiceInterface doctorService;
 	
-	DoctorController(DoctorService doctorService) {
+	DoctorController(DoctorServiceInterface doctorService) {
 		this.doctorService = doctorService;
 	}
 
 	@PostMapping("/create")
-	public ResponseEntity<String> createDoctor(@RequestBody CreateUserRequestDTO doctorRequestDTO){
-		doctorService.createDoctor(doctorRequestDTO);
+	public ResponseEntity<String> createDoctor(@RequestBody DecryptRequest decryptDTO){
+		
+		doctorService.createDoctor(decryptDTO);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body("DOCTOR CREATED");
 	}

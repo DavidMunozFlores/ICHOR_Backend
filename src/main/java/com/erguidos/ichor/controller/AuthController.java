@@ -7,23 +7,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.erguidos.ichor.dto.request.LoginUserRequestDTO;
+import com.erguidos.ichor.dto.request.AuthCredentialsRequest;
 import com.erguidos.ichor.dto.response.IsUserAuthorizedDTO;
-import com.erguidos.ichor.service.AuthService;
+import com.erguidos.ichor.service.auth.AuthServiceInterface;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
 
-	private AuthService authService;
+	private AuthServiceInterface authService;
 	
-	AuthController(AuthService authService) {
+	AuthController(AuthServiceInterface authService) {
 		this.authService = authService;
 	}
 	
 	@PostMapping("/log-in")
-	public ResponseEntity<IsUserAuthorizedDTO> isAuthorized(@RequestBody LoginUserRequestDTO userRequestDTO) {
+	public ResponseEntity<IsUserAuthorizedDTO> isAuthorized(@RequestBody AuthCredentialsRequest userRequestDTO) {
 		return ResponseEntity.ok(authService.isAuthorized(userRequestDTO));
 	}
 }
