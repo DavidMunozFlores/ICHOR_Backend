@@ -1,5 +1,6 @@
 package com.erguidos.ichor.service.hospital;
 
+import com.erguidos.ichor.dto.mappers.HospitalMapper;
 import com.erguidos.ichor.dto.response.HospitalResponse;
 import com.erguidos.ichor.repository.HospitalRepository;
 
@@ -19,7 +20,7 @@ public class HospitalService implements HospitalServiceInterface {
     public List<HospitalResponse> getAllHospitals() {
         return this.hospitalRepository.findAll()
                 .stream()
-                .map(HospitalResponse::of)
+                .map(HospitalMapper::toHospitalResponse)
                 .toList();
     }
 }
