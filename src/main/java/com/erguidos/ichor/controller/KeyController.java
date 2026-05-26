@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.erguidos.ichor.dto.response.PublicKeyResponse;
-import com.erguidos.ichor.service.KeyServiceInterface;
+import com.erguidos.ichor.service.key.KeyServiceInterface;
 
 @RestController
 @RequestMapping("/api/v1/keys")
