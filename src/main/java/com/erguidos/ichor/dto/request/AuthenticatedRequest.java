@@ -1,6 +1,6 @@
 package com.erguidos.ichor.dto.request;
 
-public record AuthenticatedRequest<D extends DataRequestInterface>(
+public record AuthenticatedRequest(
 		AuthCredentialsRequest authCredentials,
-		D data) {}
+		CreateWorkerRequest data) {}
 	

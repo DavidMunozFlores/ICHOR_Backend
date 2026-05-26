@@ -1,8 +1,8 @@
 package com.erguidos.ichor.service.auth;
 
 import com.erguidos.ichor.dto.request.AuthCredentialsRequest;
-import com.erguidos.ichor.dto.response.IsUserAuthorizedDTO;
+import com.erguidos.ichor.dto.response.IsUserAuthorizedResponse;
 
 public interface AuthServiceInterface {
-	IsUserAuthorizedDTO isAuthorized(AuthCredentialsRequest userRequestDTO);
+	IsUserAuthorizedResponse isAuthorized(AuthCredentialsRequest userRequestDTO);
 }
