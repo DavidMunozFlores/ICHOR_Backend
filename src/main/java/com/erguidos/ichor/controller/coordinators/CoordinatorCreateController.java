@@ -15,10 +15,10 @@ import com.erguidos.ichor.dto.request.CoordinatorCreateRequest;
 import com.erguidos.ichor.dto.request.DecryptRequest;
 import com.erguidos.ichor.dto.response.CoordinatorResponse;
 import com.erguidos.ichor.entity.Coordinator;
+import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.service.auth.AuthServiceInterface;
 import com.erguidos.ichor.service.key.KeyServiceInterface;
 import com.erguidos.ichor.types.CoordinatorCreationType;
-import com.erguidos.ichor.service.Role;
 import com.erguidos.ichor.service.coordinator.CoordinatorServiceInterface;
 import com.fasterxml.jackson.core.JsonProcessingException;
 

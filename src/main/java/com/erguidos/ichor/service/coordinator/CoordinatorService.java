@@ -10,10 +10,10 @@ import com.erguidos.ichor.types.CoordinatorSearchType;
 import com.erguidos.ichor.entity.Coordinator;
 import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.entity.User;
+import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.repository.CoordinatorRepository;
 import com.erguidos.ichor.repository.HospitalRepository;
 import com.erguidos.ichor.repository.UserRepository;
-import com.erguidos.ichor.service.Role;
 import com.erguidos.ichor.types.CoordinatorCreationType;
 
 @Service

@@ -2,7 +2,7 @@ package com.erguidos.ichor.service.auth;
 
 import com.erguidos.ichor.dto.request.AuthCredentialsRequest;
 import com.erguidos.ichor.dto.response.IsUserAuthorizedResponse;
-import com.erguidos.ichor.service.Role;
+import com.erguidos.ichor.enums.Role;
 
 public interface AuthServiceInterface {
 	IsUserAuthorizedResponse isAuthorized(AuthCredentialsRequest userRequestDTO);

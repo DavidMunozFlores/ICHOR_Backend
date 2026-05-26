@@ -1,4 +1,4 @@
-package com.erguidos.ichor.service;
+package com.erguidos.ichor.enums;
 
 public enum Role {
     DOCTOR,

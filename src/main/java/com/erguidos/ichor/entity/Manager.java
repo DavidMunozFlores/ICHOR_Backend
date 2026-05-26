@@ -1,6 +1,6 @@
 package com.erguidos.ichor.entity;
 
-import com.erguidos.ichor.service.Role;
+import com.erguidos.ichor.enums.Role;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;

@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import com.erguidos.ichor.dto.request.AuthCredentialsRequest;
 import com.erguidos.ichor.dto.response.IsUserAuthorizedResponse;
 import com.erguidos.ichor.entity.User;
+import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.repository.UserRepository;
-import com.erguidos.ichor.service.Role;
 
 import jakarta.persistence.EntityNotFoundException;
  
