@@ -13,7 +13,6 @@ import com.erguidos.ichor.dto.mappers.CoordinatorMapper;
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
 import com.erguidos.ichor.dto.request.CoordinatorCreateRequest;
 import com.erguidos.ichor.dto.request.DecryptRequest;
-import com.erguidos.ichor.dto.response.CoordinatorResponse;
 import com.erguidos.ichor.entity.Coordinator;
 import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.service.auth.AuthServiceInterface;
