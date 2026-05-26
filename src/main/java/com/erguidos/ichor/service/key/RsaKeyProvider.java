@@ -1,4 +1,4 @@
-package com.erguidos.ichor.service;
+package com.erguidos.ichor.service.key;
 
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
