@@ -2,6 +2,8 @@ package com.erguidos.ichor.entity;
 
 import java.util.List;
 
+import com.erguidos.ichor.service.Role;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -29,6 +31,11 @@ public class Doctor extends User {
     	super(username, password);
     	setHospital(hospital);
     	hospital.addDoctor(this);
+    }
+    
+    @Override
+    public Role getRole() {
+        return Role.DOCTOR;
     }
 	
 	public static Doctor create(String username, String password, Hospital hospital) {
