@@ -10,18 +10,18 @@ import com.erguidos.ichor.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class AuthServiceImpl implements AuthService {
+public class AuthService implements AuthServiceInterface {
     private static final String USER_NOT_EXISTS_MSJ = "That user doesn't exist";
     private static final String PASSWORD_INCORRECT_MSJ = "The password isn't correct";
     
     private UserRepository userRepository;
     
-    AuthServiceImpl(UserRepository userRepository) {
+    AuthService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
     
     @Override
-    public IsUserAuthorizedDTO isAuthorized(LoginUserRequestDTO userRequestDTO) {       
+    public IsUserAuthorizedDTO isAuthorized(AuthCredentialsRequest userRequestDTO) {       
         User loggedUser = this.userRepository
                 .findUserByUsername(userRequestDTO.username())
                 .orElseThrow(() -> new EntityNotFoundException(USER_NOT_EXISTS_MSJ));
