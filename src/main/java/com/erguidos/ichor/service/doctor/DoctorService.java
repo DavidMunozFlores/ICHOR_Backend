@@ -56,7 +56,7 @@ public class DoctorService implements DoctorServiceInterface {
 	@Override
 	public WorkerCreatedResponse createDoctor(DecryptRequest decReq)
 			throws JsonProcessingException, GeneralSecurityException {
-	    AuthenticatedRequest<CreateWorkerRequest> authReq = this.keyService.decryptToAuthenticatedRequest(decReq, CreateWorkerRequest.class);
+	    AuthenticatedRequest<CreateWorkerRequest> autReq = this.keyService.decryptToAuthenticatedRequest(decReq, CreateWorkerRequest.class);
 
 		Manager manager = managerRepository.findManagerByUsername(autReq.authCredentials().username())
 				.orElseThrow(() -> new UserNotFoundException(USER_NOT_EXISTS_MSJ));
