@@ -3,17 +3,35 @@ package com.erguidos.ichor.service.coordinator;
 import java.util.List;
 import java.util.Optional;
 
-import com.erguidos.ichor.dto.types.CoordinatorSearchResponseType;
-import com.erguidos.ichor.entity.Coordinator;
-import com.erguidos.ichor.repository.CoordinatorRepository;
+import org.springframework.stereotype.Service;
 
+import com.erguidos.ichor.dto.request.CoordinatorCreateRequest;
+import com.erguidos.ichor.types.CoordinatorSearchType;
+import com.erguidos.ichor.entity.Coordinator;
+import com.erguidos.ichor.entity.Hospital;
+import com.erguidos.ichor.entity.User;
+import com.erguidos.ichor.repository.CoordinatorRepository;
+import com.erguidos.ichor.repository.HospitalRepository;
+import com.erguidos.ichor.repository.UserRepository;
+import com.erguidos.ichor.service.Role;
+import com.erguidos.ichor.types.CoordinatorCreationType;
+
+@Service
 public class CoordinatorService
        implements CoordinatorServiceInterface {
 
     private final CoordinatorRepository coordinatorRepository;
+    private final UserRepository userRepository;
+    private final HospitalRepository hospitalRepository;
     
-    CoordinatorService(CoordinatorRepository coordinatorRepository) {
+    CoordinatorService(
+            CoordinatorRepository coordinatorRepository,
+            UserRepository userRepository,
+            HospitalRepository hospitalRepository
+    ) {
         this.coordinatorRepository = coordinatorRepository;
+        this.userRepository = userRepository;
+        this.hospitalRepository = hospitalRepository;
     }
 
     @Override
@@ -22,11 +40,30 @@ public class CoordinatorService
     }
 
     @Override
-    public CoordinatorSearchResponseType getCoordinator(Long id) {
-        Optional<Coordinator> coordinatorOp = this.coordinatorRepository.getByUserId(id);
-        if (coordinatorOp.isEmpty()) {
-            return new CoordinatorSearchResponseType.Failed();
-        }
-        return new CoordinatorSearchResponseType.Found(coordinatorOp.get());
+    public CoordinatorSearchType getCoordinator(Long id) {
+        Optional<User> userOp = this.userRepository.findById(id);
+        if (userOp.isEmpty()) { return new CoordinatorSearchType.Failed(); }
+        User user = userOp.get();
+        if (user.getRole() != Role.COORDINATOR) { return new CoordinatorSearchType.Failed(); }
+        return new CoordinatorSearchType.Found((Coordinator) user);
+    }
+
+    @Override
+    public CoordinatorCreationType createCoordinator(CoordinatorCreateRequest ccr) {
+        Optional<User> user = this.userRepository.findUserByUsername(ccr.username());
+        if (user.isPresent()) { return new CoordinatorCreationType.Exists(); }
+        
+        Optional<Hospital> hospital = this.hospitalRepository.findById(ccr.hospitalId());
+        if (hospital.isEmpty()) { return new CoordinatorCreationType.NoHospital(ccr.hospitalId()); }
+        
+        Coordinator coordinator = Coordinator.builder()
+                .setUsername(ccr.username())
+                .setPassword(ccr.password())
+                .setHospital(hospital.get())
+                .build();
+        
+        this.coordinatorRepository.save(coordinator);
+        
+        return new CoordinatorCreationType.Created(coordinator);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.erguidos.ichor.component.HashInterface;
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
+import com.erguidos.ichor.dto.request.CreateWorkerRequest;
 import com.erguidos.ichor.dto.request.DecryptRequest;
 import com.erguidos.ichor.dto.response.WorkerCreatedResponse;
 import com.erguidos.ichor.entity.Doctor;
@@ -55,9 +56,7 @@ public class DoctorService implements DoctorServiceInterface {
 	@Override
 	public WorkerCreatedResponse createDoctor(DecryptRequest decReq)
 			throws JsonProcessingException, GeneralSecurityException {
-
-		AuthenticatedRequest autReq =
-				keyService.decryptToObject(decReq, AuthenticatedRequest.class);
+	    AuthenticatedRequest<CreateWorkerRequest> authReq = this.keyService.decryptToAuthenticatedRequest(decReq, CreateWorkerRequest.class);
 
 		Manager manager = managerRepository.findManagerByUsername(autReq.authCredentials().username())
 				.orElseThrow(() -> new UserNotFoundException(USER_NOT_EXISTS_MSJ));

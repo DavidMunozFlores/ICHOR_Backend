@@ -8,5 +8,10 @@
     "name": "app.security.key.public",
     "type": "java.lang.String",
     "description": "Public key for security"
+  },
+  {
+    "name": "app.development.stage",
+    "type": "java.lang.String",
+    "description": "Stage in which the app is. BACK / FRONT. Used when testing key encryption."
   }
 ]}

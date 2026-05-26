@@ -9,10 +9,14 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.OAEPParameterSpec;
 import javax.crypto.spec.PSource;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.erguidos.ichor.dto.request.AuthenticatedRequest;
+import com.erguidos.ichor.dto.request.DataRequestInterface;
 import com.erguidos.ichor.dto.request.DecryptRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
@@ -21,20 +25,27 @@ public class KeyService implements KeyServiceInterface {
 
     private final RsaKeyProvider rsaKeyProvider;
     
-    public KeyService(RsaKeyProvider rsaKeyProvider) {
+    private final String stage;
+    
+    public KeyService(RsaKeyProvider rsaKeyProvider, @Value("${app.development.stage}") String stage) {
         this.rsaKeyProvider = rsaKeyProvider;
+        this.stage = stage;
     }
     
     private String decrypt(String base64CipherText) throws GeneralSecurityException {
         byte[] cipherBytes = Base64.getDecoder().decode(base64CipherText);
         Cipher cipher = Cipher.getInstance(KeyService.CIPHER_ALGORITHM);
-        OAEPParameterSpec oaepParams = new OAEPParameterSpec(
-            "SHA-256",
-            "MGF1",
-            MGF1ParameterSpec.SHA256,
-            PSource.PSpecified.DEFAULT
-        );
-        cipher.init(Cipher.DECRYPT_MODE, this.rsaKeyProvider.getPrivateKey(), oaepParams);
+        if ("BACK".equals(this.stage)) {
+            cipher.init(Cipher.DECRYPT_MODE, this.rsaKeyProvider.getPrivateKey());
+        } else {
+            OAEPParameterSpec oaepParams = new OAEPParameterSpec(
+                "SHA-256",
+                "MGF1",
+                MGF1ParameterSpec.SHA256,
+                PSource.PSpecified.DEFAULT
+            );
+            cipher.init(Cipher.DECRYPT_MODE, this.rsaKeyProvider.getPrivateKey(), oaepParams);
+        }
         return new String(cipher.doFinal(cipherBytes), StandardCharsets.UTF_8);
     }
     
@@ -56,5 +67,22 @@ public class KeyService implements KeyServiceInterface {
                     this.decrypt(dr.data()),
                     targetClass
                 );
+    }
+
+    @Override
+    public <T extends DataRequestInterface> AuthenticatedRequest<T> decryptToAuthenticatedRequest(
+        DecryptRequest dr,
+        Class<T> dataClass
+    ) throws GeneralSecurityException, JsonProcessingException {
+        JavaType jt = new ObjectMapper()
+                             .getTypeFactory()
+                             .constructParametricType(
+                                     AuthenticatedRequest.class,
+                                     dataClass
+                             );
+        return new ObjectMapper().readValue(
+            this.decrypt(dr.data()),
+            jt
+        );
     }
 }

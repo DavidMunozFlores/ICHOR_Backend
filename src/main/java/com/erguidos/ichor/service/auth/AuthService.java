@@ -6,7 +6,8 @@ import com.erguidos.ichor.dto.request.AuthCredentialsRequest;
 import com.erguidos.ichor.dto.response.IsUserAuthorizedResponse;
 import com.erguidos.ichor.entity.User;
 import com.erguidos.ichor.repository.UserRepository;
- 
+import com.erguidos.ichor.service.Role;
+
 import jakarta.persistence.EntityNotFoundException;
  
 @Service
@@ -30,6 +31,12 @@ public class AuthService implements AuthServiceInterface {
             throw new IllegalArgumentException(PASSWORD_INCORRECT_MSJ);
  
         return new IsUserAuthorizedResponse(loggedUser.getRole());
+    }
+    
+    @Override
+    public boolean authenticate(AuthCredentialsRequest acr, Role roleAllowed) {
+        IsUserAuthorizedResponse userRole = this.isAuthorized(acr);
+        return roleAllowed == userRole.role();
     }
 }
  
