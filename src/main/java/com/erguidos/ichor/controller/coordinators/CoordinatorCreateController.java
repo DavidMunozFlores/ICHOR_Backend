@@ -44,7 +44,7 @@ public class CoordinatorCreateController {
     }
     
     @PostMapping("/create")
-    public ResponseEntity<CoordinatorResponse> createCoordinator(@RequestBody DecryptRequest dr)
+    public ResponseEntity<?> createCoordinator(@RequestBody DecryptRequest dr)
             throws JsonProcessingException, GeneralSecurityException {
         AuthenticatedRequest<CoordinatorCreateRequest> ar = this.keyService.decryptToAuthenticatedRequest(dr, CoordinatorCreateRequest.class);
         this.authService.authenticate(ar.authCredentials(), Role.MANAGER);
@@ -57,7 +57,8 @@ public class CoordinatorCreateController {
             case CoordinatorCreationType.Exists() ->
                     ResponseEntity.status(HttpStatus.CONFLICT).build();
             case CoordinatorCreationType.NoHospital(Long id) ->
-                    ResponseEntity.badRequest().build();
+                    ResponseEntity.badRequest().body(
+                            String.format("Hospital with id %s doesn't exist", id));
         };
     }
 }
