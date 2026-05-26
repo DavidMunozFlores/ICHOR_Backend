@@ -1,4 +1,4 @@
-package com.erguidos.ichor.service;
+package com.erguidos.ichor.service.hospital;
 
 import com.erguidos.ichor.dto.response.HospitalResponse;
 

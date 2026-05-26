@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.erguidos.ichor.dto.response.HospitalResponse;
-import com.erguidos.ichor.service.HospitalServiceInterface;
+import com.erguidos.ichor.service.hospital.HospitalServiceInterface;
 
 import java.util.List;
 
