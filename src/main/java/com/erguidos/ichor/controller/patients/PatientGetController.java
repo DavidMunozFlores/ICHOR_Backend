@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.erguidos.ichor.service.patient.PatientServiceInterface;
 
 @RestController
-@RequestMapping("/api/v1/coordinators")
+@RequestMapping("/api/v1/patients")
 @CrossOrigin(origins = {"${app.cors.allowed}"})
 public class PatientGetController {
     private final PatientServiceInterface patientService;
@@ -15,4 +15,6 @@ public class PatientGetController {
     PatientGetController(PatientServiceInterface patientService) {
         this.patientService = patientService;
     }
+    
+    
 }
