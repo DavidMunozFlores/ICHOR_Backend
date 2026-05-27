@@ -17,7 +17,7 @@ import com.erguidos.ichor.types.CoordinatorSearchType;
 
 @RestController
 @RequestMapping("/api/v1/coordinators")
-@CrossOrigin(origins = "${app.cors.allowed}")
+@CrossOrigin(origins = {"${app.cors.allowed}"})
 public class CoordinatorGetController {
     private final CoordinatorServiceInterface coordinatorService;
     
