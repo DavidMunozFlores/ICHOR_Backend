@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/api/v1/hospitals")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"${app.cors.allowed}"})
 public class HospitalController {
     private final HospitalServiceInterface hospitalService;
     
