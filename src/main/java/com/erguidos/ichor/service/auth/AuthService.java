@@ -1,7 +1,9 @@
 package com.erguidos.ichor.service.auth;
  
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
- 
+
+import com.erguidos.ichor.component.HashInterface;
 import com.erguidos.ichor.dto.request.AuthCredentialsRequest;
 import com.erguidos.ichor.dto.response.IsUserAuthorizedResponse;
 import com.erguidos.ichor.entity.User;
@@ -15,21 +17,26 @@ public class AuthService implements AuthServiceInterface {
     private static final String USER_NOT_EXISTS_MSJ = "That user doesn't exist";
     private static final String PASSWORD_INCORRECT_MSJ = "The password isn't correct";
    
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final HashInterface hashing;
    
-    AuthService(UserRepository userRepository) {
+    AuthService(
+        UserRepository userRepository,
+        @Qualifier("bcryptPasswordEncoder") HashInterface hashing
+    ) {
         this.userRepository = userRepository;
+        this.hashing = hashing;
     }
-   
+    
     @Override
-    public IsUserAuthorizedResponse isAuthorized(AuthCredentialsRequest userRequestDTO) {      
+    public IsUserAuthorizedResponse isAuthorized(AuthCredentialsRequest credentials) {
         User loggedUser = this.userRepository
-                .findUserByUsername(userRequestDTO.username())
+                .findUserByUsername(credentials.username())
                 .orElseThrow(() -> new EntityNotFoundException(USER_NOT_EXISTS_MSJ));
-       
-        if(!loggedUser.getPassword().equals(userRequestDTO.password()))
+        
+        if(! this.hashing.matchPasswords(credentials.password(), loggedUser.getPassword()))
             throw new IllegalArgumentException(PASSWORD_INCORRECT_MSJ);
- 
+        
         return new IsUserAuthorizedResponse(loggedUser.getRole());
     }
     
