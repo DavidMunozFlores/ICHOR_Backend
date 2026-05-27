@@ -7,19 +7,20 @@ import org.springframework.stereotype.Service;
 
 import com.erguidos.ichor.component.HashInterface;
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
+import com.erguidos.ichor.dto.request.CreateWorkerRequest;
 import com.erguidos.ichor.dto.request.DecryptRequest;
 import com.erguidos.ichor.dto.response.WorkerCreatedResponse;
 import com.erguidos.ichor.entity.Doctor;
 import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.exceptions.NotAuthorizedExecption;
+import com.erguidos.ichor.exceptions.UserAlreadyExistsException;
 import com.erguidos.ichor.repository.DoctorRepository;
 import com.erguidos.ichor.repository.HospitalRepository;
-import com.erguidos.ichor.service.Role;
+import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.service.auth.AuthServiceInterface;
 import com.erguidos.ichor.service.key.KeyService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
@@ -53,9 +54,7 @@ public class DoctorService implements DoctorServiceInterface {
 	@Override
 	public WorkerCreatedResponse createDoctor(DecryptRequest decReq)
 			throws JsonProcessingException, GeneralSecurityException {
-
-		AuthenticatedRequest autReq =
-				keyService.decryptToObject(decReq, AuthenticatedRequest.class);
+	    AuthenticatedRequest<CreateWorkerRequest> autReq = this.keyService.decryptToAuthenticatedRequest(decReq, CreateWorkerRequest.class);
 		
 		Role authCredentialsRole = authService.isAuthorized(autReq.authCredentials()).role();
 		
@@ -64,7 +63,7 @@ public class DoctorService implements DoctorServiceInterface {
 
 
 		if (doctorRepository.existsByUsername(autReq.data().username()))
-			throw new EntityExistsException(DOCTOR_EXISTS_MSJ);
+			throw new UserAlreadyExistsException(DOCTOR_EXISTS_MSJ);
 
 		Hospital doctorHospital = hospitalRepository.findById(autReq.data().idHospital())
 				.orElseThrow(() -> new EntityNotFoundException(HOSPITAL_NOT_EXISTS_MSJ));

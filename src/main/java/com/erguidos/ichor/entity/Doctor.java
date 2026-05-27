@@ -2,7 +2,7 @@ package com.erguidos.ichor.entity;
 
 import java.util.List;
 
-import com.erguidos.ichor.service.Role;
+import com.erguidos.ichor.enums.Role;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;

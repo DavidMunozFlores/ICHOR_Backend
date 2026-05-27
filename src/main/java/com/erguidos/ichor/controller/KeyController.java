@@ -14,7 +14,7 @@ import com.erguidos.ichor.service.key.KeyServiceInterface;
 
 @RestController
 @RequestMapping("/api/v1/keys")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"${app.cors.allowed}"})
 public class KeyController {
     private final KeyServiceInterface keyService;
     
