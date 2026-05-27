@@ -5,16 +5,19 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.erguidos.ichor.controller.patients.PatientCreationRequest;
-import com.erguidos.ichor.controller.patients.PatientCreationType;
 import com.erguidos.ichor.dto.mappers.PatientMapper;
+import com.erguidos.ichor.dto.request.PatientCreationRequest;
+import com.erguidos.ichor.dto.request.PatientUpdateRequest;
 import com.erguidos.ichor.dto.response.PatientResponse;
 import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.entity.Patient;
 import com.erguidos.ichor.enums.BloodType;
 import com.erguidos.ichor.repository.HospitalRepository;
 import com.erguidos.ichor.repository.PatientRepository;
+import com.erguidos.ichor.types.PatientCreationType;
 import com.erguidos.ichor.types.SearchType;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class PatientService implements PatientServiceInterface {
@@ -66,9 +69,26 @@ public class PatientService implements PatientServiceInterface {
                 .setWeight(data.weight())
                 .setHospital(hospital.get())
                 .build();
-  
+        
         this.patientRepository.save(patient);
         
         return new PatientCreationType.Created(PatientMapper.toPatientResponse(patient));
+    }
+
+    @Override
+    @Transactional
+    public PatientUpdateType updatePatient(PatientUpdateRequest pur) {
+        Optional<Patient> patientOp = this.patientRepository.findById(pur.id());
+        if (patientOp.isEmpty()) { return new PatientUpdateType.NotExists(); }
+        
+        try {
+            Patient patient = patientOp.get();
+            patient.setHeight(pur.height());
+            patient.setWeight(pur.weight());
+            this.patientRepository.save(patient);
+            return new PatientUpdateType.Success(PatientMapper.toPatientResponse(patient));
+        } catch (NullPointerException e) {
+            return new PatientUpdateType.Failure();
+        }
     }
 }

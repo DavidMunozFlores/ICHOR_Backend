@@ -1,6 +1,4 @@
-package com.erguidos.ichor.controller.patients;
-
-import com.erguidos.ichor.dto.request.DataRequestInterface;
+package com.erguidos.ichor.dto.request;
 
 public record PatientCreationRequest(
     String internalID,

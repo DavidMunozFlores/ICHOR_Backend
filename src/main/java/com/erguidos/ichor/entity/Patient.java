@@ -73,46 +73,46 @@ public class Patient {
     public Long getId() { return this.id; }
 
     public String getInternalID() { return this.internalID; }
-    private void setInternalID(String internalID) {
+    public void setInternalID(String internalID) {
         Objects.requireNonNull(internalID);
         this.internalID = internalID;
     }
 
     public String getName() { return this.name; }
-    private void setName(String name) {
+    public void setName(String name) {
         Objects.requireNonNull(name);
         if (name.isBlank()) { throw new IllegalArgumentException("Name cannot be empty"); }
         this.name = name.trim();
     }
 
     public String getIdentification() { return this.identification; }
-    private void setIdentification(String identification) {
+    public void setIdentification(String identification) {
         Objects.requireNonNull(identification);
         this.identification = identification;
     }
 
     public BloodType getBloodType() { return this.bloodType; }
-    private void setBloodType(BloodType bloodType) {
+    public void setBloodType(BloodType bloodType) {
         Objects.requireNonNull(bloodType);
         this.bloodType = bloodType;
     }
 
     public Double getHeight() { return this.height; }
-    private void setHeight(Double height) {
+    public void setHeight(Double height) {
         Objects.requireNonNull(height);
         if (height <= 0.0d) { throw new IllegalArgumentException("Height must be at least 1"); }
         this.height = height;
     }
 
     public Double getWeight() { return this.weight; }
-    private void setWeight(Double weight) {
+    public void setWeight(Double weight) {
         Objects.requireNonNull(weight);
         if (weight <= 0.0d) { throw new IllegalArgumentException("Weight must be at least 1"); }
         this.weight = weight;
     }
 
     public Hospital getHospital() { return this.hospital; }
-    private void setHospital(Hospital hospital) {
+    public void setHospital(Hospital hospital) {
         Objects.requireNonNull(hospital);
         if (this.hospital != null) { this.hospital.getPatients().remove(this); }
         this.hospital = hospital;

@@ -1,4 +1,4 @@
-package com.erguidos.ichor.controller.patients;
+package com.erguidos.ichor.types;
 
 import com.erguidos.ichor.dto.response.PatientResponse;
 
