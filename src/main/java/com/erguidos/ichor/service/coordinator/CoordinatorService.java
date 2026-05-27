@@ -3,8 +3,10 @@ package com.erguidos.ichor.service.coordinator;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.erguidos.ichor.component.HashInterface;
 import com.erguidos.ichor.dto.request.CoordinatorCreateRequest;
 import com.erguidos.ichor.types.CoordinatorSearchType;
 import com.erguidos.ichor.entity.Coordinator;
@@ -23,15 +25,18 @@ public class CoordinatorService
     private final CoordinatorRepository coordinatorRepository;
     private final UserRepository userRepository;
     private final HospitalRepository hospitalRepository;
+    private final HashInterface hashing;
     
     CoordinatorService(
             CoordinatorRepository coordinatorRepository,
             UserRepository userRepository,
-            HospitalRepository hospitalRepository
+            HospitalRepository hospitalRepository,
+            @Qualifier("bcryptPasswordEncoder") HashInterface hashing
     ) {
         this.coordinatorRepository = coordinatorRepository;
         this.userRepository = userRepository;
         this.hospitalRepository = hospitalRepository;
+        this.hashing = hashing;
     }
 
     @Override
@@ -58,7 +63,7 @@ public class CoordinatorService
         
         Coordinator coordinator = Coordinator.builder()
                 .setUsername(ccr.username())
-                .setPassword(ccr.password())
+                .setPassword(this.hashing.hashPassword(ccr.password()))
                 .setHospital(hospital.get())
                 .build();
         
