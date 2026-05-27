@@ -1,4 +1,4 @@
-package com.erguidos.ichor.controller;
+package com.erguidos.ichor.controller.doctors;
 
 import java.security.GeneralSecurityException;
 import org.springframework.http.HttpStatus;
