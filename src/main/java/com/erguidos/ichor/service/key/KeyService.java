@@ -9,7 +9,6 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.OAEPParameterSpec;
 import javax.crypto.spec.PSource;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
@@ -25,27 +24,20 @@ public class KeyService implements KeyServiceInterface {
 
     private final RsaKeyProvider rsaKeyProvider;
     
-    private final String stage;
-    
-    public KeyService(RsaKeyProvider rsaKeyProvider, @Value("${app.development.stage}") String stage) {
+    public KeyService(RsaKeyProvider rsaKeyProvider) {
         this.rsaKeyProvider = rsaKeyProvider;
-        this.stage = stage;
     }
     
     private String decrypt(String base64CipherText) throws GeneralSecurityException {
         byte[] cipherBytes = Base64.getDecoder().decode(base64CipherText);
         Cipher cipher = Cipher.getInstance(KeyService.CIPHER_ALGORITHM);
-        if ("BACK".equals(this.stage)) {
-            cipher.init(Cipher.DECRYPT_MODE, this.rsaKeyProvider.getPrivateKey());
-        } else {
-            OAEPParameterSpec oaepParams = new OAEPParameterSpec(
-                "SHA-256",
-                "MGF1",
-                MGF1ParameterSpec.SHA256,
-                PSource.PSpecified.DEFAULT
-            );
-            cipher.init(Cipher.DECRYPT_MODE, this.rsaKeyProvider.getPrivateKey(), oaepParams);
-        }
+        OAEPParameterSpec oaepParams = new OAEPParameterSpec(
+            "SHA-256",
+            "MGF1",
+            MGF1ParameterSpec.SHA256,
+            PSource.PSpecified.DEFAULT
+        );
+        cipher.init(Cipher.DECRYPT_MODE, this.rsaKeyProvider.getPrivateKey(), oaepParams);
         return new String(cipher.doFinal(cipherBytes), StandardCharsets.UTF_8);
     }
     
