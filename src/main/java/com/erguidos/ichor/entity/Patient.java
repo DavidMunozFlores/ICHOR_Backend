@@ -1,6 +1,7 @@
 package com.erguidos.ichor.entity;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.erguidos.ichor.enums.BloodType;
 
@@ -18,8 +19,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "patients")
-public class Patient  {
-	
+public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -51,22 +51,144 @@ public class Patient  {
 	private List<OrganPetition> organPetitions;
 	
 	protected Patient() {}
-    
-	public Long getId() { return this.id; }
+	
+    private Patient(
+        String internalID,
+        String name,
+        String identification,
+        BloodType bloodType,
+        Double height,
+        Double weight,
+        Hospital hospital
+    ) {
+        this.setInternalID(internalID);
+        this.setName(name);
+        this.setIdentification(identification);
+        this.setBloodType(bloodType);
+        this.setHeight(height);
+        this.setWeight(weight);
+        this.setHospital(hospital);
+    }
 
-	public String getInternalID() { return internalID; }
+    public Long getId() { return this.id; }
 
-	public String getName() { return name; }
+    public String getInternalID() { return this.internalID; }
+    public void setInternalID(String internalID) {
+        Objects.requireNonNull(internalID);
+        this.internalID = internalID;
+    }
 
-	public String getIdentification() { return identification; }
+    public String getName() { return this.name; }
+    public void setName(String name) {
+        Objects.requireNonNull(name);
+        if (name.isBlank()) { throw new IllegalArgumentException("Name cannot be empty"); }
+        this.name = name.trim();
+    }
 
-	public BloodType getBloodType() { return bloodType; }
+    public String getIdentification() { return this.identification; }
+    public void setIdentification(String identification) {
+        Objects.requireNonNull(identification);
+        this.identification = identification;
+    }
 
-	public Double getHeight() { return height; }
+    public BloodType getBloodType() { return this.bloodType; }
+    public void setBloodType(BloodType bloodType) {
+        Objects.requireNonNull(bloodType);
+        this.bloodType = bloodType;
+    }
 
-	public Double getWeight() { return weight; }
+    public Double getHeight() { return this.height; }
+    public void setHeight(Double height) {
+        Objects.requireNonNull(height);
+        if (height <= 0.0d) { throw new IllegalArgumentException("Height must be at least 1"); }
+        this.height = height;
+    }
 
-	public Hospital getHospital() { return hospital; }
+    public Double getWeight() { return this.weight; }
+    public void setWeight(Double weight) {
+        Objects.requireNonNull(weight);
+        if (weight <= 0.0d) { throw new IllegalArgumentException("Weight must be at least 1"); }
+        this.weight = weight;
+    }
 
-	public List<OrganPetition> getOrganPetitions() { return organPetitions; }
+    public Hospital getHospital() { return this.hospital; }
+    public void setHospital(Hospital hospital) {
+        Objects.requireNonNull(hospital);
+        if (this.hospital != null) { this.hospital.getPatients().remove(this); }
+        this.hospital = hospital;
+        hospital.addPatient(this);
+    }
+
+    public List<OrganPetition> getOrganPetitions() { return this.organPetitions; }
+
+    public static PatientBuilder builder() {
+        return new PatientBuilder();
+    }
+
+    public static final class PatientBuilder {
+        private String    internalID;
+        private String    name;
+        private String    identification;
+        private BloodType bloodType;
+        private Double    height;
+        private Double    weight;
+        private Hospital  hospital;
+
+        private PatientBuilder() {
+            this.internalID     = null;
+            this.name           = null;
+            this.identification = null;
+            this.bloodType      = null;
+            this.height         = null;
+            this.weight         = null;
+            this.hospital       = null;
+        }
+
+        public PatientBuilder setInternalID(String internalID) {
+            this.internalID = internalID;
+            return this;
+        }
+
+        public PatientBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public PatientBuilder setIdentification(String identification) {
+            this.identification = identification;
+            return this;
+        }
+
+        public PatientBuilder setBloodType(BloodType bloodType) {
+            this.bloodType = bloodType;
+            return this;
+        }
+
+        public PatientBuilder setHeight(Double height) {
+            this.height = height;
+            return this;
+        }
+
+        public PatientBuilder setWeight(Double weight) {
+            this.weight = weight;
+            return this;
+        }
+
+        public PatientBuilder setHospital(Hospital hospital) {
+            this.hospital = hospital;
+            return this;
+        }
+
+        public Patient build() {
+            return new Patient(
+                this.internalID,
+                this.name,
+                this.identification,
+                this.bloodType,
+                this.height,
+                this.weight,
+                this.hospital
+            );
+        }
+    }
 }
