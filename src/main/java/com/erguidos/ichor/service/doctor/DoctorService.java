@@ -15,7 +15,7 @@ import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.exceptions.NotAuthorizedExecption;
 import com.erguidos.ichor.repository.DoctorRepository;
 import com.erguidos.ichor.repository.HospitalRepository;
-import com.erguidos.ichor.service.Role;
+import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.service.auth.AuthServiceInterface;
 import com.erguidos.ichor.service.key.KeyService;
 import com.fasterxml.jackson.core.JsonProcessingException;
