@@ -12,12 +12,11 @@ import com.erguidos.ichor.dto.request.DecryptRequest;
 import com.erguidos.ichor.dto.response.WorkerCreatedResponse;
 import com.erguidos.ichor.entity.Doctor;
 import com.erguidos.ichor.entity.Hospital;
-import com.erguidos.ichor.entity.Manager;
-import com.erguidos.ichor.exceptions.IncorrectPasswordException;
-import com.erguidos.ichor.exceptions.UserNotFoundException;
+import com.erguidos.ichor.exceptions.NotAuthorizedExecption;
 import com.erguidos.ichor.repository.DoctorRepository;
 import com.erguidos.ichor.repository.HospitalRepository;
-import com.erguidos.ichor.repository.ManagerRepository;
+import com.erguidos.ichor.service.Role;
+import com.erguidos.ichor.service.auth.AuthServiceInterface;
 import com.erguidos.ichor.service.key.KeyService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -28,41 +27,40 @@ import jakarta.persistence.EntityNotFoundException;
 public class DoctorService implements DoctorServiceInterface {
 	private static final String DOCTOR_EXISTS_MSJ = "The Doctor already exists";
 	private static final String HOSPITAL_NOT_EXISTS_MSJ = "The Hospital doesn't exist";
-	private static final String USER_NOT_EXISTS_MSJ = "The User doesn't exist";
-	private static final String PASSWORD_INCORRECT_MSJ = "The password isn't correct";
 	private static final String DOCTOR_CREATED_MSJ = "DOCTOR CREATED";
+	private static final String NOT_AUTHORIZED_MSJ = "This role is not authorized";
 
 	private DoctorRepository doctorRepository;
 	private HospitalRepository hospitalRepository;
-	private ManagerRepository managerRepository;
 	private KeyService keyService;
 	private HashInterface hashComponent;
-
+	private AuthServiceInterface authService;
+	
 	DoctorService(
 			DoctorRepository doctorRepository,
 			HospitalRepository hospitalRepository,
-			ManagerRepository managerRepository,
 			KeyService keyService,
-			@Qualifier("bcryptPasswordEncoder") HashInterface hashComponent
+			@Qualifier("bcryptPasswordEncoder") HashInterface hashComponent,
+			AuthServiceInterface authService
 			) {
 		
 		this.doctorRepository = doctorRepository;
 		this.hospitalRepository = hospitalRepository;
-		this.managerRepository = managerRepository;
 		this.keyService = keyService;
 		this.hashComponent = hashComponent;
+		this.authService = authService;
 	}
 
 	@Override
 	public WorkerCreatedResponse createDoctor(DecryptRequest decReq)
 			throws JsonProcessingException, GeneralSecurityException {
 	    AuthenticatedRequest<CreateWorkerRequest> autReq = this.keyService.decryptToAuthenticatedRequest(decReq, CreateWorkerRequest.class);
+		
+		Role authCredentialsRole = authService.isAuthorized(autReq.authCredentials()).role();
+		
+		if(authCredentialsRole != Role.MANAGER)
+			throw new NotAuthorizedExecption(NOT_AUTHORIZED_MSJ);
 
-		Manager manager = managerRepository.findManagerByUsername(autReq.authCredentials().username())
-				.orElseThrow(() -> new UserNotFoundException(USER_NOT_EXISTS_MSJ));
-
-		if (!manager.getPassword().equals(autReq.authCredentials().password()))
-			throw new IncorrectPasswordException(PASSWORD_INCORRECT_MSJ);
 
 		if (doctorRepository.existsByUsername(autReq.data().username()))
 			throw new EntityExistsException(DOCTOR_EXISTS_MSJ);

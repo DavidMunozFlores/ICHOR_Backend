@@ -9,8 +9,8 @@ import com.erguidos.ichor.dto.response.IsUserAuthorizedResponse;
 import com.erguidos.ichor.entity.User;
 import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.repository.UserRepository;
-
-import jakarta.persistence.EntityNotFoundException;
+import com.erguidos.ichor.exceptions.IncorrectPasswordException;
+import com.erguidos.ichor.exceptions.UserNotFoundException;
  
 @Service
 public class AuthService implements AuthServiceInterface {
@@ -32,10 +32,10 @@ public class AuthService implements AuthServiceInterface {
     public IsUserAuthorizedResponse isAuthorized(AuthCredentialsRequest credentials) {
         User loggedUser = this.userRepository
                 .findUserByUsername(credentials.username())
-                .orElseThrow(() -> new EntityNotFoundException(USER_NOT_EXISTS_MSJ));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_EXISTS_MSJ));
         
         if(! this.hashing.matchPasswords(credentials.password(), loggedUser.getPassword()))
-            throw new IllegalArgumentException(PASSWORD_INCORRECT_MSJ);
+            throw new IncorrectPasswordException(PASSWORD_INCORRECT_MSJ);
         
         return new IsUserAuthorizedResponse(loggedUser.getRole());
     }
