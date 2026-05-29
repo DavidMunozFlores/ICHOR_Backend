@@ -76,4 +76,12 @@ public class CoordinatorService
         
         return new CoordinatorCreationType.Created(coordinator);
     }
+
+    @Override
+    public List<CoordinatorResponse> getCoordinatorsByName(String name) {
+        return this.coordinatorRepository.findByNameContainingIgnoreCase(name)
+                .stream()
+                .map(CoordinatorMapper::toCoordinatorResponse)
+                .toList();
+    }
 }

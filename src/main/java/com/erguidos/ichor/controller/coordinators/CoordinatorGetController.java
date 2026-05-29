@@ -38,5 +38,10 @@ public class CoordinatorGetController {
                     ResponseEntity.ok(CoordinatorMapper.toCoordinatorResponse(coordinator));
             case CoordinatorSearchType.Failed() -> ResponseEntity.notFound().build();
         };
-    }   
+    }
+    
+    @GetMapping("/get-by-name/{name}")
+    public ResponseEntity<List<CoordinatorResponse>> getCoordinatorsByName(@RequestParam String name) {
+        return ResponseEntity.ok(this.coordinatorService.getCoordinatorsByName(name));
+    }
 }

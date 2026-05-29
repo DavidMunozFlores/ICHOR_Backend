@@ -13,4 +13,6 @@ public interface CoordinatorServiceInterface {
     CoordinatorSearchType getCoordinator(Long id);
 
     CoordinatorCreationType createCoordinator(CoordinatorCreateRequest ccr);
+
+    List<CoordinatorResponse> getCoordinatorsByName(String name);
 }
