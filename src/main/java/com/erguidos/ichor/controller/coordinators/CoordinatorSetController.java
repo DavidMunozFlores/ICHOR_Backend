@@ -27,12 +27,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/api/v1/coordinators")
 @CrossOrigin(origins = {"${app.cors.allowed}"})
-public class CoordinatorCreateController {
+public class CoordinatorSetController {
     private final CoordinatorServiceInterface coordinatorService;
     private final KeyServiceInterface keyService;
     private final AuthServiceInterface authService;
     
-    CoordinatorCreateController(
+    CoordinatorSetController(
         CoordinatorServiceInterface coordinatorService,
         KeyServiceInterface keyService,
         AuthServiceInterface authService
