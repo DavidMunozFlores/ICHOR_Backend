@@ -27,12 +27,7 @@ public class CoordinatorGetController {
 
     @GetMapping
     public ResponseEntity<List<CoordinatorResponse>> getAllCoordinators() {
-        return ResponseEntity.ok(
-                    this.coordinatorService.getAllCoordinators()
-                    .stream()
-                    .map(CoordinatorMapper::toCoordinatorResponse)
-                    .toList()
-               );
+        return ResponseEntity.ok(this.coordinatorService.getAllCoordinators());
     }
     
     @GetMapping("/{id}")
