@@ -1,8 +1,13 @@
 package com.erguidos.ichor.entity;
  
+import java.util.List;
+
+import com.erguidos.ichor.dto.request.Gene;
 import com.erguidos.ichor.enums.OrganType;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -17,6 +22,15 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="organs")
 public class Organ {
+	private final static String INCORRECT_WEIGHT = "Weight grams must be in range of (10.0, 4000.0)";
+	private final static String INCORRECT_VOLUME = "Volume cc must be in range of (10.0, 4000.0)";
+	private final static String ORGAN_TYPE_NULL = "Organ type cannot be null";
+	private final static String WEIGHT_NULL = "Weight cannot be null";
+	private final static String VOLUME_NULL = "Volume cannot be null";
+	private final static String HLA_NULL = "Hla cannot be null";
+	
+	private final static Double MAX_DIMENSION = 4000.0;
+	private final static Double MIN_DIMENSION = 10.0;
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,11 +46,10 @@ public class Organ {
 	@Column(name="volume_cc", nullable = false)
 	private Double volumeCC;
 	
-	/**
-	 * Chain must be a six ordered hla markers to match compatibility
-	 */
-	@Column(name="hla_chain",  nullable = false, length = 255)
-	private String hlaChain;
+	@Column(name="hla",  nullable = false, length = 255)
+	@ElementCollection
+	@CollectionTable(name = "organ_hla", joinColumns = @JoinColumn(name = "id_organ"))
+	private List<Gene> hla;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_hospital", nullable = false)
@@ -46,13 +59,40 @@ public class Organ {
 	@JoinColumn(name = "id_coordinator", nullable = false)
 	private Coordinator coordinator;
 	
-	@Column(name="assigned", nullable = false)
-	private boolean assigned;
-	
 	@OneToOne(mappedBy = "organ")
 	private OrganPetition organPetition;
 	
 	protected Organ() {}
+	
+	private Organ(
+			OrganType organType,
+			Double weightGrams,
+			Double volumeCC,
+			List<Gene> hla,
+			Hospital donorHospital,
+			Coordinator coordinator
+			) {
+		setOrganType(organType);
+		setWeightGrams(weightGrams);
+		setVolumeCC(volumeCC);
+		setHla(hla);
+		setDonorHospital(donorHospital);
+		setCoordinator(coordinator);
+	}
+	
+	public static Organ create(
+			OrganType organType,
+			Double weightGrams,
+			Double volumeCC,
+			List<Gene> hla,
+			Hospital donorHospital,
+			Coordinator coordinator
+			) {
+		
+		return new Organ(organType, weightGrams, volumeCC, hla, donorHospital, coordinator);
+	}
+	
+	public boolean isAssigned() { return this.organPetition != null; }
     
 	public Long getId() { return this.id; }
 
@@ -62,13 +102,55 @@ public class Organ {
 
 	public Double getVolumeCC() { return volumeCC; }
 
-	public String getHlaChain() { return hlaChain; }
+	public List<Gene> getHla() { return hla; }
+
 
 	public Hospital getDonorHospital() { return donorHospital; }
-
-	public boolean isAssigned() { return assigned; }
 
 	public OrganPetition getOrganPetition() { return organPetition; }
 
 	public Coordinator getCoordinator() { return coordinator; }
+	
+	private void setHla(List<Gene> hla) {
+		validateNonNull(hla, HLA_NULL);
+		
+		this.hla = hla; 
+	}
+
+	private void setOrganType(OrganType organType) {
+		validateNonNull(organType, ORGAN_TYPE_NULL);
+		
+		this.organType = organType; 
+	}
+
+	private void setWeightGrams(Double weightGrams) {
+		validateNonNull(weightGrams, WEIGHT_NULL);
+		
+		validateDimension(weightGrams, INCORRECT_WEIGHT);
+		
+		this.weightGrams = weightGrams;
+	}
+
+	private void setVolumeCC(Double volumeCC) {
+		validateNonNull(volumeCC, VOLUME_NULL);
+		
+		validateDimension(weightGrams, INCORRECT_VOLUME);
+		
+		this.volumeCC = volumeCC;
+	}
+	
+	private void validateDimension(Double dim, String errMsj) {
+		if(dim < MIN_DIMENSION || dim > MAX_DIMENSION)
+			throw new IllegalArgumentException(errMsj);
+	}
+	
+	private void validateNonNull(Object o, String errMsj) {
+		if(o == null) throw new NullPointerException(errMsj);
+	}
+
+	private void setDonorHospital(Hospital donorHospital) { this.donorHospital = donorHospital; }
+
+	private void setCoordinator(Coordinator coordinator) { this.coordinator = coordinator; }
+
+	private void setOrganPetition(OrganPetition organPetition) { this.organPetition = organPetition; }
 }

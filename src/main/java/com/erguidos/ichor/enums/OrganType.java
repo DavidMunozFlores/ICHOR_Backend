@@ -7,4 +7,7 @@ public enum OrganType {
 	private OrganType(int lifeTime) {
 		this.lifeTime = lifeTime;
 	}
+	public int getTime() {
+		return this.lifeTime;
+	}
 }

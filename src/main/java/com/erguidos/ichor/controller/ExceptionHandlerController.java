@@ -43,5 +43,19 @@ public class ExceptionHandlerController {
 		
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(responseDTO);
 	}
+	
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<ErrorCodeResponse> handleIllegalArgument(IllegalArgumentException e){
+		ErrorCodeResponse responseDTO = new ErrorCodeResponse(400, e.getMessage(), LocalDateTime.now());
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);
+	}
+	
+	@ExceptionHandler(NullPointerException.class)
+	public ResponseEntity<ErrorCodeResponse> handleNullPointer(NullPointerException e){
+		ErrorCodeResponse responseDTO = new ErrorCodeResponse(400, e.getMessage(), LocalDateTime.now());
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);
+	}
 
 }
