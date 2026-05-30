@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.erguidos.ichor.component.HashInterface;
+import com.erguidos.ichor.dto.mappers.CoordinatorMapper;
 import com.erguidos.ichor.dto.request.CoordinatorCreateRequest;
+import com.erguidos.ichor.dto.response.CoordinatorResponse;
 import com.erguidos.ichor.types.CoordinatorSearchType;
 import com.erguidos.ichor.entity.Coordinator;
 import com.erguidos.ichor.entity.Hospital;
@@ -40,8 +42,11 @@ public class CoordinatorService
     }
 
     @Override
-    public List<Coordinator> getAllCoordinators() {
-        return this.coordinatorRepository.findAll();
+    public List<CoordinatorResponse> getAllCoordinators() {
+        return this.coordinatorRepository.findAll()
+                .stream()
+                .map(CoordinatorMapper::toCoordinatorResponse)
+                .toList();
     }
 
     @Override
@@ -70,5 +75,13 @@ public class CoordinatorService
         this.coordinatorRepository.save(coordinator);
         
         return new CoordinatorCreationType.Created(coordinator);
+    }
+
+    @Override
+    public List<CoordinatorResponse> getCoordinatorsByName(String name) {
+        return this.coordinatorRepository.findByNameContainingIgnoreCase(name)
+                .stream()
+                .map(CoordinatorMapper::toCoordinatorResponse)
+                .toList();
     }
 }

@@ -27,12 +27,7 @@ public class CoordinatorGetController {
 
     @GetMapping
     public ResponseEntity<List<CoordinatorResponse>> getAllCoordinators() {
-        return ResponseEntity.ok(
-                    this.coordinatorService.getAllCoordinators()
-                    .stream()
-                    .map(CoordinatorMapper::toCoordinatorResponse)
-                    .toList()
-               );
+        return ResponseEntity.ok(this.coordinatorService.getAllCoordinators());
     }
     
     @GetMapping("/{id}")
@@ -43,5 +38,10 @@ public class CoordinatorGetController {
                     ResponseEntity.ok(CoordinatorMapper.toCoordinatorResponse(coordinator));
             case CoordinatorSearchType.Failed() -> ResponseEntity.notFound().build();
         };
-    }   
+    }
+    
+    @GetMapping("/get-by-name/{name}")
+    public ResponseEntity<List<CoordinatorResponse>> getCoordinatorsByName(@RequestParam String name) {
+        return ResponseEntity.ok(this.coordinatorService.getCoordinatorsByName(name));
+    }
 }
