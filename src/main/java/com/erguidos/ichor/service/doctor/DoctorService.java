@@ -99,4 +99,13 @@ public class DoctorService implements DoctorServiceInterface {
 				
 		return DoctorMapper.toDoctorResponse(doctor);
 	}
+
+	@Override
+	public List<DoctorResponse> getDoctorsByNameContainingIgnoreCase(String name) {
+		return doctorRepository
+				.findByUsernameContainingIgnoreCase(name)
+				.stream()
+				.map(DoctorMapper::toDoctorResponse)
+				.toList();
+	}
 }
