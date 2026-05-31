@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.erguidos.ichor.dto.response.DoctorResponse;
@@ -33,5 +32,10 @@ public class DoctorGetController {
 	public ResponseEntity<DoctorResponse> getDoctorById(@PathVariable Long id){
 		return ResponseEntity.ok(doctorService.getDoctorById(id));
 	}
+	
+    @GetMapping("/get-by-name/{name}")
+    public ResponseEntity<List<DoctorResponse>> getDoctorsByNameContainingIgnoreCase(@PathVariable String name) {
+        return ResponseEntity.ok(this.doctorService.getDoctorsByNameContainingIgnoreCase(name));
+    }
 
 }

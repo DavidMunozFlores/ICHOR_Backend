@@ -13,5 +13,5 @@ public interface CoordinatorRepository
          extends JpaRepository<Coordinator, Long> {
 	
 	  Optional<Coordinator> findByUsername(String username);
-    List<Coordinator> findByNameContainingIgnoreCase(String name);
+    List<Coordinator> findByUsernameContainingIgnoreCase(String username);
 }

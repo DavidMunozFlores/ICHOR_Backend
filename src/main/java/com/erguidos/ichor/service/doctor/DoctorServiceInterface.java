@@ -12,4 +12,5 @@ public interface DoctorServiceInterface {
 	WorkerCreatedResponse createDoctor(DecryptRequest decryptedDTO) throws JsonProcessingException, GeneralSecurityException;
 	List<DoctorResponse> getAllDoctors();
 	DoctorResponse getDoctorById(Long id);
+	List<DoctorResponse> getDoctorsByNameContainingIgnoreCase(String name);
 }

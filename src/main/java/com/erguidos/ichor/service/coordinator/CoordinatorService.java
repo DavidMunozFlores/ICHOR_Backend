@@ -79,7 +79,7 @@ public class CoordinatorService
 
     @Override
     public List<CoordinatorResponse> getCoordinatorsByName(String name) {
-        return this.coordinatorRepository.findByNameContainingIgnoreCase(name)
+        return this.coordinatorRepository.findByUsernameContainingIgnoreCase(name)
                 .stream()
                 .map(CoordinatorMapper::toCoordinatorResponse)
                 .toList();
