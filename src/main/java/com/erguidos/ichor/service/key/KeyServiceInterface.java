@@ -13,6 +13,8 @@ public interface KeyServiceInterface {
     <T> T decryptToObject(DecryptRequest dr, Class<T> targetClass)
             throws GeneralSecurityException, JsonProcessingException;
     
-    <T extends DataRequestInterface> AuthenticatedRequest<T> decryptToAuthenticatedRequest(DecryptRequest dr, Class<T> dataClass)
-            throws GeneralSecurityException, JsonProcessingException;
+    <T extends DataRequestInterface> AuthenticatedRequest<T> decryptToAuthenticatedRequest(
+        DecryptRequest dr,
+        Class<T> dataClass
+    ) throws GeneralSecurityException, JsonProcessingException;
 }

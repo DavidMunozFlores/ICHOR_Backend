@@ -30,7 +30,12 @@ public class CoordinatorSemiController extends AuthenticatedSemiController {
     }
     
     public ResponseEntity<?> createCoordinator(DecryptRequest dr) {
-        return this.process(dr, CoordinatorCreateRequest.class, Role.COORDINATOR, this::createWithData);
+        return this.process(
+                dr,
+                CoordinatorCreateRequest.class,
+                Role.COORDINATOR,
+                this::createWithData
+        );
     }
     
     private ResponseEntity<?> createWithData(CoordinatorCreateRequest data) {
