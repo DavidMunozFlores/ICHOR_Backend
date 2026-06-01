@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.erguidos.ichor.component.HashInterface;
-import com.erguidos.ichor.dto.mappers.CoordinatorMapper;
 import com.erguidos.ichor.dto.request.CoordinatorCreateRequest;
-import com.erguidos.ichor.dto.response.CoordinatorResponse;
-import com.erguidos.ichor.types.CoordinatorSearchType;
+import com.erguidos.ichor.dto.types.CoordinatorCreationType;
+import com.erguidos.ichor.dto.types.SearchType;
 import com.erguidos.ichor.entity.Coordinator;
 import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.entity.User;
@@ -18,7 +17,6 @@ import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.repository.CoordinatorRepository;
 import com.erguidos.ichor.repository.HospitalRepository;
 import com.erguidos.ichor.repository.UserRepository;
-import com.erguidos.ichor.types.CoordinatorCreationType;
 
 @Service
 public class CoordinatorService
@@ -42,20 +40,17 @@ public class CoordinatorService
     }
 
     @Override
-    public List<CoordinatorResponse> getAllCoordinators() {
-        return this.coordinatorRepository.findAll()
-                .stream()
-                .map(CoordinatorMapper::toCoordinatorResponse)
-                .toList();
+    public List<Coordinator> getAllCoordinators() {
+        return this.coordinatorRepository.findAll();
     }
 
     @Override
-    public CoordinatorSearchType getCoordinator(Long id) {
+    public SearchType<Coordinator> getCoordinator(Long id) {
         Optional<User> userOp = this.userRepository.findById(id);
-        if (userOp.isEmpty()) { return new CoordinatorSearchType.Failed(); }
+        if (userOp.isEmpty()) { return new SearchType.Failed<Coordinator>(); }
         User user = userOp.get();
-        if (user.getRole() != Role.COORDINATOR) { return new CoordinatorSearchType.Failed(); }
-        return new CoordinatorSearchType.Found((Coordinator) user);
+        if (user.getRole() != Role.COORDINATOR) { return new SearchType.Failed<Coordinator>(); }
+        return new SearchType.Found<Coordinator>((Coordinator) user);
     }
 
     @Override
@@ -78,10 +73,7 @@ public class CoordinatorService
     }
 
     @Override
-    public List<CoordinatorResponse> getCoordinatorsByName(String name) {
-        return this.coordinatorRepository.findByUsernameContainingIgnoreCase(name)
-                .stream()
-                .map(CoordinatorMapper::toCoordinatorResponse)
-                .toList();
+    public List<Coordinator> getCoordinatorsByName(String name) {
+        return this.coordinatorRepository.findByUsernameContainingIgnoreCase(name);
     }
 }

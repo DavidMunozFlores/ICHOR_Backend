@@ -1,10 +1,11 @@
 package com.erguidos.ichor.service.hospital;
 
-import com.erguidos.ichor.dto.mappers.HospitalMapper;
-import com.erguidos.ichor.dto.response.HospitalResponse;
+import com.erguidos.ichor.dto.types.SearchType;
+import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.repository.HospitalRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,14 @@ public class HospitalService implements HospitalServiceInterface {
     }
     
     @Override
-    public List<HospitalResponse> getAllHospitals() {
-        return this.hospitalRepository.findAll()
-                .stream()
-                .map(HospitalMapper::toHospitalResponse)
-                .toList();
+    public List<Hospital> getAllHospitals() {
+        return this.hospitalRepository.findAll();
+    }
+
+    @Override
+    public SearchType<Hospital> getHospital(Long id) {
+        Optional<Hospital> hospitalOp = this.hospitalRepository.findById(id);
+        if (hospitalOp.isEmpty()) { return new SearchType.Failed<Hospital>(); }
+        return new SearchType.Found<Hospital>(hospitalOp.get());
     }
 }

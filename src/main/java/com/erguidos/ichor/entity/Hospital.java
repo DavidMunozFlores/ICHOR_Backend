@@ -14,7 +14,11 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "hospitals")
 public class Hospital {
-	
+    private static final BigDecimal LONGITUDE_MAX = BigDecimal.valueOf( 180);
+    private static final BigDecimal LONGITUDE_MIN = BigDecimal.valueOf(-180);
+    private static final BigDecimal LATITUDE_MAX  = BigDecimal.valueOf(  90);
+    private static final BigDecimal LATITUDE_MIN  = BigDecimal.valueOf( -90);
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -65,26 +69,48 @@ public class Hospital {
     public Long getId() { return this.id; }
     
     public String getName() { return this.name; }
-    public void setName(String name) {
-        assert name != null;
-        this.name = name;
+    private void setName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Bad name: " + name);
+        }
+        this.name = name.trim();
     }
     
-    public String getAddress() { return this.address; } 
-    public void setAddress(String address) {
-        assert address != null;
-        this.address = address;
+    public String getAddress() { return this.address; }
+    private void setAddress(String address) {
+        if (address == null || address.isBlank()) {
+            throw new IllegalArgumentException("Bad address: " + address);
+        }
+        this.address = address.trim();
     }
     
     public BigDecimal getLongitude() { return this.longitude; }
-    public void setLongitude(BigDecimal longitude) {
-        assert longitude != null;
-        this.longitude = longitude;
+    private void setLongitude(BigDecimal longitude) {
+        if (longitude == null) {
+            throw new IllegalArgumentException("Bad longitude: " + longitude);
+        }
+        this.longitude = this.wrapLongitudeAroundGlobe(longitude);
+    }
+    private BigDecimal wrapLongitudeAroundGlobe(final BigDecimal longitude) {
+        BigDecimal transformed = longitude;
+        while(transformed.compareTo(LONGITUDE_MAX) > 0) {
+            transformed.subtract(LONGITUDE_MAX);
+        }
+        while(transformed.compareTo(LONGITUDE_MIN) < 0) {
+            transformed.subtract(LONGITUDE_MIN);
+        }
+        return transformed;
     }
     
     public BigDecimal getLatitude() { return this.latitude; }
-    public void setLatitude(BigDecimal latitude) {
-        assert latitude != null;
+    private void setLatitude(BigDecimal latitude) {
+        if (latitude == null) {
+            throw new IllegalArgumentException("Bad latitude: " + latitude);
+        }
+        if (latitude.compareTo(LATITUDE_MAX) > 0
+         || latitude.compareTo(LATITUDE_MIN) < 0) {
+            throw new IllegalArgumentException("Bad latitude: " + latitude + ", must be -90 <= latitude <= 90");
+        }
         this.latitude = latitude;
     }
     
@@ -109,18 +135,18 @@ public class Hospital {
     }
     
     public static class HospitalBuilder {
-        private String name = null;
-        private String address = null;
+        private String     name      = null;
+        private String     address   = null;
         private BigDecimal longitude = null;
-        private BigDecimal latitude = null;
+        private BigDecimal latitude  = null;
         
         private HospitalBuilder() {}
         
         private HospitalBuilder(Hospital hospital) {
-            this.name = hospital.name;
-            this.address = hospital.address;
+            this.name      = hospital.name;
+            this.address   = hospital.address;
             this.longitude = hospital.longitude;
-            this.latitude = hospital.latitude;
+            this.latitude  = hospital.latitude;
         }
         
         public HospitalBuilder setName(String name) {
