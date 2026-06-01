@@ -1,4 +1,4 @@
-package com.erguidos.ichor.types;
+package com.erguidos.ichor.dto.types;
 
 public sealed interface SearchType<T>
                 permits SearchType.Found,
