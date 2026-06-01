@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,7 +23,7 @@ public class CoordinatorGetController {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCoordinator(@RequestParam Long id) {
+    public ResponseEntity<?> getCoordinator(@PathVariable Long id) {
         return this.semi.getCoordinator(id);
     }
     
