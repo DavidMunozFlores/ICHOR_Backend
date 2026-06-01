@@ -1,4 +1,4 @@
-package com.erguidos.ichor.types;
+package com.erguidos.ichor.dto.types;
 
 import com.erguidos.ichor.entity.Coordinator;
 
