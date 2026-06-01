@@ -18,8 +18,8 @@ import com.erguidos.ichor.service.key.KeyServiceInterface;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 public abstract class AuthenticatedSemiController {
-    private final KeyServiceInterface keyService;
-    private final AuthServiceInterface authService;
+    protected final KeyServiceInterface keyService;
+    protected final AuthServiceInterface authService;
     
     protected AuthenticatedSemiController(
         KeyServiceInterface keyService,
