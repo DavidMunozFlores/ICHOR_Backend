@@ -1,6 +1,7 @@
 package com.erguidos.ichor.config;
 
 import java.lang.reflect.Type;
+import java.util.Optional;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -33,8 +34,8 @@ public class PayloadDecryptionAdvice extends BaseDecryptionAdvice {
     }
 
     @Override
-    protected Role getPermittedRole(MethodParameter parameter) {
-        return parameter.getParameterAnnotation(AuthenticatedPayload.class).value();
+    protected Optional<Role> getPermittedRole(MethodParameter parameter) {
+        return Optional.of(parameter.getParameterAnnotation(AuthenticatedPayload.class).value());
     }
 
     @Override

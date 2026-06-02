@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
+import java.util.Optional;
 
 public abstract class BaseDecryptionAdvice extends RequestBodyAdviceAdapter {
 
@@ -49,16 +50,18 @@ public abstract class BaseDecryptionAdvice extends RequestBodyAdviceAdapter {
         byte[] encryptedBytes = inputMessage.getBody().readAllBytes();
         DecryptRequest decryptRequest = objectMapper.readValue(encryptedBytes, DecryptRequest.class);
         
-        Role permittedRole = getPermittedRole(parameter);
+        Optional<Role> permittedRole = getPermittedRole(parameter);
         Class<? extends DataRequestInterface> dataClass = getDataClass(parameter);
         
         try {
             AuthenticatedRequest<? extends DataRequestInterface> authenticatedRequest = keyService.decryptToAuthenticatedRequest(decryptRequest, dataClass);
 
-            boolean isAuthenticated = authService.authenticate(authenticatedRequest.authCredentials(), permittedRole);
-            
-            if (!isAuthenticated) {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
+            if (permittedRole.isPresent()) {
+                boolean isAuthenticated = authService.authenticate(authenticatedRequest.authCredentials(), permittedRole.get());
+                
+                if (!isAuthenticated) {
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
+                }
             }
             
             String forwardJson = determineForwardJson(authenticatedRequest, parameter);
@@ -80,7 +83,7 @@ public abstract class BaseDecryptionAdvice extends RequestBodyAdviceAdapter {
         }
     }
 
-    protected abstract Role getPermittedRole(MethodParameter parameter);
+    protected abstract Optional<Role> getPermittedRole(MethodParameter parameter);
     protected abstract Class<? extends DataRequestInterface> getDataClass(MethodParameter parameter);
     protected abstract String determineForwardJson(
         AuthenticatedRequest<? extends DataRequestInterface> authRequest,

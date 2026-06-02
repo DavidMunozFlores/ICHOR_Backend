@@ -1,9 +1,8 @@
 package com.erguidos.ichor.config;
 
-import com.erguidos.ichor.annotations.AuthenticatedOnly;
+import com.erguidos.ichor.annotations.UnauthenticatedPayload;
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
 import com.erguidos.ichor.dto.request.DataRequestInterface;
-import com.erguidos.ichor.dto.request.EmptyDataRequest;
 import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.service.auth.AuthServiceInterface;
 import com.erguidos.ichor.service.key.KeyServiceInterface;
@@ -15,9 +14,9 @@ import java.lang.reflect.Type;
 import java.util.Optional;
 
 @ControllerAdvice
-public class AuthOnlyDecryptionAdvice extends BaseDecryptionAdvice {
+public class LoginDecryptionAdvice extends BaseDecryptionAdvice {
 
-    public AuthOnlyDecryptionAdvice(
+    public LoginDecryptionAdvice(
         KeyServiceInterface keyService,
         AuthServiceInterface authService
     ) {
@@ -26,21 +25,27 @@ public class AuthOnlyDecryptionAdvice extends BaseDecryptionAdvice {
 
     @Override
     public boolean supports(MethodParameter methodParameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) {
-        return methodParameter.hasParameterAnnotation(AuthenticatedOnly.class);
+        return methodParameter.hasParameterAnnotation(UnauthenticatedPayload.class);
     }
 
     @Override
     protected Optional<Role> getPermittedRole(MethodParameter parameter) {
-        return Optional.of(parameter.getParameterAnnotation(AuthenticatedOnly.class).value());
+        return Optional.empty();
     }
 
     @Override
     protected Class<? extends DataRequestInterface> getDataClass(MethodParameter parameter) {
-        return EmptyDataRequest.class;
+        Class<?> rawClass = parameter.getParameterType();
+        if (!DataRequestInterface.class.isAssignableFrom(rawClass)) {
+            throw new IllegalStateException("@UnauthenticatedPayload must be used on types implementing DataRequestInterface");
+        }
+        @SuppressWarnings("unchecked")
+        Class<? extends DataRequestInterface> targetClass = (Class<? extends DataRequestInterface>) rawClass;
+        return targetClass;
     }
 
     @Override
     protected String determineForwardJson(AuthenticatedRequest<? extends DataRequestInterface> authRequest, MethodParameter parameter) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(authRequest.authCredentials());
+        return objectMapper.writeValueAsString(authRequest.data());
     }
 }
