@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.erguidos.ichor.dto.request.PatientCreationRequest;
 import com.erguidos.ichor.dto.request.PatientUpdateRequest;
 import com.erguidos.ichor.dto.types.PatientCreationType;
+import com.erguidos.ichor.dto.types.PatientUpdateType;
 import com.erguidos.ichor.dto.types.SearchType;
 import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.entity.Patient;

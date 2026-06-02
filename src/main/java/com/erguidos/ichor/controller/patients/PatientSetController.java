@@ -13,12 +13,12 @@ import com.erguidos.ichor.dto.mappers.PatientMapper;
 import com.erguidos.ichor.dto.request.PatientCreationRequest;
 import com.erguidos.ichor.dto.request.PatientUpdateRequest;
 import com.erguidos.ichor.dto.types.PatientCreationType;
+import com.erguidos.ichor.dto.types.PatientUpdateType;
 import com.erguidos.ichor.entity.Patient;
 import com.erguidos.ichor.enums.BadRequest;
 import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.pre.AuthenticatedPayload;
 import com.erguidos.ichor.service.patient.PatientServiceInterface;
-import com.erguidos.ichor.service.patient.PatientUpdateType;
 
 
 @RestController

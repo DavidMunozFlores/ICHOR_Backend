@@ -1,4 +1,4 @@
-package com.erguidos.ichor.service.patient;
+package com.erguidos.ichor.dto.types;
 
 import com.erguidos.ichor.entity.Patient;
 import com.erguidos.ichor.enums.BadRequest;
