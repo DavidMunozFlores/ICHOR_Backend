@@ -157,7 +157,6 @@ public class Patient {
         Objects.requireNonNull(hospital);
         if (this.hospital != null) { this.hospital.getPatients().remove(this); }
         this.hospital = hospital;
-        hospital.addPatient(this);
     }
 
     public List<OrganPetition> getOrganPetitions() { return this.organPetitions; }

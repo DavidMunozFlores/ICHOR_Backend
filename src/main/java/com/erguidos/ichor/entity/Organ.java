@@ -3,6 +3,7 @@ package com.erguidos.ichor.entity;
 import java.util.List;
 
 import com.erguidos.ichor.dto.request.Gene;
+import com.erguidos.ichor.enums.BloodType;
 import com.erguidos.ichor.enums.OrganType;
 
 import jakarta.persistence.CollectionTable;
@@ -25,9 +26,12 @@ public class Organ {
 	private final static String INCORRECT_WEIGHT = "Weight grams must be in range of (10.0, 4000.0)";
 	private final static String INCORRECT_VOLUME = "Volume cc must be in range of (10.0, 4000.0)";
 	private final static String ORGAN_TYPE_NULL = "Organ type cannot be null";
+	private final static String BLOOD_TYPE_NULL = "Blood type cannot be null";
 	private final static String WEIGHT_NULL = "Weight cannot be null";
 	private final static String VOLUME_NULL = "Volume cannot be null";
 	private final static String HLA_NULL = "Hla cannot be null";
+	private final static String DONOR_HOSPITAL_NULL = "Donor hospital cannot be null";
+	private final static String COORDINATOR_NULL = "Coordinator cannot be null";
 	
 	private final static Double MAX_DIMENSION = 4000.0;
 	private final static Double MIN_DIMENSION = 10.0;
@@ -51,6 +55,10 @@ public class Organ {
 	@CollectionTable(name = "organ_hla", joinColumns = @JoinColumn(name = "id_organ"))
 	private List<Gene> hla;
 	
+	@Column(name = "blood_type", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private BloodType bloodType;
+	
 	@ManyToOne
 	@JoinColumn(name = "id_hospital", nullable = false)
 	private Hospital donorHospital;
@@ -69,6 +77,7 @@ public class Organ {
 			Double weightGrams,
 			Double volumeCC,
 			List<Gene> hla,
+			BloodType bloodType,
 			Hospital donorHospital,
 			Coordinator coordinator
 			) {
@@ -76,6 +85,7 @@ public class Organ {
 		setWeightGrams(weightGrams);
 		setVolumeCC(volumeCC);
 		setHla(hla);
+		setBloodType(bloodType);
 		setDonorHospital(donorHospital);
 		setCoordinator(coordinator);
 	}
@@ -85,11 +95,12 @@ public class Organ {
 			Double weightGrams,
 			Double volumeCC,
 			List<Gene> hla,
+			BloodType bloodType,
 			Hospital donorHospital,
 			Coordinator coordinator
 			) {
 		
-		return new Organ(organType, weightGrams, volumeCC, hla, donorHospital, coordinator);
+		return new Organ(organType, weightGrams, volumeCC, hla, bloodType, donorHospital, coordinator);
 	}
 	
 	public boolean isAssigned() { return this.organPetition != null; }
@@ -97,6 +108,8 @@ public class Organ {
 	public Long getId() { return this.id; }
 
 	public OrganType getOrganType() { return organType; }
+	
+	public BloodType getBloodType() { return bloodType; }
 
 	public Double getWeightGrams() { return weightGrams; }
 
@@ -121,6 +134,12 @@ public class Organ {
 		validateNonNull(organType, ORGAN_TYPE_NULL);
 		
 		this.organType = organType; 
+	}
+	
+	private void setBloodType(BloodType bloodType) {
+		validateNonNull(bloodType, BLOOD_TYPE_NULL);
+		
+		this.bloodType = bloodType; 
 	}
 
 	private void setWeightGrams(Double weightGrams) {
@@ -148,9 +167,15 @@ public class Organ {
 		if(o == null) throw new NullPointerException(errMsj);
 	}
 
-	private void setDonorHospital(Hospital donorHospital) { this.donorHospital = donorHospital; }
+	private void setDonorHospital(Hospital donorHospital) {
+		validateNonNull(donorHospital, DONOR_HOSPITAL_NULL);
+		this.donorHospital = donorHospital;
+	}
 
-	private void setCoordinator(Coordinator coordinator) { this.coordinator = coordinator; }
+	private void setCoordinator(Coordinator coordinator) {
+		validateNonNull(coordinator, COORDINATOR_NULL);
+		this.coordinator = coordinator;
+	}
 
 	private void setOrganPetition(OrganPetition organPetition) { this.organPetition = organPetition; }
 }

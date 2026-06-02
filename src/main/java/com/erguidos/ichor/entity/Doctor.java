@@ -30,7 +30,6 @@ public class Doctor extends User {
     private Doctor(String username, String password, Hospital hospital) {
     	super(username, password);
     	setHospital(hospital);
-    	hospital.addDoctor(this);
     }
     
     @Override
