@@ -124,7 +124,6 @@ public class Hospital {
     public void addCoordinator(Coordinator coordinator) { this.coordinators.add(coordinator); }
 
     public List<Patient> getPatients() { return this.patients; }
-    
     public void addPatient(Patient patient) { this.patients.add(patient); }
     
     public static HospitalBuilder builder() {
