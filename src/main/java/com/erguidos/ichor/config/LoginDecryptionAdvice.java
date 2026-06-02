@@ -1,26 +1,38 @@
 package com.erguidos.ichor.config;
 
 import com.erguidos.ichor.annotations.UnauthenticatedPayload;
-import com.erguidos.ichor.dto.request.AuthenticatedRequest;
-import com.erguidos.ichor.dto.request.DataRequestInterface;
-import com.erguidos.ichor.enums.Role;
-import com.erguidos.ichor.service.auth.AuthServiceInterface;
+import com.erguidos.ichor.dto.request.AuthCredentialsRequest;
+import com.erguidos.ichor.dto.request.DecryptRequest;
 import com.erguidos.ichor.service.key.KeyServiceInterface;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpInputMessage;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAdapter;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
-import java.util.Optional;
+import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 
 @ControllerAdvice
-public class LoginDecryptionAdvice extends BaseDecryptionAdvice {
-
+public class LoginDecryptionAdvice extends RequestBodyAdviceAdapter {
+    private final KeyServiceInterface keyService;
+    private final ObjectMapper objectMapper;
+    
     public LoginDecryptionAdvice(
-        KeyServiceInterface keyService,
-        AuthServiceInterface authService
+        KeyServiceInterface keyService
     ) {
-        super(keyService, authService);
+        this.keyService = keyService;
+        this.objectMapper = new ObjectMapper();
     }
 
     @Override
@@ -29,23 +41,33 @@ public class LoginDecryptionAdvice extends BaseDecryptionAdvice {
     }
 
     @Override
-    protected Optional<Role> getPermittedRole(MethodParameter parameter) {
-        return Optional.empty();
-    }
-
-    @Override
-    protected Class<? extends DataRequestInterface> getDataClass(MethodParameter parameter) {
-        Class<?> rawClass = parameter.getParameterType();
-        if (!DataRequestInterface.class.isAssignableFrom(rawClass)) {
-            throw new IllegalStateException("@UnauthenticatedPayload must be used on types implementing DataRequestInterface");
+    public HttpInputMessage beforeBodyRead(
+        HttpInputMessage inputMessage,
+        MethodParameter parameter,
+        Type targetType,
+        Class<? extends HttpMessageConverter<?>> converterType
+    ) throws IOException {
+        byte[] encryptedBytes = inputMessage.getBody().readAllBytes();
+        DecryptRequest decryptRequest = this.objectMapper.readValue(encryptedBytes, DecryptRequest.class);
+        
+        try {
+            AuthCredentialsRequest acr = this.keyService.decryptToObject(decryptRequest, AuthCredentialsRequest.class);
+            
+            String forwardJson = this.objectMapper.writeValueAsString(acr);
+            
+            return new HttpInputMessage() {
+                @Override
+                public InputStream getBody() throws IOException {
+                    return new ByteArrayInputStream(forwardJson.getBytes(StandardCharsets.UTF_8));
+                }
+                
+                @Override
+                public HttpHeaders getHeaders() {
+                    return inputMessage.getHeaders();
+                }
+            };
+        } catch (JsonProcessingException | GeneralSecurityException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Decryption failed", e);
         }
-        @SuppressWarnings("unchecked")
-        Class<? extends DataRequestInterface> targetClass = (Class<? extends DataRequestInterface>) rawClass;
-        return targetClass;
-    }
-
-    @Override
-    protected String determineForwardJson(AuthenticatedRequest<? extends DataRequestInterface> authRequest, MethodParameter parameter) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(authRequest.data());
     }
 }
