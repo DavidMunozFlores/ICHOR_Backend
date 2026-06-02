@@ -10,13 +10,15 @@ public final class PatientMapper {
     
     public static PatientResponse toPatientResponse(Patient patient) {
         return new PatientResponse(
+        	patient.getId(),
             patient.getInternalID(),
             patient.getName(),
             patient.getIdentification(),
             patient.getBloodType().toString(),
             patient.getHeight(),
             patient.getWeight(),
-            patient.getHospital().getId()
+            patient.getHospital().getId(),
+            patient.getOrganPetitions()
         );
     }
 }
