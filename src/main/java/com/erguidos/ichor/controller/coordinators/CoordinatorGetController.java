@@ -7,28 +7,53 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.erguidos.ichor.dto.mappers.CoordinatorMapper;
+import com.erguidos.ichor.dto.mappers.ListMapper;
+import com.erguidos.ichor.dto.response.CoordinatorResponse;
+import com.erguidos.ichor.dto.response.ListWrapper;
+import com.erguidos.ichor.dto.types.SearchType;
+import com.erguidos.ichor.entity.Coordinator;
+import com.erguidos.ichor.service.coordinator.CoordinatorServiceInterface;
+
 @RestController
 @RequestMapping("/api/v1/coordinators")
 @CrossOrigin(origins = {"${app.cors.allowed}"})
 public class CoordinatorGetController {
-    private final CoordinatorSemiController semi;
+    private final CoordinatorServiceInterface coordinatorService;
     
-    public CoordinatorGetController(CoordinatorSemiController semi) {
-        this.semi = semi;
+    public CoordinatorGetController(CoordinatorServiceInterface coordinatorService) {
+        this.coordinatorService = coordinatorService;
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllCoordinators() {
-        return this.semi.getAllCoordinators();
+    public ResponseEntity<ListWrapper<CoordinatorResponse>> getAllCoordinators() {
+        return ResponseEntity.ok(
+            ListMapper.toListWrapper(
+                this.coordinatorService.getAllCoordinators(),
+                CoordinatorMapper::toCoordinatorResponse
+            )
+        );
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCoordinator(@PathVariable Long id) {
-        return this.semi.getCoordinator(id);
+    public ResponseEntity<CoordinatorResponse> getCoordinator(@PathVariable Long id) {
+        SearchType<Coordinator> response = this.coordinatorService.getCoordinator(id);
+        
+        return switch (response) {
+            case SearchType.Found(Coordinator coordinator) ->
+                ResponseEntity.ok(CoordinatorMapper.toCoordinatorResponse(coordinator));
+            case SearchType.Failed() ->
+                ResponseEntity.notFound().build();
+        };
     }
     
     @GetMapping("/get-by-name/{name}")
-    public ResponseEntity<?> getCoordinatorsByName(@PathVariable String name) {
-        return this.semi.getCoordinatorsByName(name);
+    public ResponseEntity<ListWrapper<CoordinatorResponse>> getCoordinatorsByName(@PathVariable String name) {
+        return ResponseEntity.ok(
+            ListMapper.toListWrapper(
+                this.coordinatorService.getCoordinatorsByName(name),
+                CoordinatorMapper::toCoordinatorResponse
+            )
+        );
     }
 }
