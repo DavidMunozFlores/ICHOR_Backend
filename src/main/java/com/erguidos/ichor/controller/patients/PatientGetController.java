@@ -5,6 +5,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.erguidos.ichor.dto.mappers.ListMapper;
+import com.erguidos.ichor.dto.mappers.PatientMapper;
+import com.erguidos.ichor.dto.response.ListWrapper;
+import com.erguidos.ichor.dto.response.PatientResponse;
+import com.erguidos.ichor.dto.types.SearchType;
+import com.erguidos.ichor.entity.Patient;
+import com.erguidos.ichor.service.patient.PatientServiceInterface;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -13,19 +21,28 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/api/v1/patients")
 @CrossOrigin(origins = {"${app.cors.allowed}"})
 public class PatientGetController {
-    private final PatientSemiController semi;
+    private final PatientServiceInterface patientService;
     
-    PatientGetController(PatientSemiController semi) {
-        this.semi = semi;
+    PatientGetController(PatientServiceInterface patientService) {
+        this.patientService = patientService;
     }
     
     @GetMapping
-    public ResponseEntity<?> getAllPatients() {
-        return this.semi.getAllPatients();
+    public ResponseEntity<ListWrapper<PatientResponse>> getAllPatients() {
+        return ResponseEntity.ok(
+            ListMapper.toListWrapper(
+                this.patientService.getAllPatients(),
+                PatientMapper::toPatientResponse
+            )
+        );
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPatient(@PathVariable Long id) {
-        return this.semi.getPatient(id);
+    public ResponseEntity<PatientResponse> getPatient(@PathVariable Long id) {
+        SearchType<Patient> response = this.patientService.getPatient(id);
+        return switch (response) {
+            case SearchType.Found(Patient patient) -> ResponseEntity.ok(PatientMapper.toPatientResponse(patient));
+            case SearchType.Failed() -> ResponseEntity.notFound().build();
+        };
     }  
 }

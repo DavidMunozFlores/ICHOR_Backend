@@ -84,7 +84,7 @@ public class PatientService implements PatientServiceInterface {
     @Transactional
     public PatientUpdateType updatePatient(PatientUpdateRequest pur) {
         Optional<Patient> patientOp = this.patientRepository.findById(pur.id());
-        if (patientOp.isEmpty()) { return new PatientUpdateType.NotExists(); }
+        if (patientOp.isEmpty()) { return new PatientUpdateType.Failure(BadRequest.USER_NOT_EXISTS); }
         try {
             Patient patient = patientOp.get();
             patient.updateHeightAndWeight(pur.height(), pur.weight());
