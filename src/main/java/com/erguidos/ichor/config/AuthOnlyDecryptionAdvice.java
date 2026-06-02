@@ -1,5 +1,6 @@
-package com.erguidos.ichor.pre;
+package com.erguidos.ichor.config;
 
+import com.erguidos.ichor.annotations.AuthenticatedOnly;
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
 import com.erguidos.ichor.dto.request.DataRequestInterface;
 import com.erguidos.ichor.dto.request.EmptyDataRequest;

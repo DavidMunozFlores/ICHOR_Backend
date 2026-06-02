@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.erguidos.ichor.annotations.AuthenticatedPayload;
 import com.erguidos.ichor.dto.mappers.PatientMapper;
 import com.erguidos.ichor.dto.request.PatientCreationRequest;
 import com.erguidos.ichor.dto.request.PatientUpdateRequest;
@@ -17,7 +18,6 @@ import com.erguidos.ichor.dto.types.PatientUpdateType;
 import com.erguidos.ichor.entity.Patient;
 import com.erguidos.ichor.enums.BadRequest;
 import com.erguidos.ichor.enums.Role;
-import com.erguidos.ichor.pre.AuthenticatedPayload;
 import com.erguidos.ichor.service.patient.PatientServiceInterface;
 
 

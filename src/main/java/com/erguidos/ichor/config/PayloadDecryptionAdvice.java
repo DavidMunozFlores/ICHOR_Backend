@@ -1,4 +1,4 @@
-package com.erguidos.ichor.pre;
+package com.erguidos.ichor.config;
 
 import java.lang.reflect.Type;
 
@@ -6,6 +6,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
+import com.erguidos.ichor.annotations.AuthenticatedPayload;
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
 import com.erguidos.ichor.dto.request.DataRequestInterface;
 import com.erguidos.ichor.enums.Role;

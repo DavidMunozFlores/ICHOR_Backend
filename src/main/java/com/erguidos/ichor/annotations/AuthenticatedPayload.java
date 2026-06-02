@@ -1,4 +1,4 @@
-package com.erguidos.ichor.pre;
+package com.erguidos.ichor.annotations;
 
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -10,6 +10,6 @@ import com.erguidos.ichor.enums.Role;
 
 @Retention(RUNTIME)
 @Target(PARAMETER)
-public @interface AuthenticatedOnly {
+public @interface AuthenticatedPayload {
     Role value();
 }

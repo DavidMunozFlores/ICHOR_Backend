@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.erguidos.ichor.annotations.AuthenticatedPayload;
 import com.erguidos.ichor.dto.mappers.CoordinatorMapper;
 import com.erguidos.ichor.dto.request.CoordinatorCreateRequest;
 import com.erguidos.ichor.dto.response.CoordinatorResponse;
 import com.erguidos.ichor.dto.types.CoordinatorCreationType;
 import com.erguidos.ichor.entity.Coordinator;
 import com.erguidos.ichor.enums.Role;
-import com.erguidos.ichor.pre.AuthenticatedPayload;
 import com.erguidos.ichor.service.coordinator.CoordinatorServiceInterface;
 
 import org.springframework.web.bind.annotation.RequestBody;

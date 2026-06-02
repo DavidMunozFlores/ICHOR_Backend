@@ -1,4 +1,4 @@
-package com.erguidos.ichor.pre;
+package com.erguidos.ichor.config;
 
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
 import com.erguidos.ichor.dto.request.DataRequestInterface;
