@@ -59,7 +59,7 @@ public class CoordinatorService
         if (user.isPresent()) { return new CoordinatorCreationType.Exists(); }
         
         Optional<Hospital> hospital = this.hospitalRepository.findById(ccr.idHospital());
-        if (hospital.isEmpty()) { return new CoordinatorCreationType.NoHospital(ccr.idHospital()); }
+        if (hospital.isEmpty()) { return new CoordinatorCreationType.NoHospital(); }
         
         Coordinator coordinator = Coordinator.builder()
                 .setUsername(ccr.username())

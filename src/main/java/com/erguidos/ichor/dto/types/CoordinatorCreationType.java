@@ -8,5 +8,5 @@ public sealed interface CoordinatorCreationType
                         CoordinatorCreationType.NoHospital {
     public record Created(Coordinator coordinator) implements CoordinatorCreationType {}
     public record Exists() implements CoordinatorCreationType {}
-    public record NoHospital(Long id) implements CoordinatorCreationType {}
+    public record NoHospital() implements CoordinatorCreationType {}
 }

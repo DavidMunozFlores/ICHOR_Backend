@@ -29,27 +29,6 @@ public class CoordinatorSemiController extends AuthenticatedSemiController {
         this.coordinatorService = coordinatorService;
     }
     
-    public ResponseEntity<?> createCoordinator(DecryptRequest dr) {
-        return this.process(
-                dr,
-                CoordinatorCreateRequest.class,
-                Role.COORDINATOR,
-                this::createWithData
-        );
-    }
-    
-    private ResponseEntity<?> createWithData(CoordinatorCreateRequest data) {
-        CoordinatorCreationType ccrt = this.coordinatorService.createCoordinator(data);
-        return switch (ccrt) {
-            case CoordinatorCreationType.Created(Coordinator coordinator) ->
-                ResponseEntity.status(HttpStatus.CREATED).body(CoordinatorMapper.toCoordinatorResponse(coordinator));
-            case CoordinatorCreationType.Exists() ->
-                ResponseEntity.status(HttpStatus.CONFLICT).build();
-            case CoordinatorCreationType.NoHospital(Long id) ->
-                ResponseEntity.badRequest().body(String.format("Hospital with id %s doesn't exist", id));
-        };
-    }
-    
     public ResponseEntity<?> getAllCoordinators() {
         return ResponseEntity.ok(
             CoordinatorMapper.toCoordinatorResponse(
