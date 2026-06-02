@@ -112,11 +112,11 @@ public class Patient {
     }
 
     public Hospital getHospital() { return this.hospital; }
+    
     public void setHospital(Hospital hospital) {
         Objects.requireNonNull(hospital);
         if (this.hospital != null) { this.hospital.getPatients().remove(this); }
         this.hospital = hospital;
-        hospital.addPatient(this);
     }
 
     public List<OrganPetition> getOrganPetitions() { return this.organPetitions; }

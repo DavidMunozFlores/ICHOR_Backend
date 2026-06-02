@@ -10,10 +10,12 @@ import com.erguidos.ichor.dto.mappers.OrganMapper;
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
 import com.erguidos.ichor.dto.request.Gene;
 import com.erguidos.ichor.dto.request.RegisterOrganRequest;
+import com.erguidos.ichor.dto.response.OrganBloodTypeInfoResponse;
 import com.erguidos.ichor.dto.response.OrganTypeInfoResponse;
 import com.erguidos.ichor.dto.response.RegisterOrganResponse;
 import com.erguidos.ichor.entity.Coordinator;
 import com.erguidos.ichor.entity.Organ;
+import com.erguidos.ichor.enums.BloodType;
 import com.erguidos.ichor.enums.OrganType;
 import com.erguidos.ichor.exceptions.UserNotFoundException;
 import com.erguidos.ichor.repository.CoordinatorRepository;
@@ -34,6 +36,7 @@ public class OrganService implements OrganServiceInterface {
 		this.organRepository = organRepository;
 		this.coordinatorRepository = coordinatorRepository;
 	}
+	
 
 	@Override
 	public List<OrganTypeInfoResponse> getOrganTypeInfo() {
@@ -42,6 +45,16 @@ public class OrganService implements OrganServiceInterface {
 				.map(OrganMapper::toOrganTypeInfoResponse)
 				.toList();
 	}
+	
+	
+	@Override
+	public List<OrganBloodTypeInfoResponse> getOrganBloodTypeInfo() {
+		return Arrays
+				.stream(BloodType.values())
+				.map(OrganMapper::toOrganBloodTypeInfoResponse)
+				.toList();
+	}
+	
 
 	@Override
 	public RegisterOrganResponse registerOrgan(AuthenticatedRequest<RegisterOrganRequest> ar) {
@@ -59,6 +72,7 @@ public class OrganService implements OrganServiceInterface {
 				ror.weightGrams(),
 				ror.volumeCC(),
 				hla,
+				ror.bloodType(),
 				c.getHospital(),
 				c);
 		
@@ -66,4 +80,5 @@ public class OrganService implements OrganServiceInterface {
 		
 		return OrganMapper.toRregisterOrganResponse(o);
 	}
+
 }

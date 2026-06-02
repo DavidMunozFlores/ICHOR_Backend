@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.erguidos.ichor.dto.response.ErrorCodeResponse;
 import com.erguidos.ichor.exceptions.BadBloodTypeException;
 import com.erguidos.ichor.exceptions.IncorrectPasswordException;
+import com.erguidos.ichor.exceptions.OrganPetitionNotFoundException;
+import com.erguidos.ichor.exceptions.UnouthorizedOrganPetitionStateException;
 import com.erguidos.ichor.exceptions.UserAlreadyExistsException;
 import com.erguidos.ichor.exceptions.UserNotFoundException;
 
@@ -53,6 +55,20 @@ public class ExceptionHandlerController {
 	
 	@ExceptionHandler(NullPointerException.class)
 	public ResponseEntity<ErrorCodeResponse> handleNullPointer(NullPointerException e){
+		ErrorCodeResponse responseDTO = new ErrorCodeResponse(400, e.getMessage(), LocalDateTime.now());
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);
+	}
+	
+	@ExceptionHandler(OrganPetitionNotFoundException.class)
+	public ResponseEntity<ErrorCodeResponse> handleOrganPetitionNotFound(OrganPetitionNotFoundException e){
+		ErrorCodeResponse responseDTO = new ErrorCodeResponse(404, e.getMessage(), LocalDateTime.now());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDTO);
+	}
+	
+	@ExceptionHandler(UnouthorizedOrganPetitionStateException.class)
+	public ResponseEntity<ErrorCodeResponse> handleUnouthorizedOrganPetitionState(UnouthorizedOrganPetitionStateException e){
 		ErrorCodeResponse responseDTO = new ErrorCodeResponse(400, e.getMessage(), LocalDateTime.now());
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);

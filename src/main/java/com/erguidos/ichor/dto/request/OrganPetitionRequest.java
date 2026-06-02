@@ -1,13 +1,11 @@
 package com.erguidos.ichor.dto.request;
 
-import com.erguidos.ichor.enums.BloodType;
 import com.erguidos.ichor.enums.OrganType;
 
-public record RegisterOrganRequest(
+public record OrganPetitionRequest(
+		Long idPatient,
 		OrganType organType,
 		Double weightGrams,
 		Double volumeCC,
-		String hla,
-		BloodType bloodType
+		String hla
 		) implements DataRequestInterface {}
-

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.erguidos.ichor.dto.response.OrganBloodTypeInfoResponse;
 import com.erguidos.ichor.dto.response.OrganTypeInfoResponse;
 import com.erguidos.ichor.service.organ.OrganServiceInterface;
 
@@ -25,6 +26,11 @@ public class OrganGetController {
 	@GetMapping("/type-info")
 	public ResponseEntity<List<OrganTypeInfoResponse>> getOrganTypeInfo(){
 		return ResponseEntity.ok(organService.getOrganTypeInfo());
+	}
+	
+	@GetMapping("/blood-info")
+	public ResponseEntity<List<OrganBloodTypeInfoResponse>> getOrganBloodTypeInfo(){
+		return ResponseEntity.ok(organService.getOrganBloodTypeInfo());
 	}
 	
 	
