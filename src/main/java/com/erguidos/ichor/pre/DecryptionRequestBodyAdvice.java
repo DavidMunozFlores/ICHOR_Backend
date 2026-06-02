@@ -97,7 +97,6 @@ public class DecryptionRequestBodyAdvice extends RequestBodyAdviceAdapter {
                     return inputMessage.getHeaders();
                 }
             };
-            
         } catch (UserNotFoundException | IncorrectPasswordException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UNKNOWN_USER");
         } catch (JsonProcessingException | GeneralSecurityException e) {
