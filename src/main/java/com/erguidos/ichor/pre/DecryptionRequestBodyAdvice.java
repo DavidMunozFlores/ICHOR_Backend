@@ -1,4 +1,4 @@
-package com.erguidos.ichor;
+package com.erguidos.ichor.pre;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -31,16 +31,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class DecryptionRequestBodyAdvice extends RequestBodyAdviceAdapter {
     private final KeyServiceInterface keyService;
     private final AuthServiceInterface authService;
-    private final ObjectMapper objectMapper;
     
     public DecryptionRequestBodyAdvice(
         KeyServiceInterface keyService,
-        AuthServiceInterface authService,
-        ObjectMapper objectMapper
+        AuthServiceInterface authService
     ) {
         this.keyService = keyService;
         this.authService = authService;
-        this.objectMapper = objectMapper;
     }
     
     @Override
@@ -77,7 +74,7 @@ public class DecryptionRequestBodyAdvice extends RequestBodyAdviceAdapter {
         Role permittedRole = annotation.value();
         
         byte[] encryptedBytes = inputMessage.getBody().readAllBytes();
-        DecryptRequest decryptRequest = this.objectMapper.readValue(encryptedBytes, DecryptRequest.class);
+        DecryptRequest decryptRequest = new ObjectMapper().readValue(encryptedBytes, DecryptRequest.class);
         
         try {
             AuthenticatedRequest<? extends DataRequestInterface> authenticatedRequest = this.keyService.decryptToAuthenticatedRequest(decryptRequest, targetClass);
@@ -88,7 +85,7 @@ public class DecryptionRequestBodyAdvice extends RequestBodyAdviceAdapter {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
             }
             
-            String decryptedJson = this.objectMapper.writeValueAsString(authenticatedRequest.data());
+            String decryptedJson = new ObjectMapper().writeValueAsString(authenticatedRequest.data());
             return new HttpInputMessage() {
                 @Override
                 public InputStream getBody() throws IOException {

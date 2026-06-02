@@ -1,4 +1,4 @@
-package com.erguidos.ichor;
+package com.erguidos.ichor.pre;
 
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
