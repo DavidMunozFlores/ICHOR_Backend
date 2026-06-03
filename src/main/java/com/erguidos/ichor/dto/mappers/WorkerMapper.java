@@ -8,9 +8,25 @@ import com.erguidos.ichor.entity.User;
 public class WorkerMapper {
     public static WorkerResponse toWorkerResponse(User user) {
         return switch(user) {
-            case Doctor d -> new WorkerResponse(d.getUsername(), d.getHospital().getName(), d.getRole());
-            case Coordinator c -> new WorkerResponse(c.getUsername(), c.getHospital().getName(), c.getRole());
+            case Doctor d -> WorkerMapper.toWorkerResponse(d);
+            case Coordinator c -> WorkerMapper.toWorkerResponse(c);
             default -> throw new IllegalArgumentException("User is not a worker!");
         };
+    }
+    
+    public static WorkerResponse toWorkerResponse(Doctor doctor) {
+        return new WorkerResponse(
+            doctor.getUsername(),
+            doctor.getHospital().getName(),
+            doctor.getRole()
+        );
+    }
+    
+    public static WorkerResponse toWorkerResponse(Coordinator coordinator) {
+        return new WorkerResponse(
+            coordinator.getUsername(),
+            coordinator.getHospital().getName(),
+            coordinator.getRole()
+        );
     }
 }
