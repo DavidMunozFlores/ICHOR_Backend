@@ -11,6 +11,7 @@ import com.erguidos.ichor.service.key.KeyServiceInterface;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -48,31 +49,32 @@ public abstract class BaseDecryptionAdvice extends RequestBodyAdviceAdapter {
         Class<? extends HttpMessageConverter<?>> converterType
     ) throws IOException {
         byte[] encryptedBytes = inputMessage.getBody().readAllBytes();
-        DecryptRequest decryptRequest = objectMapper.readValue(encryptedBytes, DecryptRequest.class);
+        DecryptRequest decryptRequest = this.objectMapper.readValue(encryptedBytes, DecryptRequest.class);
         
-        Optional<Role> permittedRole = getPermittedRole(parameter);
-        Class<? extends DataRequestInterface> dataClass = getDataClass(parameter);
+        Optional<Role> permittedRole = this.getPermittedRole(parameter);
+        Class<? extends DataRequestInterface> dataClass = this.getDataClass(parameter);
         
         try {
-            AuthenticatedRequest<? extends DataRequestInterface> authenticatedRequest = keyService.decryptToAuthenticatedRequest(decryptRequest, dataClass);
+            AuthenticatedRequest<? extends DataRequestInterface> authenticatedRequest = this.keyService.decryptToAuthenticatedRequest(decryptRequest, dataClass);
 
             if (permittedRole.isPresent()) {
-                boolean isAuthenticated = authService.authenticate(authenticatedRequest.authCredentials(), permittedRole.get());
+                boolean isAuthenticated = this.authService.authenticate(authenticatedRequest.authCredentials(), permittedRole.get());
                 
                 if (!isAuthenticated) {
                     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
                 }
             }
             
-            String forwardJson = determineForwardJson(authenticatedRequest, parameter);
+            String forwardJson = this.determineForwardJson(authenticatedRequest, parameter);
             
             return new HttpInputMessage() {
                 @Override
                 public InputStream getBody() throws IOException {
                     return new ByteArrayInputStream(forwardJson.getBytes(StandardCharsets.UTF_8));
                 }
+                
                 @Override
-                public org.springframework.http.HttpHeaders getHeaders() {
+                public HttpHeaders getHeaders() {
                     return inputMessage.getHeaders();
                 }
             };
