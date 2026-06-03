@@ -6,6 +6,10 @@ import com.erguidos.ichor.entity.Doctor;
 import com.erguidos.ichor.entity.User;
 
 public class WorkerMapper {
+    private WorkerMapper() {
+        throw new UnsupportedOperationException("Don't instantiate WorkerMapper");
+    }
+    
     public static WorkerResponse toWorkerResponse(User user) {
         return switch(user) {
             case Doctor d -> WorkerMapper.toWorkerResponse(d);
