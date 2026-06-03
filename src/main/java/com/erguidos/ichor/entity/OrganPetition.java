@@ -131,7 +131,7 @@ public class OrganPetition {
 	private void setVolumeCC(Double volumeCC) {
 		validateNonNull(volumeCC, VOLUME_NULL);
 		
-		validateDimension(weightGrams, INCORRECT_VOLUME);
+		validateDimension(volumeCC, INCORRECT_VOLUME);
 		
 		this.volumeCC = volumeCC;
 	}
