@@ -14,14 +14,16 @@ import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.service.auth.AuthServiceInterface;
 import com.erguidos.ichor.service.key.KeyServiceInterface;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ControllerAdvice
 public class PayloadDecryptionAdvice extends BaseDecryptionAdvice {
     public PayloadDecryptionAdvice(
         KeyServiceInterface keyService,
-        AuthServiceInterface authService
+        AuthServiceInterface authService,
+        ObjectMapper objectMapper
     ) {
-        super(keyService, authService);
+        super(keyService, authService, objectMapper);
     }
     
     @Override

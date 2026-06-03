@@ -8,6 +8,8 @@ import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.service.auth.AuthServiceInterface;
 import com.erguidos.ichor.service.key.KeyServiceInterface;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.core.MethodParameter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -19,9 +21,10 @@ public class AuthOnlyDecryptionAdvice extends BaseDecryptionAdvice {
 
     public AuthOnlyDecryptionAdvice(
         KeyServiceInterface keyService,
-        AuthServiceInterface authService
+        AuthServiceInterface authService,
+        ObjectMapper objectMapper
     ) {
-        super(keyService, authService);
+        super(keyService, authService, objectMapper);
     }
 
     @Override

@@ -34,11 +34,12 @@ public abstract class BaseDecryptionAdvice extends RequestBodyAdviceAdapter {
 
     protected BaseDecryptionAdvice(
         KeyServiceInterface keyService,
-        AuthServiceInterface authService
+        AuthServiceInterface authService,
+        ObjectMapper objectMapper
     ) {
         this.keyService = keyService;
         this.authService = authService;
-        this.objectMapper = new ObjectMapper();
+        this.objectMapper = objectMapper;
     }
 
     @Override

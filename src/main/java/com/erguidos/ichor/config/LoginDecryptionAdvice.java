@@ -29,10 +29,11 @@ public class LoginDecryptionAdvice extends RequestBodyAdviceAdapter {
     private final ObjectMapper objectMapper;
     
     public LoginDecryptionAdvice(
-        KeyServiceInterface keyService
+        KeyServiceInterface keyService,
+        ObjectMapper objectMapper
     ) {
         this.keyService = keyService;
-        this.objectMapper = new ObjectMapper();
+        this.objectMapper = objectMapper;
     }
 
     @Override
