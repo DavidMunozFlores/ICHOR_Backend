@@ -6,8 +6,8 @@ import com.erguidos.ichor.dto.response.HospitalResponse;
 import com.erguidos.ichor.entity.Hospital;
 
 public final class HospitalMapper {
-    private HospitalMapper() throws IllegalAccessException {
-        throw new IllegalAccessException("Don't instantiate HospitalMapper");
+    private HospitalMapper() {
+        throw new UnsupportedOperationException("Don't instantiate HospitalMapper");
     }
     
     public static HospitalResponse toHospitalResponse(Hospital hospital) {

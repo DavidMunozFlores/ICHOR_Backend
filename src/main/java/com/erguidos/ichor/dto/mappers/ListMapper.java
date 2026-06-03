@@ -6,8 +6,8 @@ import java.util.function.Function;
 import com.erguidos.ichor.dto.response.ListWrapper;
 
 public class ListMapper {
-    private ListMapper() throws IllegalAccessException {
-        throw new IllegalAccessException("Don't instantiate ListMapper");
+    private ListMapper() {
+        throw new UnsupportedOperationException("Don't instantiate ListMapper");
     }
     
     public static <T> ListWrapper<T> toListWrapper(List<T> toWrap) {
