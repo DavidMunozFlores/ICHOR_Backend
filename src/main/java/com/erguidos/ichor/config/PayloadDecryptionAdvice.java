@@ -57,8 +57,10 @@ public class PayloadDecryptionAdvice extends BaseDecryptionAdvice {
     }
 
     @Override
-    protected String determineForwardJson(AuthenticatedRequest<? extends DataRequestInterface> authRequest,
-            MethodParameter parameter) throws JsonProcessingException {
+    protected String determineForwardJson(
+        AuthenticatedRequest<? extends DataRequestInterface> authRequest,
+        MethodParameter parameter
+    ) throws JsonProcessingException {
         return this.objectMapper.writeValueAsString(authRequest.data());
     }
 }
