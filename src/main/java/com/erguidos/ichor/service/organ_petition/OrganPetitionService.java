@@ -1,6 +1,8 @@
 package com.erguidos.ichor.service.organ_petition;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import com.erguidos.ichor.dto.response.OrganPetitionResponse;
 import com.erguidos.ichor.entity.Doctor;
 import com.erguidos.ichor.entity.OrganPetition;
 import com.erguidos.ichor.entity.Patient;
+import com.erguidos.ichor.enums.OrganPetitionState;
 import com.erguidos.ichor.exceptions.OrganPetitionNotFoundException;
 import com.erguidos.ichor.exceptions.UserNotFoundException;
 import com.erguidos.ichor.repository.DoctorRepository;
@@ -95,5 +98,14 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 		organPetitionRepository.save(op);
 		
 		return OrganPetitionMapper.toOrganPetitionResponse(op);
+	}
+
+	@Override
+	public Set<OrganPetitionResponse> findByOrganPetitionState(OrganPetitionState organPetitionState) {
+		return organPetitionRepository
+				.findByOrganPetitionState(organPetitionState)
+				.stream()
+				.map(OrganPetitionMapper::toOrganPetitionResponse)
+				.collect(Collectors.toSet());
 	}
 }
