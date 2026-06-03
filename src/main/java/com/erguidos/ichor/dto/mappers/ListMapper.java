@@ -5,7 +5,7 @@ import java.util.function.Function;
 
 import com.erguidos.ichor.dto.response.ListWrapper;
 
-public class ListMapper {
+public final class ListMapper {
     private ListMapper() {
         throw new UnsupportedOperationException("Don't instantiate ListMapper");
     }

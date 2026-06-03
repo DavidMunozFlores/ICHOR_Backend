@@ -5,7 +5,7 @@ import com.erguidos.ichor.entity.Coordinator;
 import com.erguidos.ichor.entity.Doctor;
 import com.erguidos.ichor.entity.User;
 
-public class WorkerMapper {
+public final class WorkerMapper {
     private WorkerMapper() {
         throw new UnsupportedOperationException("Don't instantiate WorkerMapper");
     }
