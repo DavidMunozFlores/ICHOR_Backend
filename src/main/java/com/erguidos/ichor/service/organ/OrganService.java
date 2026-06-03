@@ -82,8 +82,9 @@ public class OrganService implements OrganServiceInterface {
 		
 		organRepository.save(o);
 		
-		cs.addOrganToMostCompatibleOP(o);
-		
+		//cs.addOrganToMostCompatibleOP(o);
+		cs.addOrganToMostCompatibleOPTest(o);
+		organRepository.save(o);
 		return OrganMapper.toRregisterOrganResponse(o);
 	}
 

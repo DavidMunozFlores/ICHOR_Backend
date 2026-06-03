@@ -11,6 +11,8 @@ public class OrganMapper {
 	private OrganMapper() {}
 
 	public static RegisterOrganResponse toRregisterOrganResponse(Organ o) {
+		if(o == null) return null;
+		
 		return new RegisterOrganResponse(
 				o.getOrganType(),
 				o.getWeightGrams(),

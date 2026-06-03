@@ -20,4 +20,6 @@ public interface OrganPetitionRepository extends JpaRepository<OrganPetition, Lo
 	
 	@Query("SELECT op FROM OrganPetition op JOIN op.patient p where p.bloodType IN :bloodTypes")
 	Set<OrganPetition> findByCompatibleBlood(@Param(value = "bloodTypes") List<BloodType> bloodTypes);
+	
+	// Busqueda por muestra
 }

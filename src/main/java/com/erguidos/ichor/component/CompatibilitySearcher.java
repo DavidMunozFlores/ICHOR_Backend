@@ -1,5 +1,6 @@
 package com.erguidos.ichor.component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -89,6 +90,12 @@ public class CompatibilitySearcher {
 		
 		return o.getOrganType().getTime() > duration;
 		
+	}
+	
+	public void addOrganToMostCompatibleOPTest(Organ o) {
+		Set<OrganPetition> opWaiting = opRep.findByOrganPetitionState(OrganPetitionState.WAITING);
+		List<OrganPetition> r = new ArrayList<>(opWaiting);
+		r.get(0).assignOrgan(o);
 	}
 	
 

@@ -14,7 +14,7 @@ public class OrganPetitionMapper {
 				op.getVolumeCC(),
 				op.getHla(),
 				op.getOrganPetitionState(),
-				op.getOrgan()
+				OrganMapper.toRregisterOrganResponse(op.getOrgan())
 				); 
 	}
 

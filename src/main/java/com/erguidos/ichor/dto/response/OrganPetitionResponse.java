@@ -15,5 +15,5 @@ public record OrganPetitionResponse (
 		Double volumeCC,
 		List<Gene> hla,
 		OrganPetitionState petitionState,
-		Organ organAssigned
+		RegisterOrganResponse organAssigned
 		) implements DataRequestInterface {}
