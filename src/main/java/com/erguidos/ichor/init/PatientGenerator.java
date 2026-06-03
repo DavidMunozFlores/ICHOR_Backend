@@ -3,8 +3,13 @@ package com.erguidos.ichor.init;
 import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.entity.Patient;
 import com.erguidos.ichor.enums.BloodType;
+import com.erguidos.ichor.exceptions.BlankStringException;
+import com.erguidos.ichor.exceptions.ImproperHeightException;
+import com.erguidos.ichor.exceptions.ImproperWeightException;
 import com.erguidos.ichor.repository.HospitalRepository;
 import com.erguidos.ichor.repository.PatientRepository;
+
+import jakarta.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
@@ -28,8 +33,8 @@ public class PatientGenerator {
         this.hospitalRepository = hospitalRepository;
     }
 
+    @Transactional
     public void generate() {
-
         if (patientRepository.count() > 0) return;
 
         List<Hospital> hospitals = hospitalRepository.findAll();
@@ -50,17 +55,23 @@ public class PatientGenerator {
             BloodType bloodType = bloodTypes.get(random.nextInt(bloodTypes.size()));
             Hospital hospital = hospitals.get(0);//random.nextInt(hospitals.size())
 
-            Patient patient = Patient.builder()
-                    .setInternalID("INT-" + UUID.randomUUID().toString().substring(0, 8))
-                    .setName(name)
-                    .setIdentification("ID-" + (100000 + i))
-                    .setBloodType(bloodType)
-                    .setHeight(150 + random.nextDouble() * 40)   // 150–190 cm
-                    .setWeight(50 + random.nextDouble() * 50)    // 50–100 kg
-                    .setHospital(hospital)
-                    .build();
+            try {
+                Patient patient = Patient.builder()
+                        .setInternalID("INT-" + UUID.randomUUID().toString().substring(0, 8))
+                        .setName(name)
+                        .setIdentification("ID-" + (100000 + i))
+                        .setBloodType(bloodType)
+                        .setHeight(150 + random.nextDouble() * 40)   // 150–190 cm
+                        .setWeight(50 + random.nextDouble() * 50)    // 50–100 kg
+                        .setHospital(hospital)
+                        .build();
+                
 
-            patientRepository.save(patient);
+                patientRepository.save(patient);
+            } catch (BlankStringException | ImproperHeightException | ImproperWeightException e) {
+                
+            }
+
         }
     }
 }
