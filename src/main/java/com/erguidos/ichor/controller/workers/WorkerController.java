@@ -16,7 +16,7 @@ import com.erguidos.ichor.service.workers.WorkerServiceInterface;
 @RequestMapping("/api/v1/workers")
 @CrossOrigin(origins = {"${app.cors.allowed}"})
 public class WorkerController {
-private final WorkerServiceInterface workerService;
+    private final WorkerServiceInterface workerService;
     
     WorkerController(WorkerServiceInterface workerService) {
         this.workerService = workerService;
