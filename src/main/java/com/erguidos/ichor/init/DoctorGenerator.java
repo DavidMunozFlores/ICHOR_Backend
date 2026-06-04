@@ -2,48 +2,39 @@ package com.erguidos.ichor.init;
 
 import com.erguidos.ichor.component.HashInterface;
 import com.erguidos.ichor.entity.Doctor;
-import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.repository.DoctorRepository;
-import com.erguidos.ichor.repository.HospitalRepository;
+import com.erguidos.ichor.utils.IchorUtils;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class DoctorGenerator {
+    private static final int DOCTOR_COUNT = 20;
 
     private final DoctorRepository doctorRepository;
-    private final HospitalRepository hospitalRepository;
+    private final HospitalGenerator hospitalGenerator;
     private final HashInterface hashing;
 
     public DoctorGenerator(
             DoctorRepository doctorRepository,
-            HospitalRepository hospitalRepository,
+            HospitalGenerator hospitalGenerator,
             @Qualifier("bcryptPasswordEncoder") HashInterface hashing
     ) {
         this.doctorRepository = doctorRepository;
-        this.hospitalRepository = hospitalRepository;
+        this.hospitalGenerator = hospitalGenerator;
         this.hashing = hashing;
     }
 
     public void generate() {
-        Hospital hospital = hospitalRepository.findAll().stream()
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("No hospitals found in DB"));
-
-        List<String> doctorNames = List.of("Doctor", "Pepe", "Ana", "Lepan", "Ichor");
-
-        for (String name : doctorNames) {
+        for (String name : IchorUtils.generateFullNames(DOCTOR_COUNT)) {
             if (doctorRepository.existsByUsername(name)) continue;
 
             Doctor doctor = Doctor.create(
                     name,
                     hashing.hashPassword("1234"),
-                    hospital
+                    this.hospitalGenerator.getRandomHospital()
             );
-
             
             doctorRepository.save(doctor);
         }
