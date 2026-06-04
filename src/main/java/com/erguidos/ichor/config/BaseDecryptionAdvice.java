@@ -3,6 +3,7 @@ package com.erguidos.ichor.config;
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
 import com.erguidos.ichor.dto.request.DataRequestInterface;
 import com.erguidos.ichor.dto.request.DecryptRequest;
+import com.erguidos.ichor.enums.BadRequest;
 import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.exceptions.IncorrectPasswordException;
 import com.erguidos.ichor.exceptions.UserNotFoundException;
@@ -62,7 +63,7 @@ public abstract class BaseDecryptionAdvice extends RequestBodyAdviceAdapter {
                 boolean isAuthenticated = this.authService.hasValidRole(authenticatedRequest.authCredentials(), permittedRole.get());
                 
                 if (!isAuthenticated) {
-                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, BadRequest.UNAUTHORIZED.toString());
                 }
             }
             
@@ -80,9 +81,9 @@ public abstract class BaseDecryptionAdvice extends RequestBodyAdviceAdapter {
                 }
             };
         } catch (UserNotFoundException | IncorrectPasswordException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UNKNOWN_USER");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, BadRequest.USER_NOT_EXISTS.toString());
         } catch (JsonProcessingException | GeneralSecurityException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Decryption failed", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, BadRequest.FAILED_DECRYPTION.toString(), e);
         }
     }
 
