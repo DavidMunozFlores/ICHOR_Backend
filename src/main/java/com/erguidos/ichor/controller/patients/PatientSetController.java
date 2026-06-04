@@ -13,12 +13,19 @@ import com.erguidos.ichor.annotations.AuthenticatedPayload;
 import com.erguidos.ichor.dto.mappers.PatientMapper;
 import com.erguidos.ichor.dto.request.PatientCreationRequest;
 import com.erguidos.ichor.dto.request.PatientUpdateRequest;
+import com.erguidos.ichor.dto.response.PatientResponse;
 import com.erguidos.ichor.dto.types.PatientCreationType;
 import com.erguidos.ichor.dto.types.PatientUpdateType;
 import com.erguidos.ichor.entity.Patient;
 import com.erguidos.ichor.enums.BadRequest;
 import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.service.patient.PatientServiceInterface;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 
 @RestController
@@ -31,6 +38,23 @@ public class PatientSetController {
         this.patientService = patientService;
     }
     
+    @Operation(summary = "Create a new patient record")
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "201", 
+            description = "Patient successfully created",
+            content = @Content(schema = @Schema(implementation = PatientResponse.class))
+        ),
+        @ApiResponse(
+            responseCode = "409", 
+            description = "Patient already exists"
+        ),
+        @ApiResponse(
+            responseCode = "400", 
+            description = "Invalid request payload",
+            content = @Content(schema = @Schema(implementation = BadRequest.class))
+        )
+    })
     @PostMapping("/create")
     public ResponseEntity<?> createPatient(
         @RequestBody @AuthenticatedPayload(Role.DOCTOR) PatientCreationRequest patientCreationRequest
