@@ -27,6 +27,6 @@ public class AuthController {
 	public ResponseEntity<?> isAuthorized(
         @RequestBody @UnauthenticatedPayload AuthCredentialsRequest acr
     ) {
-	    return ResponseEntity.ok(this.authService.isAuthorized(acr));
+	    return ResponseEntity.ok(this.authService.getRole(acr));
 	}
 }

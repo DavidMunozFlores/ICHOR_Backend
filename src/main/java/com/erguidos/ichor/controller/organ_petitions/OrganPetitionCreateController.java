@@ -36,7 +36,7 @@ public class OrganPetitionCreateController {
 			@RequestBody AuthenticatedRequest<OrganPetitionRequest> ar
 			) {
 		
-        this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
+        this.authService.validRoleOrThrow(ar.authCredentials(), Role.DOCTOR);
 		
 		return ResponseEntity.ok(organPetitionService.createOrganPetition(ar));
 	}
@@ -46,7 +46,7 @@ public class OrganPetitionCreateController {
 			@RequestBody AuthenticatedRequest<StateUpdateOrganPetitionRequest> ar
 			) {
 		
-        this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
+        this.authService.validRoleOrThrow(ar.authCredentials(), Role.DOCTOR);
 		
 		return ResponseEntity.ok(organPetitionService.acceptOrganPetition(ar));
 	}
@@ -56,7 +56,7 @@ public class OrganPetitionCreateController {
 			@RequestBody AuthenticatedRequest<StateUpdateOrganPetitionRequest> ar
 			) {
 		
-		this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
+		this.authService.validRoleOrThrow(ar.authCredentials(), Role.DOCTOR);
 		
 		return ResponseEntity.ok(organPetitionService.cancellOrganPetition(ar));
 	}

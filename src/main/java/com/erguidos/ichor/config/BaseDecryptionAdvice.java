@@ -59,7 +59,7 @@ public abstract class BaseDecryptionAdvice extends RequestBodyAdviceAdapter {
             AuthenticatedRequest<? extends DataRequestInterface> authenticatedRequest = this.keyService.decryptToAuthenticatedRequest(decryptRequest, dataClass);
 
             if (permittedRole.isPresent()) {
-                boolean isAuthenticated = this.authService.authenticate(authenticatedRequest.authCredentials(), permittedRole.get());
+                boolean isAuthenticated = this.authService.hasValidRole(authenticatedRequest.authCredentials(), permittedRole.get());
                 
                 if (!isAuthenticated) {
                     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
