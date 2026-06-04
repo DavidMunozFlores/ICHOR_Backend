@@ -101,6 +101,20 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 	}
 
 	@Override
+	public OrganPetitionResponse checkOrganPetition(AuthenticatedRequest<StateUpdateOrganPetitionRequest> ar) {
+		OrganPetition op = organPetitionRepository
+				.findById(ar.data().idOrganPetition())
+				.orElseThrow(() -> new OrganPetitionNotFoundException(ORGAN_PETITION_NOT_FOUND));
+		
+		// WAITING -> ASSIGNED
+		op.check();
+		
+		organPetitionRepository.save(op);
+		
+		return OrganPetitionMapper.toOrganPetitionResponse(op);
+	}
+	
+	@Override
 	public Set<OrganPetitionResponse> findByOrganPetitionState(OrganPetitionState organPetitionState) {
 		return organPetitionRepository
 				.findByOrganPetitionState(organPetitionState)

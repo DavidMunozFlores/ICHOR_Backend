@@ -13,5 +13,6 @@ public interface OrganPetitionServiceInterface {
 	OrganPetitionResponse createOrganPetition(AuthenticatedRequest<OrganPetitionRequest> ar);
 	OrganPetitionResponse acceptOrganPetition(AuthenticatedRequest<StateUpdateOrganPetitionRequest> ar);
 	OrganPetitionResponse cancellOrganPetition(AuthenticatedRequest<StateUpdateOrganPetitionRequest> ar);
+	OrganPetitionResponse checkOrganPetition(AuthenticatedRequest<StateUpdateOrganPetitionRequest> ar);
 	Set<OrganPetitionResponse> findByOrganPetitionState(OrganPetitionState organPetitionState);
 }

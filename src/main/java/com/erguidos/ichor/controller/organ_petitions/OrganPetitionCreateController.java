@@ -60,4 +60,14 @@ public class OrganPetitionCreateController {
 		
 		return ResponseEntity.ok(organPetitionService.cancellOrganPetition(ar));
 	}
+	
+	@PatchMapping("/check")
+	public ResponseEntity<OrganPetitionResponse> checkOrganPetition(
+			@RequestBody AuthenticatedRequest<StateUpdateOrganPetitionRequest> ar
+			) {
+		
+		this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
+		
+		return ResponseEntity.ok(organPetitionService.checkOrganPetition(ar));
+	}
 }
