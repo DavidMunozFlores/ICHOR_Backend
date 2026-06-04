@@ -13,6 +13,7 @@ import com.erguidos.ichor.annotations.AuthenticatedPayload;
 import com.erguidos.ichor.dto.mappers.PatientMapper;
 import com.erguidos.ichor.dto.request.PatientCreationRequest;
 import com.erguidos.ichor.dto.request.PatientUpdateRequest;
+import com.erguidos.ichor.dto.response.BadRequestResponse;
 import com.erguidos.ichor.dto.response.PatientResponse;
 import com.erguidos.ichor.dto.types.PatientCreationType;
 import com.erguidos.ichor.dto.types.PatientUpdateType;
@@ -45,16 +46,27 @@ public class PatientSetController {
         @ApiResponse(
             responseCode = "201",
             description = "Patient successfully created",
-            content = @Content(schema = @Schema(implementation = PatientResponse.class))
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PatientResponse.class))
         ),
         @ApiResponse(
             responseCode = "409",
-            description = "Patient already exists"
+            description = "Patient already exists",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = BadRequestResponse.class))
         ),
         @ApiResponse(
             responseCode = "400",
             description = "Invalid request payload",
-            content = @Content(schema = @Schema(implementation = BadRequest.class))
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = BadRequestResponse.class))
+        ),
+        
+        @ApiResponse(
+            responseCode = "500",
+            description = "Decryption failure",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = BadRequestResponse.class))
+        ),
+        @ApiResponse(
+            responseCode = "401",
+            description = "User not authorized"
         )
     })
     @PostMapping("/create")
