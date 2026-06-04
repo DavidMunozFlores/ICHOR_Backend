@@ -41,16 +41,16 @@ public class PatientSetController {
     @Operation(summary = "Create a new patient record")
     @ApiResponses(value = {
         @ApiResponse(
-            responseCode = "201", 
+            responseCode = "201",
             description = "Patient successfully created",
             content = @Content(schema = @Schema(implementation = PatientResponse.class))
         ),
         @ApiResponse(
-            responseCode = "409", 
+            responseCode = "409",
             description = "Patient already exists"
         ),
         @ApiResponse(
-            responseCode = "400", 
+            responseCode = "400",
             description = "Invalid request payload",
             content = @Content(schema = @Schema(implementation = BadRequest.class))
         )
@@ -74,6 +74,19 @@ public class PatientSetController {
         };
     }
     
+    @Operation(summary = "Update a patient's height and weight")
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Patient successfully updated",
+            content = @Content(schema = @Schema(implementation = PatientResponse.class))
+        ),
+        @ApiResponse(
+            responseCode = "400", 
+            description = "Invalid request payload",
+            content = @Content(schema = @Schema(implementation = BadRequest.class))
+        )
+    })
     @PatchMapping
     public ResponseEntity<?> updatePatient(
         @RequestBody @AuthenticatedPayload(Role.DOCTOR) PatientUpdateRequest patientUpdateRequest
