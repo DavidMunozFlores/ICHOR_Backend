@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.erguidos.ichor.dto.response.ErrorCodeResponse;
 import com.erguidos.ichor.exceptions.BadBloodTypeException;
@@ -74,4 +75,13 @@ public class ExceptionHandlerController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);
 	}
 
+	@ExceptionHandler(ResponseStatusException.class)
+	public ResponseEntity<ErrorCodeResponse> handleResponseStatusException(ResponseStatusException e) {
+	    ErrorCodeResponse responseDTO = new ErrorCodeResponse(
+            e.getStatusCode().value(),
+            e.getMessage(),
+            LocalDateTime.now()
+        );
+        return ResponseEntity.status(e.getStatusCode()).body(responseDTO);
+	}
 }
