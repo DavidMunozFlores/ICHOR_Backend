@@ -26,11 +26,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 @RestController
 @RequestMapping("/api/v1/patients")
 @CrossOrigin(origins = {"${app.cors.allowed}"})
+@Tag(name = "Patient Creation and Update", description = "Endpoints for creating and updating patients")
 public class PatientSetController {
     private final PatientServiceInterface patientService;
     
