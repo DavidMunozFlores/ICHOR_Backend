@@ -45,10 +45,10 @@ public class Patient {
 	@Enumerated(EnumType.STRING)
 	private BloodType bloodType;
 	
-	@Column(name = "height", nullable = false)
+	@Column(name = "height", nullable = false, precision = 2)
 	private Double height;
 	
-	@Column(name = "weight", nullable = false)
+	@Column(name = "weight", nullable = false, precision = 2)
 	private Double weight;
 	
 	@ManyToOne
