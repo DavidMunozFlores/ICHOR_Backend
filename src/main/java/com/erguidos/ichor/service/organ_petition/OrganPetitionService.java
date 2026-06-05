@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 
 import com.erguidos.ichor.component.HlaParser;
 import com.erguidos.ichor.dto.mappers.OrganPetitionMapper;
-import com.erguidos.ichor.dto.request.StateUpdateOrganPetitionRequest;
+import com.erguidos.ichor.dto.request.UpdateOrganPetitionRequest;
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
 import com.erguidos.ichor.dto.request.Gene;
 import com.erguidos.ichor.dto.request.OrganPetitionRequest;
+import com.erguidos.ichor.dto.request.OrganPetitionUpdateRequest;
+import com.erguidos.ichor.dto.response.OPDeleted;
 import com.erguidos.ichor.dto.response.OrganPetitionResponse;
 import com.erguidos.ichor.entity.Doctor;
 import com.erguidos.ichor.entity.OrganPetition;
@@ -70,9 +72,52 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 		
 		return OrganPetitionMapper.toOrganPetitionResponse(op);
 	}
+	
+	@Override
+	public OrganPetitionResponse updateOrganPetition(AuthenticatedRequest<OrganPetitionUpdateRequest> ar) {
+		OrganPetitionUpdateRequest d = ar.data();
+		
+		Doctor doc = doctorRepository
+				.findByUsername(ar.authCredentials().username())
+				.orElseThrow(() -> new UserNotFoundException(DOCTOR_NOT_FOUND));
+		
+		Patient p = patientRepository
+				.findById(d.idPatient())
+				.orElseThrow(() -> new UserNotFoundException(PATIENT_NOT_FOUND));
+		
+		OrganPetition op = organPetitionRepository
+				.findById(d.idOrganPetition())
+				.orElseThrow(() -> new OrganPetitionNotFoundException(ORGAN_PETITION_NOT_FOUND));
+		
+		List<Gene> hla = HlaParser.parse(d.hla());
+		
+		op.update(
+				d.organType(),
+				d.weightGrams(),
+				d.volumeCC(),
+				hla,
+				doc,
+				p
+				);
+		
+		organPetitionRepository.save(op);
+				
+		return OrganPetitionMapper.toOrganPetitionResponse(op);
+	}
+	
+	@Override
+	public OPDeleted deleteOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar) {
+		OrganPetition op = organPetitionRepository
+				.findById(ar.data().idOrganPetition())
+				.orElseThrow(() -> new OrganPetitionNotFoundException(ORGAN_PETITION_NOT_FOUND));
+		
+		organPetitionRepository.delete(op);
+		
+		return new OPDeleted("DELETED");
+	}
 
 	@Override
-	public OrganPetitionResponse acceptOrganPetition(AuthenticatedRequest<StateUpdateOrganPetitionRequest> ar) {
+	public OrganPetitionResponse acceptOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar) {
 		
 		OrganPetition op = organPetitionRepository
 				.findById(ar.data().idOrganPetition())
@@ -87,7 +132,7 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 	}
 
 	@Override
-	public OrganPetitionResponse cancellOrganPetition(AuthenticatedRequest<StateUpdateOrganPetitionRequest> ar) {
+	public OrganPetitionResponse cancellOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar) {
 		OrganPetition op = organPetitionRepository
 				.findById(ar.data().idOrganPetition())
 				.orElseThrow(() -> new OrganPetitionNotFoundException(ORGAN_PETITION_NOT_FOUND));
@@ -101,7 +146,7 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 	}
 
 	@Override
-	public OrganPetitionResponse checkOrganPetition(AuthenticatedRequest<StateUpdateOrganPetitionRequest> ar) {
+	public OrganPetitionResponse checkOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar) {
 		OrganPetition op = organPetitionRepository
 				.findById(ar.data().idOrganPetition())
 				.orElseThrow(() -> new OrganPetitionNotFoundException(ORGAN_PETITION_NOT_FOUND));
