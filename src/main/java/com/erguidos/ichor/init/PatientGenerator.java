@@ -1,6 +1,9 @@
 package com.erguidos.ichor.init;
 
 import com.erguidos.ichor.entity.Patient;
+import com.erguidos.ichor.exceptions.BlankStringException;
+import com.erguidos.ichor.exceptions.ImproperHeightException;
+import com.erguidos.ichor.exceptions.ImproperWeightException;
 import com.erguidos.ichor.repository.PatientRepository;
 import com.erguidos.ichor.utils.IchorUtils;
 
@@ -40,8 +43,6 @@ public class PatientGenerator {
                         .build();
                 patientRepository.save(patient);
             }
-        } catch (BlankStringException | ImproperHeightException | ImproperWeightException e) {
-            
-        }
+        } catch (BlankStringException | ImproperHeightException | ImproperWeightException ignored) {}
     }
 }
