@@ -38,7 +38,6 @@ public class Coordinator extends User {
 	public Hospital getHospital() { return this.hospital; }
 	private void setHospital(Hospital hospital) {
 	    this.hospital = hospital;
-	    hospital.addCoordinator(this);
 	}
 	
 	public List<Organ> getRegisteredOrgans() { return registeredOrgans; }

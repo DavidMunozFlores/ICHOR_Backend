@@ -2,7 +2,10 @@ package com.erguidos.ichor.init;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Random;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import com.erguidos.ichor.entity.Hospital;
@@ -10,11 +13,15 @@ import com.erguidos.ichor.repository.HospitalRepository;
 
 @Component
 public class HospitalGenerator {
-
     private final HospitalRepository hospitalRepository;
+    private final Random random;
     
-    HospitalGenerator(HospitalRepository hospitalRepository) {
+    HospitalGenerator(
+        HospitalRepository hospitalRepository,
+        Random random
+    ) {
         this.hospitalRepository = hospitalRepository;
+        this.random = random;
     }
     
     public void generate() {
@@ -54,5 +61,15 @@ public class HospitalGenerator {
         );
 
         this.hospitalRepository.saveAll(hospitals);
+    }
+    
+    public Hospital getRandomHospital() {
+        long totalHospitals = this.hospitalRepository.count();
+        if (totalHospitals == 0) {
+            return null;
+        }
+        int randomIndex = this.random.nextInt((int) totalHospitals);
+        Page<Hospital> hospitalPage = this.hospitalRepository.findAll(PageRequest.of(randomIndex, 1));
+        return hospitalPage.getContent().get(0);
     }
 }
