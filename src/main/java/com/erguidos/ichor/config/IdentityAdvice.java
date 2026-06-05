@@ -8,11 +8,10 @@ import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAdapter;
 
 import com.erguidos.ichor.annotations.AuthenticatedIdentity;
@@ -20,6 +19,7 @@ import com.erguidos.ichor.dto.request.AuthCredentialsRequest;
 import com.erguidos.ichor.dto.request.DecryptRequest;
 import com.erguidos.ichor.dto.request.UserId;
 import com.erguidos.ichor.dto.request.UserIdentity;
+import com.erguidos.ichor.enums.ErrorCode;
 import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.exceptions.IncorrectPasswordException;
 import com.erguidos.ichor.exceptions.UserNotFoundException;
@@ -68,13 +68,9 @@ public class IdentityAdvice extends RequestBodyAdviceAdapter {
 
         try {
             AuthCredentialsRequest credentials = this.keyService.decryptToObject(decryptRequest, AuthCredentialsRequest.class);
-            
             UserIdentity userIdentity = this.authService.identify(credentials);
-            
-            if (roleAllowed != userIdentity.role()) {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access: Role mismatch");
-            }
 
+            if (roleAllowed != userIdentity.role()) { throw ErrorCode.UNAUTHORIZED.throwIt(); }
             UserId identity = new UserId(userIdentity.id());
             String forwardJson = this.objectMapper.writeValueAsString(identity);
             
@@ -85,14 +81,14 @@ public class IdentityAdvice extends RequestBodyAdviceAdapter {
                 }
                 
                 @Override
-                public org.springframework.http.HttpHeaders getHeaders() {
+                public HttpHeaders getHeaders() {
                     return inputMessage.getHeaders();
                 }
             };
         } catch (UserNotFoundException | IncorrectPasswordException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UNKNOWN_USER");
+            throw ErrorCode.USER_NOT_EXISTS.throwIt();
         } catch (JsonProcessingException | GeneralSecurityException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Decryption failed", e);
+            throw ErrorCode.FAILED_DECRYPTION.throwIt();
         }
     }
 }
