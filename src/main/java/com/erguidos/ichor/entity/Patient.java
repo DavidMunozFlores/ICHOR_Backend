@@ -25,10 +25,10 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "patients")
 public class Patient {
-    private static final Double HEIGHT_MIN = 100.0d;
-    private static final Double HEIGHT_MAX = 250.0d;
-    private static final Double WEIGHT_MIN =  25.0d;
-    private static final Double WEIGHT_MAX = 400.0d;
+    public static final Double HEIGHT_MIN =  10.0d;
+    public static final Double HEIGHT_MAX = 250.0d;
+    public static final Double WEIGHT_MIN =   2.0d;
+    public static final Double WEIGHT_MAX = 400.0d;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
