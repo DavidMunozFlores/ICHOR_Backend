@@ -73,14 +73,14 @@ public class OrganPetitionCreateController {
 		return ResponseEntity.ok(organPetitionService.acceptOrganPetition(ar));
 	}
 	
-	@PatchMapping("/cancell")
+	@PatchMapping("/cancel")
 	public ResponseEntity<OrganPetitionResponse> cancellOrganPetition(
 			@RequestBody AuthenticatedRequest<UpdateOrganPetitionRequest> ar
 			) {
 		
 		this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
 		
-		return ResponseEntity.ok(organPetitionService.cancellOrganPetition(ar));
+		return ResponseEntity.ok(organPetitionService.cancelOrganPetition(ar));
 	}
 	
 	@PatchMapping("/check")

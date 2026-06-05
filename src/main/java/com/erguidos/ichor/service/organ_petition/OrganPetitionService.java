@@ -132,7 +132,7 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 	}
 
 	@Override
-	public OrganPetitionResponse cancellOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar) {
+	public OrganPetitionResponse cancelOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar) {
 		OrganPetition op = organPetitionRepository
 				.findById(ar.data().idOrganPetition())
 				.orElseThrow(() -> new OrganPetitionNotFoundException(ORGAN_PETITION_NOT_FOUND));

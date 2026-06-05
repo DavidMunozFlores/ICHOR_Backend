@@ -20,7 +20,7 @@ public interface OrganPetitionServiceInterface {
 	
 	OrganPetitionResponse acceptOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar);
 	
-	OrganPetitionResponse cancellOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar);
+	OrganPetitionResponse cancelOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar);
 	
 	OrganPetitionResponse checkOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar);
 	
