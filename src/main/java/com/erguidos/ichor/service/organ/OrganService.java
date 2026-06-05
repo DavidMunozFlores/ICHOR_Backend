@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.erguidos.ichor.component.MostCompatibleOPMatcher;
 import com.erguidos.ichor.component.HlaParser;
 import com.erguidos.ichor.dto.mappers.OrganMapper;
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
@@ -27,14 +28,17 @@ public class OrganService implements OrganServiceInterface {
  
 	private OrganRepository organRepository;
 	private CoordinatorRepository coordinatorRepository;
+	private MostCompatibleOPMatcher opMatcher;
 	
 	OrganService(
 			OrganRepository organRepository,
-			CoordinatorRepository coordinatorRepository
+			CoordinatorRepository coordinatorRepository,
+			MostCompatibleOPMatcher cs
 			){
 		
 		this.organRepository = organRepository;
 		this.coordinatorRepository = coordinatorRepository;
+		this.opMatcher = cs;
 	}
 	
 
@@ -78,7 +82,11 @@ public class OrganService implements OrganServiceInterface {
 		
 		organRepository.save(o);
 		
-		return OrganMapper.toRregisterOrganResponse(o);
+		opMatcher.addOrganToMostCompatibleOP(o);
+		
+		organRepository.save(o);
+		
+		return OrganMapper.toRegisterOrganResponse(o);
 	}
 
 }

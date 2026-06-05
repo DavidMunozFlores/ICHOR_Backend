@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -51,7 +52,7 @@ public class HlaParser {
 				.stream(getGenes(hlaStr))
 				.map(HlaParser::getGeneInfo)
 				.map(genInf -> Gene.create(GenLetter.valueOf(genInf[LETTER]), genInf[ALLELE], genInf[PROTEIIN]))
-				.toList();
+				.collect(Collectors.toList());
 	}
 	
 	private static String[] getGenes(String hlaStr) { return hlaStr.split(" "); }

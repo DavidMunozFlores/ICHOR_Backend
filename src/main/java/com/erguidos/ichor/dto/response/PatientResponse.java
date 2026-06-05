@@ -13,5 +13,5 @@ public record PatientResponse(
     Double height,
     Double weight,
     Long   idHospital,
-    List<OrganPetition> organPetitions
+    List<OrganPetitionResponse> organPetitions
 ) {}

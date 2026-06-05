@@ -1,5 +1,7 @@
 package com.erguidos.ichor.enums;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import com.erguidos.ichor.exceptions.BadBloodTypeException;
@@ -128,5 +130,11 @@ public enum BloodType {
         } catch (BadBloodTypeException bbte) {
             return Optional.empty();
         }
+    }
+    
+    public static List<BloodType> getCompatibleBloodTypes(BloodType donorBlood) {
+    	return Arrays.stream(BloodType.values())
+    		   .filter(donorBlood::canDonateTo)
+    		   .toList();
     }
 }

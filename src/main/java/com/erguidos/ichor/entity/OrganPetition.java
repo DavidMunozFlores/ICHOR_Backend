@@ -5,6 +5,7 @@ import java.util.List;
 import com.erguidos.ichor.dto.request.Gene;
 import com.erguidos.ichor.enums.OrganPetitionState;
 import com.erguidos.ichor.enums.OrganType;
+import com.erguidos.ichor.exceptions.OrganPetitionUpdateException;
 import com.erguidos.ichor.exceptions.UnouthorizedOrganPetitionStateException;
 
 import jakarta.persistence.CollectionTable;
@@ -34,7 +35,9 @@ public class OrganPetition {
 	private final static String PATIENT_NULL = "Patient cannot be null";
 	private final static String ORGAN_NULL = "Compatible organ cannot be null";
 	private final static String UNOUTHARIZED_STATE_ACCEPT = "Cannot change to WAITING if is not DRAFT";
-	private final static String UNOUTHARIZED_STATE_CANCELL = "Cannot change to WAITING if is not DRAFT";
+	private final static String UNOUTHARIZED_STATE_CANCELL = "Cannot change to CANCELL if is not WAITING or ASSIGNED";
+	private final static String UNOUTHARIZED_CHECKED = "Cannot change to ASSIGN if is not WAITING";
+	private final static String UNOUTHARIZED_UPDATE = "Cannot update if is not DRAFT";
 	
 	private final static Double MAX_DIMENSION = 4000.0;
 	private final static Double MIN_DIMENSION = 10.0;
@@ -107,6 +110,26 @@ public class OrganPetition {
 		return new OrganPetition(organType, weightGrams, volumeCC, hla, doctor, patient);
 	}
 	
+	public void update(
+			OrganType organType,
+			Double weightGrams,
+			Double volumeCC,
+			List<Gene> hla,
+			Doctor doctor,
+			Patient patient
+			) {
+		
+		if(this.organPetitionState != OrganPetitionState.DRAFT)
+			throw new OrganPetitionUpdateException(UNOUTHARIZED_UPDATE);
+			
+		setOrganType(organType);
+		setWeightGrams(weightGrams);
+		setVolumeCC(volumeCC);
+		setHla(hla);
+		setDoctor(doctor);
+		setPatient(patient);
+	}
+	
 	private void setHla(List<Gene> hla) {
 		validateNonNull(hla, HLA_NULL);
 		
@@ -131,7 +154,7 @@ public class OrganPetition {
 	private void setVolumeCC(Double volumeCC) {
 		validateNonNull(volumeCC, VOLUME_NULL);
 		
-		validateDimension(weightGrams, INCORRECT_VOLUME);
+		validateDimension(volumeCC, INCORRECT_VOLUME);
 		
 		this.volumeCC = volumeCC;
 	}
@@ -163,10 +186,17 @@ public class OrganPetition {
 	}
 	
 	public void cancell() {
-		if(this.organPetitionState != OrganPetitionState.ASSIGNED_ORGAN)
+		if(this.organPetitionState != OrganPetitionState.WAITING && this.organPetitionState != OrganPetitionState.ASSIGNED_ORGAN )
 			throw new UnouthorizedOrganPetitionStateException(UNOUTHARIZED_STATE_CANCELL);
 		
 		this.organPetitionState = OrganPetitionState.CANCELLED;
+	}
+	
+	public void check() {
+		if(this.organPetitionState != OrganPetitionState.WAITING)
+			throw new UnouthorizedOrganPetitionStateException(UNOUTHARIZED_CHECKED);
+		
+		this.organPetitionState = OrganPetitionState.ASSIGNED_ORGAN;
 	}
 	
 	public void assignOrgan(Organ compatibleOrgan) {
@@ -193,4 +223,12 @@ public class OrganPetition {
 	public Organ getOrgan() { return organ; }
 
 	public Doctor getDoctor() { return doctor; }
+
+	@Override
+	public String toString() {
+		return "OrganPetition [id=" + id + ", organType=" + organType + ", organPetitionState=" + organPetitionState
+				+ ", organ=" + organ + "]";
+	}
+	
+	
 }
