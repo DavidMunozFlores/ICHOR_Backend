@@ -93,11 +93,6 @@ public class ExceptionHandlerController {
 
 	@ExceptionHandler(ResponseStatusException.class)
 	public ResponseEntity<ErrorCodeResponse> handleResponseStatusException(ResponseStatusException e) {
-	    ErrorCodeResponse responseDTO = new ErrorCodeResponse(
-            e.getStatusCode().value(),
-            e.getMessage(),
-            LocalDateTime.now()
-        );
-        return ResponseEntity.status(e.getStatusCode()).body(responseDTO);
+	    return ErrorCodeResponse.of(e.getStatusCode().value(), e.getMessage()).getResponse();
 	}
 }
