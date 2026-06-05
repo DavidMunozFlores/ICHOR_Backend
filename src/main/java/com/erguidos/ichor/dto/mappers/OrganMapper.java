@@ -10,7 +10,7 @@ import com.erguidos.ichor.enums.OrganType;
 public class OrganMapper {
 	private OrganMapper() {}
 
-	public static RegisterOrganResponse toRregisterOrganResponse(Organ o) {
+	public static RegisterOrganResponse toRegisterOrganResponse(Organ o) {
 		if(o == null) return null;
 		
 		return new RegisterOrganResponse(

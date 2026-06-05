@@ -86,7 +86,7 @@ public class OrganService implements OrganServiceInterface {
 		
 		organRepository.save(o);
 		
-		return OrganMapper.toRregisterOrganResponse(o);
+		return OrganMapper.toRegisterOrganResponse(o);
 	}
 
 }
