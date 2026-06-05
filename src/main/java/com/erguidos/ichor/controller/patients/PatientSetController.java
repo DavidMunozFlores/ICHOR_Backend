@@ -13,12 +13,10 @@ import com.erguidos.ichor.annotations.AuthenticatedPayload;
 import com.erguidos.ichor.dto.mappers.PatientMapper;
 import com.erguidos.ichor.dto.request.PatientCreationRequest;
 import com.erguidos.ichor.dto.request.PatientUpdateRequest;
-import com.erguidos.ichor.dto.response.BadRequestResponse;
+import com.erguidos.ichor.dto.response.ErrorCodeResponse;
 import com.erguidos.ichor.dto.response.PatientResponse;
-import com.erguidos.ichor.dto.types.PatientCreationType;
-import com.erguidos.ichor.dto.types.PatientUpdateType;
 import com.erguidos.ichor.entity.Patient;
-import com.erguidos.ichor.enums.BadRequest;
+import com.erguidos.ichor.enums.ErrorCode;
 import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.service.patient.PatientServiceInterface;
 
@@ -51,18 +49,17 @@ public class PatientSetController {
         @ApiResponse(
             responseCode = "409",
             description = "Patient already exists",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = BadRequestResponse.class))
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorCodeResponse.class))
         ),
         @ApiResponse(
             responseCode = "400",
             description = "Invalid request payload",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = BadRequestResponse.class))
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorCodeResponse.class))
         ),
-        
         @ApiResponse(
             responseCode = "500",
             description = "Decryption failure",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = BadRequestResponse.class))
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorCodeResponse.class))
         ),
         @ApiResponse(
             responseCode = "401",
@@ -70,22 +67,11 @@ public class PatientSetController {
         )
     })
     @PostMapping("/create")
-    public ResponseEntity<?> createPatient(
+    public ResponseEntity<PatientResponse> createPatient(
         @RequestBody @AuthenticatedPayload(Role.DOCTOR) PatientCreationRequest patientCreationRequest
     ) {
-        PatientCreationType pct = this.patientService.createPatient(patientCreationRequest);
-        return this.createPatientSwitch(pct);
-    }
-    
-    private ResponseEntity<?> createPatientSwitch(PatientCreationType pct) {
-        return switch (pct) {
-            case PatientCreationType.Created(Patient patient) ->
-                ResponseEntity.status(HttpStatus.CREATED).body(PatientMapper.toPatientResponse(patient));
-            case PatientCreationType.Exists() ->
-                ResponseEntity.status(HttpStatus.CONFLICT).build();
-            case PatientCreationType.Failure(BadRequest br) ->
-                ResponseEntity.badRequest().body(br);
-        };
+        Patient patient = this.patientService.createPatient(patientCreationRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(PatientMapper.toPatientResponse(patient));
     }
     
     @Operation(summary = "Update a patient's height and weight")
@@ -98,23 +84,14 @@ public class PatientSetController {
         @ApiResponse(
             responseCode = "400", 
             description = "Invalid request payload",
-            content = @Content(schema = @Schema(implementation = BadRequest.class))
+            content = @Content(schema = @Schema(implementation = ErrorCode.class))
         )
     })
     @PatchMapping
-    public ResponseEntity<?> updatePatient(
+    public ResponseEntity<PatientResponse> updatePatient(
         @RequestBody @AuthenticatedPayload(Role.DOCTOR) PatientUpdateRequest patientUpdateRequest
     ) {
-        PatientUpdateType put = this.patientService.updatePatient(patientUpdateRequest);
-        return this.updatePatientSwitch(put);
-    }
-    
-    private ResponseEntity<?> updatePatientSwitch(PatientUpdateType put) {
-        return switch (put) {
-            case PatientUpdateType.Failure(BadRequest br) ->
-                ResponseEntity.badRequest().body(br);
-            case PatientUpdateType.Success(Patient patient) ->
-                ResponseEntity.ok(PatientMapper.toPatientResponse(patient));
-        };
+        Patient patient = this.patientService.updatePatient(patientUpdateRequest);
+        return ResponseEntity.ok(PatientMapper.toPatientResponse(patient));
     }
 }

@@ -3,7 +3,7 @@ package com.erguidos.ichor.config;
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
 import com.erguidos.ichor.dto.request.DataRequestInterface;
 import com.erguidos.ichor.dto.request.DecryptRequest;
-import com.erguidos.ichor.enums.BadRequest;
+import com.erguidos.ichor.enums.ErrorCode;
 import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.exceptions.IncorrectPasswordException;
 import com.erguidos.ichor.exceptions.UserNotFoundException;
@@ -14,9 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAdapter;
 
 import java.io.ByteArrayInputStream;
@@ -50,6 +48,7 @@ public abstract class BaseDecryptionAdvice extends RequestBodyAdviceAdapter {
         Type targetType,
         Class<? extends HttpMessageConverter<?>> converterType
     ) throws IOException {
+        
         byte[] encryptedBytes = inputMessage.getBody().readAllBytes();
         DecryptRequest decryptRequest = this.objectMapper.readValue(encryptedBytes, DecryptRequest.class);
         
@@ -63,7 +62,7 @@ public abstract class BaseDecryptionAdvice extends RequestBodyAdviceAdapter {
                 boolean isAuthenticated = this.authService.hasValidRole(authenticatedRequest.authCredentials(), permittedRole.get());
                 
                 if (!isAuthenticated) {
-                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, BadRequest.UNAUTHORIZED.toString());
+                    throw ErrorCode.UNAUTHORIZED.throwIt();
                 }
             }
             
@@ -81,9 +80,9 @@ public abstract class BaseDecryptionAdvice extends RequestBodyAdviceAdapter {
                 }
             };
         } catch (UserNotFoundException | IncorrectPasswordException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, BadRequest.USER_NOT_EXISTS.toString());
+            throw ErrorCode.USER_NOT_EXISTS.throwIt();
         } catch (JsonProcessingException | GeneralSecurityException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, BadRequest.FAILED_DECRYPTION.toString(), e);
+            throw ErrorCode.FAILED_DECRYPTION.throwIt();
         }
     }
 

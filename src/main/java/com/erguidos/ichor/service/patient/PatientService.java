@@ -7,12 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.erguidos.ichor.dto.request.PatientCreationRequest;
 import com.erguidos.ichor.dto.request.PatientUpdateRequest;
-import com.erguidos.ichor.dto.types.PatientCreationType;
-import com.erguidos.ichor.dto.types.PatientUpdateType;
 import com.erguidos.ichor.dto.types.SearchType;
 import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.entity.Patient;
-import com.erguidos.ichor.enums.BadRequest;
+import com.erguidos.ichor.enums.ErrorCode;
 import com.erguidos.ichor.enums.BloodType;
 import com.erguidos.ichor.exceptions.BlankStringException;
 import com.erguidos.ichor.exceptions.ImproperHeightException;
@@ -45,18 +43,18 @@ public class PatientService implements PatientServiceInterface {
     }
 
     @Override
-    public PatientCreationType createPatient(PatientCreationRequest data) {
+    public Patient createPatient(PatientCreationRequest data) {
         Optional<Patient> gotByInternalID = this.patientRepository.getByInternalID(data.internalID());
-        if (gotByInternalID.isPresent()) { return new PatientCreationType.Exists(); }
+        if (gotByInternalID.isPresent()) { throw ErrorCode.ALREADY_EXISTS.throwIt(); }
         
         Optional<Patient> getByIndetification = this.patientRepository.getByIdentification(data.identification());
-        if (getByIndetification.isPresent()) { return new PatientCreationType.Exists(); }
+        if (getByIndetification.isPresent()) { throw ErrorCode.ALREADY_EXISTS.throwIt(); }
         
         Optional<BloodType> bloodType = BloodType.tryParse(data.bloodType());
-        if (bloodType.isEmpty()) { return new PatientCreationType.Failure(BadRequest.BLOOD_TYPE_NOT_EXISTS); }
+        if (bloodType.isEmpty()) { throw ErrorCode.BLOOD_TYPE_NOT_EXISTS.throwIt(); }
         
         Optional<Hospital> hospital = this.hospitalRepository.findById(data.idHospital());
-        if (hospital.isEmpty()) { return new PatientCreationType.Failure(BadRequest.HOSPITAL_NOT_EXISTS); }
+        if (hospital.isEmpty()) { throw ErrorCode.HOSPITAL_NOT_EXISTS.throwIt(); }
         
         try {
             Patient patient = Patient.builder()
@@ -71,31 +69,31 @@ public class PatientService implements PatientServiceInterface {
             
             this.patientRepository.save(patient);
             
-            return new PatientCreationType.Created(patient);
+            return patient;
         } catch (BlankStringException bse) {
-            return new PatientCreationType.Failure(BadRequest.BLANK_STRING);
-        } catch (ImproperHeightException ige) {
-            return new PatientCreationType.Failure(BadRequest.IMPROPER_HEIGHT);
+            throw ErrorCode.BLANK_STRING.throwIt();
+        } catch (ImproperHeightException ihe) {
+            throw ErrorCode.IMPROPER_HEIGHT.throwIt();
         } catch (ImproperWeightException iwe) {
-            return new PatientCreationType.Failure(BadRequest.IMPROPER_WEIGHT);
+            throw ErrorCode.IMPROPER_WEIGHT.throwIt();
         }
     }
 
     @Override
     @Transactional
-    public PatientUpdateType updatePatient(PatientUpdateRequest pur) {
+    public Patient updatePatient(PatientUpdateRequest pur) {
         Optional<Patient> patientOp = this.patientRepository.findById(pur.id());
-        if (patientOp.isEmpty()) { return new PatientUpdateType.Failure(BadRequest.USER_NOT_EXISTS); }
+        if (patientOp.isEmpty()) { throw ErrorCode.USER_NOT_EXISTS.throwIt(); }
         try {
             Patient patient = patientOp.get();
             patient.updateHeightAndWeight(pur.height(), pur.weight());
             
             this.patientRepository.save(patient);
-            return new PatientUpdateType.Success(patient);
+            return patient;
         } catch (ImproperHeightException ihe) {
-            return new PatientUpdateType.Failure(BadRequest.IMPROPER_HEIGHT);
+            throw ErrorCode.IMPROPER_HEIGHT.throwIt();
         } catch (ImproperWeightException iwe) {
-            return new PatientUpdateType.Failure(BadRequest.IMPROPER_WEIGHT);
+            throw ErrorCode.IMPROPER_WEIGHT.throwIt();
         }
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.erguidos.ichor.dto.response.ErrorCodeResponse;
 import com.erguidos.ichor.exceptions.BadBloodTypeException;
+import com.erguidos.ichor.exceptions.ErrorCodeException;
 import com.erguidos.ichor.exceptions.IncorrectPasswordException;
 import com.erguidos.ichor.exceptions.ORAPIException;
 import com.erguidos.ichor.exceptions.OrganPetitionNotFoundException;
@@ -94,5 +95,10 @@ public class ExceptionHandlerController {
 	@ExceptionHandler(ResponseStatusException.class)
 	public ResponseEntity<ErrorCodeResponse> handleResponseStatusException(ResponseStatusException e) {
 	    return ErrorCodeResponse.of(e.getStatusCode().value(), e.getMessage()).getResponse();
+	}
+	
+	@ExceptionHandler(ErrorCodeException.class)
+	public ResponseEntity<ErrorCodeResponse> handleErrorCodeException(ErrorCodeException e) {
+	    return ErrorCodeResponse.of(e.getHttpStatus(), e.getMessage()).getResponse();
 	}
 }
