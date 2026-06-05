@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.erguidos.ichor.component.HashInterface;
 import com.erguidos.ichor.dto.request.CoordinatorCreateRequest;
-import com.erguidos.ichor.dto.types.CoordinatorCreationType;
 import com.erguidos.ichor.dto.types.SearchType;
 import com.erguidos.ichor.entity.Coordinator;
 import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.entity.User;
+import com.erguidos.ichor.enums.ErrorCode;
 import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.repository.CoordinatorRepository;
 import com.erguidos.ichor.repository.HospitalRepository;
@@ -54,12 +54,12 @@ public class CoordinatorService
     }
 
     @Override
-    public CoordinatorCreationType createCoordinator(CoordinatorCreateRequest ccr) {
+    public Coordinator createCoordinator(CoordinatorCreateRequest ccr) {
         Optional<User> user = this.userRepository.findUserByUsername(ccr.username());
-        if (user.isPresent()) { return new CoordinatorCreationType.Exists(); }
+        if (user.isPresent()) { throw ErrorCode.ALREADY_EXISTS.throwIt(); }
         
         Optional<Hospital> hospital = this.hospitalRepository.findById(ccr.idHospital());
-        if (hospital.isEmpty()) { return new CoordinatorCreationType.NoHospital(); }
+        if (hospital.isEmpty()) { throw ErrorCode.HOSPITAL_NOT_EXISTS.throwIt(); }
         
         Coordinator coordinator = Coordinator.builder()
                 .setUsername(ccr.username())
@@ -69,7 +69,7 @@ public class CoordinatorService
         
         this.coordinatorRepository.save(coordinator);
         
-        return new CoordinatorCreationType.Created(coordinator);
+        return coordinator;
     }
 
     @Override

@@ -11,7 +11,6 @@ import com.erguidos.ichor.annotations.AuthenticatedPayload;
 import com.erguidos.ichor.dto.mappers.CoordinatorMapper;
 import com.erguidos.ichor.dto.request.CoordinatorCreateRequest;
 import com.erguidos.ichor.dto.response.CoordinatorResponse;
-import com.erguidos.ichor.dto.types.CoordinatorCreationType;
 import com.erguidos.ichor.entity.Coordinator;
 import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.service.coordinator.CoordinatorServiceInterface;
@@ -33,18 +32,7 @@ public class CoordinatorSetController {
     public ResponseEntity<CoordinatorResponse> createCoordinator(
         @RequestBody @AuthenticatedPayload(Role.MANAGER) CoordinatorCreateRequest coordinatorCreateRequest
     ) {
-        CoordinatorCreationType cct = this.coordinatorService.createCoordinator(coordinatorCreateRequest);
-        return this.createCoordinatorSwitch(cct);
-    }
-    
-    private ResponseEntity<CoordinatorResponse> createCoordinatorSwitch(CoordinatorCreationType cct) {
-        return switch (cct) {
-            case CoordinatorCreationType.Created(Coordinator coordinator) ->
-                ResponseEntity.status(HttpStatus.CREATED).body(CoordinatorMapper.toCoordinatorResponse(coordinator));
-            case CoordinatorCreationType.Exists() ->
-                ResponseEntity.status(HttpStatus.CONFLICT).build();
-            case CoordinatorCreationType.NoHospital() ->
-                ResponseEntity.badRequest().build();
-        };
+        Coordinator coordinator = this.coordinatorService.createCoordinator(coordinatorCreateRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(CoordinatorMapper.toCoordinatorResponse(coordinator));
     }
 }
