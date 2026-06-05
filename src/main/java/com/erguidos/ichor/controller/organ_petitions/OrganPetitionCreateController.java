@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.erguidos.ichor.dto.request.StateUpdateOrganPetitionRequest;
+import com.erguidos.ichor.dto.request.UpdateOrganPetitionRequest;
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
 import com.erguidos.ichor.dto.request.OrganPetitionRequest;
+import com.erguidos.ichor.dto.request.OrganPetitionUpdateRequest;
+import com.erguidos.ichor.dto.response.OPDeleted;
 import com.erguidos.ichor.dto.response.OrganPetitionResponse;
 import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.service.auth.AuthServiceInterface;
@@ -41,9 +43,29 @@ public class OrganPetitionCreateController {
 		return ResponseEntity.ok(organPetitionService.createOrganPetition(ar));
 	}
 	
+	@PostMapping("/update")
+	public ResponseEntity<OrganPetitionResponse> updateOrganPetition(
+			@RequestBody AuthenticatedRequest<OrganPetitionUpdateRequest> ar
+			) {
+		
+		this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
+		
+		return ResponseEntity.ok(organPetitionService.updateOrganPetition(ar));
+	}
+	
+	@PostMapping("/delete")
+	public ResponseEntity<OPDeleted> deleteOrganPetition(
+			@RequestBody AuthenticatedRequest<UpdateOrganPetitionRequest> ar
+			) {
+		
+		this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
+		
+		return ResponseEntity.ok(organPetitionService.deleteOrganPetition(ar));
+	}
+	
 	@PatchMapping("/accept")
 	public ResponseEntity<OrganPetitionResponse> acceptOrganPetition(
-			@RequestBody AuthenticatedRequest<StateUpdateOrganPetitionRequest> ar
+			@RequestBody AuthenticatedRequest<UpdateOrganPetitionRequest> ar
 			) {
 		
         this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
@@ -53,7 +75,7 @@ public class OrganPetitionCreateController {
 	
 	@PatchMapping("/cancell")
 	public ResponseEntity<OrganPetitionResponse> cancellOrganPetition(
-			@RequestBody AuthenticatedRequest<StateUpdateOrganPetitionRequest> ar
+			@RequestBody AuthenticatedRequest<UpdateOrganPetitionRequest> ar
 			) {
 		
 		this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
@@ -63,7 +85,7 @@ public class OrganPetitionCreateController {
 	
 	@PatchMapping("/check")
 	public ResponseEntity<OrganPetitionResponse> checkOrganPetition(
-			@RequestBody AuthenticatedRequest<StateUpdateOrganPetitionRequest> ar
+			@RequestBody AuthenticatedRequest<UpdateOrganPetitionRequest> ar
 			) {
 		
 		this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
