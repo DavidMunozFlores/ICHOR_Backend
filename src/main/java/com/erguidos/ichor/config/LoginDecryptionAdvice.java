@@ -3,6 +3,7 @@ package com.erguidos.ichor.config;
 import com.erguidos.ichor.annotations.UnauthenticatedPayload;
 import com.erguidos.ichor.dto.request.AuthCredentialsRequest;
 import com.erguidos.ichor.dto.request.DecryptRequest;
+import com.erguidos.ichor.enums.ErrorCode;
 import com.erguidos.ichor.service.key.KeyServiceInterface;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,10 +11,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAdapter;
 
 import java.io.ByteArrayInputStream;
@@ -53,7 +52,6 @@ public class LoginDecryptionAdvice extends RequestBodyAdviceAdapter {
         
         try {
             AuthCredentialsRequest acr = this.keyService.decryptToObject(decryptRequest, AuthCredentialsRequest.class);
-            
             String forwardJson = this.objectMapper.writeValueAsString(acr);
             
             return new HttpInputMessage() {
@@ -68,7 +66,7 @@ public class LoginDecryptionAdvice extends RequestBodyAdviceAdapter {
                 }
             };
         } catch (JsonProcessingException | GeneralSecurityException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Decryption failed", e);
+            throw ErrorCode.FAILED_DECRYPTION.throwIt();
         }
     }
 }
