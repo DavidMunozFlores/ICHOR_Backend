@@ -11,7 +11,9 @@ import org.springframework.web.server.ResponseStatusException;
 import com.erguidos.ichor.dto.response.ErrorCodeResponse;
 import com.erguidos.ichor.exceptions.BadBloodTypeException;
 import com.erguidos.ichor.exceptions.IncorrectPasswordException;
+import com.erguidos.ichor.exceptions.ORAPIException;
 import com.erguidos.ichor.exceptions.OrganPetitionNotFoundException;
+import com.erguidos.ichor.exceptions.OrganPetitionUpdateException;
 import com.erguidos.ichor.exceptions.UnouthorizedOrganPetitionStateException;
 import com.erguidos.ichor.exceptions.UserAlreadyExistsException;
 import com.erguidos.ichor.exceptions.UserNotFoundException;
@@ -70,6 +72,20 @@ public class ExceptionHandlerController {
 	
 	@ExceptionHandler(UnouthorizedOrganPetitionStateException.class)
 	public ResponseEntity<ErrorCodeResponse> handleUnouthorizedOrganPetitionState(UnouthorizedOrganPetitionStateException e){
+		ErrorCodeResponse responseDTO = new ErrorCodeResponse(400, e.getMessage(), LocalDateTime.now());
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);
+	}
+	
+	@ExceptionHandler(ORAPIException.class)
+	public ResponseEntity<ErrorCodeResponse> handleORAPIException(ORAPIException e){
+		ErrorCodeResponse responseDTO = new ErrorCodeResponse(422, e.getMessage(), LocalDateTime.now());
+		
+		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(responseDTO);
+	}
+	
+	@ExceptionHandler(OrganPetitionUpdateException.class)
+	public ResponseEntity<ErrorCodeResponse> handleOrganPetitionUpdateException(OrganPetitionUpdateException e){
 		ErrorCodeResponse responseDTO = new ErrorCodeResponse(400, e.getMessage(), LocalDateTime.now());
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);

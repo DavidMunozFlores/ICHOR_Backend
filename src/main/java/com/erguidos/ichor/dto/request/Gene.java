@@ -1,5 +1,7 @@
 package com.erguidos.ichor.dto.request;
 
+import java.util.Objects;
+
 import com.erguidos.ichor.enums.GenLetter;
 
 import jakarta.persistence.Embeddable;
@@ -38,4 +40,27 @@ public class Gene {
 	public String toString() {
 		return this.letter + " " + this.allele + " " + this.protein;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(allele, letter, protein);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Gene other = (Gene) obj;
+		
+		return this.letter.equals(other.letter) &&
+			   this.allele.equals(other.allele) &&
+			   this.protein.equals(other.protein);
+	}
+	
+	
+	
 }

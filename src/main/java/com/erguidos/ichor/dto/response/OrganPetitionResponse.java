@@ -9,11 +9,12 @@ import com.erguidos.ichor.enums.OrganPetitionState;
 import com.erguidos.ichor.enums.OrganType;
 
 public record OrganPetitionResponse (
+		Long idOrganPetition,
 		Long idPatient,
 		OrganType organType,
 		Double weightGrams,
 		Double volumeCC,
 		List<Gene> hla,
 		OrganPetitionState petitionState,
-		Organ organAssigned
+		RegisterOrganResponse organAssigned
 		) implements DataRequestInterface {}

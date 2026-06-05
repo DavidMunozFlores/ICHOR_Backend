@@ -8,13 +8,14 @@ public class OrganPetitionMapper {
 
 	public static OrganPetitionResponse toOrganPetitionResponse(OrganPetition op) {
 		return new OrganPetitionResponse(
+				op.getId(),
 				op.getPatient().getId(),
 				op.getOrganType(),
 				op.getWeightGrams(),
 				op.getVolumeCC(),
 				op.getHla(),
 				op.getOrganPetitionState(),
-				op.getOrgan()
+				OrganMapper.toRegisterOrganResponse(op.getOrgan())
 				); 
 	}
 
