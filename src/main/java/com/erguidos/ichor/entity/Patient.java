@@ -1,5 +1,7 @@
 package com.erguidos.ichor.entity;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,10 +47,10 @@ public class Patient {
 	@Enumerated(EnumType.STRING)
 	private BloodType bloodType;
 	
-	@Column(name = "height", nullable = false, precision = 2)
+	@Column(name = "height", nullable = false, columnDefinition = "NUMERIC(5,2)")
 	private Double height;
 	
-	@Column(name = "weight", nullable = false, precision = 2)
+	@Column(name = "weight", nullable = false, columnDefinition = "NUMERIC(6,2)")
 	private Double weight;
 	
 	@ManyToOne
@@ -129,7 +131,9 @@ public class Patient {
         if (height > HEIGHT_MAX) {
             throw new ImproperHeightException("Height must be at most " + HEIGHT_MAX);
         }
-        this.height = height;
+        this.height = BigDecimal.valueOf(height)
+                                .setScale(2, RoundingMode.HALF_UP)
+                                .doubleValue();
     }
 
     public Double getWeight() { return this.weight; }
@@ -143,7 +147,9 @@ public class Patient {
         if (weight > WEIGHT_MAX) {
             throw new ImproperWeightException("Weight must be at most " + WEIGHT_MAX);
         }
-        this.weight = weight;
+        this.weight = BigDecimal.valueOf(weight)
+                                .setScale(2, RoundingMode.HALF_UP)
+                                .doubleValue();
     }
     
     public void updateHeightAndWeight(Double height, Double weight)
