@@ -1,6 +1,6 @@
 package com.erguidos.ichor.service.organ_petition;
 
-import com.erguidos.ichor.dto.request.UpdateOrganPetitionRequest;
+import com.erguidos.ichor.dto.request.IdOrganPetitionRequest;
 
 import java.util.Set;
 
@@ -16,13 +16,13 @@ public interface OrganPetitionServiceInterface {
 	
 	OrganPetitionResponse updateOrganPetition(AuthenticatedRequest<OrganPetitionUpdateRequest> ar);
 	
-	OPDeleted deleteOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar);
+	OPDeleted deleteOrganPetition(AuthenticatedRequest<IdOrganPetitionRequest> ar);
 	
-	OrganPetitionResponse acceptOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar);
+	OrganPetitionResponse acceptOrganPetition(AuthenticatedRequest<IdOrganPetitionRequest> ar);
 	
-	OrganPetitionResponse cancelOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar);
+	OrganPetitionResponse cancelOrganPetition(AuthenticatedRequest<IdOrganPetitionRequest> ar);
 	
-	OrganPetitionResponse checkOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar);
+	OrganPetitionResponse checkOrganPetition(AuthenticatedRequest<IdOrganPetitionRequest> ar);
 	
 	Set<OrganPetitionResponse> findByOrganPetitionState(OrganPetitionState organPetitionState);
 }

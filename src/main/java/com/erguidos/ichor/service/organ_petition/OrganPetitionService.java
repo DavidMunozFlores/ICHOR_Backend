@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.erguidos.ichor.component.HlaParser;
 import com.erguidos.ichor.dto.mappers.OrganPetitionMapper;
-import com.erguidos.ichor.dto.request.UpdateOrganPetitionRequest;
+import com.erguidos.ichor.dto.request.IdOrganPetitionRequest;
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
 import com.erguidos.ichor.dto.request.Gene;
 import com.erguidos.ichor.dto.request.OrganPetitionRequest;
@@ -106,7 +106,7 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 	}
 	
 	@Override
-	public OPDeleted deleteOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar) {
+	public OPDeleted deleteOrganPetition(AuthenticatedRequest<IdOrganPetitionRequest> ar) {
 		OrganPetition op = organPetitionRepository
 				.findById(ar.data().idOrganPetition())
 				.orElseThrow(() -> new OrganPetitionNotFoundException(ORGAN_PETITION_NOT_FOUND));
@@ -117,7 +117,7 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 	}
 
 	@Override
-	public OrganPetitionResponse acceptOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar) {
+	public OrganPetitionResponse acceptOrganPetition(AuthenticatedRequest<IdOrganPetitionRequest> ar) {
 		
 		OrganPetition op = organPetitionRepository
 				.findById(ar.data().idOrganPetition())
@@ -132,7 +132,7 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 	}
 
 	@Override
-	public OrganPetitionResponse cancelOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar) {
+	public OrganPetitionResponse cancelOrganPetition(AuthenticatedRequest<IdOrganPetitionRequest> ar) {
 		OrganPetition op = organPetitionRepository
 				.findById(ar.data().idOrganPetition())
 				.orElseThrow(() -> new OrganPetitionNotFoundException(ORGAN_PETITION_NOT_FOUND));
@@ -146,7 +146,7 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 	}
 
 	@Override
-	public OrganPetitionResponse checkOrganPetition(AuthenticatedRequest<UpdateOrganPetitionRequest> ar) {
+	public OrganPetitionResponse checkOrganPetition(AuthenticatedRequest<IdOrganPetitionRequest> ar) {
 		OrganPetition op = organPetitionRepository
 				.findById(ar.data().idOrganPetition())
 				.orElseThrow(() -> new OrganPetitionNotFoundException(ORGAN_PETITION_NOT_FOUND));

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.erguidos.ichor.dto.request.UpdateOrganPetitionRequest;
+import com.erguidos.ichor.dto.request.IdOrganPetitionRequest;
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
 import com.erguidos.ichor.dto.request.OrganPetitionRequest;
 import com.erguidos.ichor.dto.request.OrganPetitionUpdateRequest;
@@ -55,7 +55,7 @@ public class OrganPetitionCreateController {
 	
 	@PostMapping("/delete")
 	public ResponseEntity<OPDeleted> deleteOrganPetition(
-			@RequestBody AuthenticatedRequest<UpdateOrganPetitionRequest> ar
+			@RequestBody AuthenticatedRequest<IdOrganPetitionRequest> ar
 			) {
 		
 		this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
@@ -65,7 +65,7 @@ public class OrganPetitionCreateController {
 	
 	@PatchMapping("/accept")
 	public ResponseEntity<OrganPetitionResponse> acceptOrganPetition(
-			@RequestBody AuthenticatedRequest<UpdateOrganPetitionRequest> ar
+			@RequestBody AuthenticatedRequest<IdOrganPetitionRequest> ar
 			) {
 		
         this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
@@ -75,7 +75,7 @@ public class OrganPetitionCreateController {
 	
 	@PatchMapping("/cancel")
 	public ResponseEntity<OrganPetitionResponse> cancellOrganPetition(
-			@RequestBody AuthenticatedRequest<UpdateOrganPetitionRequest> ar
+			@RequestBody AuthenticatedRequest<IdOrganPetitionRequest> ar
 			) {
 		
 		this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
@@ -85,7 +85,7 @@ public class OrganPetitionCreateController {
 	
 	@PatchMapping("/check")
 	public ResponseEntity<OrganPetitionResponse> checkOrganPetition(
-			@RequestBody AuthenticatedRequest<UpdateOrganPetitionRequest> ar
+			@RequestBody AuthenticatedRequest<IdOrganPetitionRequest> ar
 			) {
 		
 		this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
