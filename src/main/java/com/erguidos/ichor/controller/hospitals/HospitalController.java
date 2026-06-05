@@ -7,7 +7,6 @@ import com.erguidos.ichor.dto.mappers.HospitalMapper;
 import com.erguidos.ichor.dto.mappers.ListMapper;
 import com.erguidos.ichor.dto.response.HospitalResponse;
 import com.erguidos.ichor.dto.response.ListWrapper;
-import com.erguidos.ichor.dto.types.SearchType;
 import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.service.hospital.HospitalServiceInterface;
 
@@ -36,12 +35,7 @@ public class HospitalController {
     }
     
     public ResponseEntity<HospitalResponse> getHospital(Long id) {
-        SearchType<Hospital> response = this.hospitalService.getHospital(id);
-        return switch (response) {
-            case SearchType.Found(Hospital hospital) ->
-                ResponseEntity.ok(HospitalMapper.toHospitalResponse(hospital));
-            case SearchType.Failed() ->
-                ResponseEntity.notFound().build();
-        };
+        Hospital hospital = this.hospitalService.getHospital(id);
+        return ResponseEntity.ok(HospitalMapper.toHospitalResponse(hospital));
     }
 }

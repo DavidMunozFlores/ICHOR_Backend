@@ -1,7 +1,7 @@
 package com.erguidos.ichor.service.hospital;
 
-import com.erguidos.ichor.dto.types.SearchType;
 import com.erguidos.ichor.entity.Hospital;
+import com.erguidos.ichor.enums.ErrorCode;
 import com.erguidos.ichor.repository.HospitalRepository;
 
 import java.util.List;
@@ -23,9 +23,9 @@ public class HospitalService implements HospitalServiceInterface {
     }
 
     @Override
-    public SearchType<Hospital> getHospital(Long id) {
+    public Hospital getHospital(Long id) {
         Optional<Hospital> hospitalOp = this.hospitalRepository.findById(id);
-        if (hospitalOp.isEmpty()) { return new SearchType.Failed<Hospital>(); }
-        return new SearchType.Found<Hospital>(hospitalOp.get());
+        if (hospitalOp.isEmpty()) { throw ErrorCode.NOT_FOUND.throwIt(); }
+        return hospitalOp.get();
     }
 }
