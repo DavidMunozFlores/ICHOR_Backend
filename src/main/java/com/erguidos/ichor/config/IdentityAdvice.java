@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAd
 import com.erguidos.ichor.annotations.AuthenticatedIdentity;
 import com.erguidos.ichor.dto.request.AuthCredentialsRequest;
 import com.erguidos.ichor.dto.request.DecryptRequest;
-import com.erguidos.ichor.dto.request.UserId;
+import com.erguidos.ichor.dto.request.EntityId;
 import com.erguidos.ichor.dto.request.UserIdentity;
 import com.erguidos.ichor.enums.ErrorCode;
 import com.erguidos.ichor.enums.Role;
@@ -71,7 +71,7 @@ public class IdentityAdvice extends RequestBodyAdviceAdapter {
             UserIdentity userIdentity = this.authService.identify(credentials);
 
             if (roleAllowed != userIdentity.role()) { throw ErrorCode.UNAUTHORIZED.throwIt(); }
-            UserId identity = new UserId(userIdentity.id());
+            EntityId identity = new EntityId(userIdentity.id());
             String forwardJson = this.objectMapper.writeValueAsString(identity);
             
             return new HttpInputMessage() {
