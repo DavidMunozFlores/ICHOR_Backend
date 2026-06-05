@@ -9,7 +9,6 @@ import com.erguidos.ichor.dto.mappers.ListMapper;
 import com.erguidos.ichor.dto.mappers.PatientMapper;
 import com.erguidos.ichor.dto.response.ListWrapper;
 import com.erguidos.ichor.dto.response.PatientResponse;
-import com.erguidos.ichor.dto.types.SearchType;
 import com.erguidos.ichor.entity.Patient;
 import com.erguidos.ichor.service.patient.PatientServiceInterface;
 
@@ -39,10 +38,7 @@ public class PatientGetController {
     
     @GetMapping("/{id}")
     public ResponseEntity<PatientResponse> getPatient(@PathVariable Long id) {
-        SearchType<Patient> response = this.patientService.getPatient(id);
-        return switch (response) {
-            case SearchType.Found(Patient patient) -> ResponseEntity.ok(PatientMapper.toPatientResponse(patient));
-            case SearchType.Failed() -> ResponseEntity.notFound().build();
-        };
+        Patient patient = this.patientService.getPatient(id);
+        return ResponseEntity.ok(PatientMapper.toPatientResponse(patient));
     }  
 }

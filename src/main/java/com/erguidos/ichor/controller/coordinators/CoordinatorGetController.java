@@ -11,7 +11,6 @@ import com.erguidos.ichor.dto.mappers.CoordinatorMapper;
 import com.erguidos.ichor.dto.mappers.ListMapper;
 import com.erguidos.ichor.dto.response.CoordinatorResponse;
 import com.erguidos.ichor.dto.response.ListWrapper;
-import com.erguidos.ichor.dto.types.SearchType;
 import com.erguidos.ichor.entity.Coordinator;
 import com.erguidos.ichor.service.coordinator.CoordinatorServiceInterface;
 
@@ -37,14 +36,8 @@ public class CoordinatorGetController {
     
     @GetMapping("/{id}")
     public ResponseEntity<CoordinatorResponse> getCoordinator(@PathVariable Long id) {
-        SearchType<Coordinator> response = this.coordinatorService.getCoordinator(id);
-        
-        return switch (response) {
-            case SearchType.Found(Coordinator coordinator) ->
-                ResponseEntity.ok(CoordinatorMapper.toCoordinatorResponse(coordinator));
-            case SearchType.Failed() ->
-                ResponseEntity.notFound().build();
-        };
+        Coordinator coordinator = this.coordinatorService.getCoordinator(id);
+        return ResponseEntity.ok(CoordinatorMapper.toCoordinatorResponse(coordinator));
     }
     
     @GetMapping("/get-by-name/{name}")

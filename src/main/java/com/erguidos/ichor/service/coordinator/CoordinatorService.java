@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.erguidos.ichor.component.HashInterface;
 import com.erguidos.ichor.dto.request.CoordinatorCreateRequest;
-import com.erguidos.ichor.dto.types.SearchType;
 import com.erguidos.ichor.entity.Coordinator;
 import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.entity.User;
@@ -45,12 +44,12 @@ public class CoordinatorService
     }
 
     @Override
-    public SearchType<Coordinator> getCoordinator(Long id) {
+    public Coordinator getCoordinator(Long id) {
         Optional<User> userOp = this.userRepository.findById(id);
-        if (userOp.isEmpty()) { return new SearchType.Failed<Coordinator>(); }
+        if (userOp.isEmpty()) { throw ErrorCode.NOT_FOUND.throwIt(); }
         User user = userOp.get();
-        if (user.getRole() != Role.COORDINATOR) { return new SearchType.Failed<Coordinator>(); }
-        return new SearchType.Found<Coordinator>((Coordinator) user);
+        if (user.getRole() != Role.COORDINATOR) { throw ErrorCode.WRONG_ROLE.throwIt(); }
+        return (Coordinator) user;
     }
 
     @Override

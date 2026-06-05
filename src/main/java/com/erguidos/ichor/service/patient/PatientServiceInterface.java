@@ -4,13 +4,12 @@ import java.util.List;
 
 import com.erguidos.ichor.dto.request.PatientCreationRequest;
 import com.erguidos.ichor.dto.request.PatientUpdateRequest;
-import com.erguidos.ichor.dto.types.SearchType;
 import com.erguidos.ichor.entity.Patient;
 
 public interface PatientServiceInterface {
     List<Patient> getAllPatients();
 
-    SearchType<Patient> getPatient(Long id);
+    Patient getPatient(Long id);
 
     Patient createPatient(PatientCreationRequest data);
 

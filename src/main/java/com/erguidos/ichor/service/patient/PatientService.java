@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.erguidos.ichor.dto.request.PatientCreationRequest;
 import com.erguidos.ichor.dto.request.PatientUpdateRequest;
-import com.erguidos.ichor.dto.types.SearchType;
 import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.entity.Patient;
 import com.erguidos.ichor.enums.ErrorCode;
@@ -36,10 +35,10 @@ public class PatientService implements PatientServiceInterface {
     }
     
     @Override
-    public SearchType<Patient> getPatient(Long id) {
+    public Patient getPatient(Long id) {
         Optional<Patient> patientOp = this.patientRepository.findById(id);
-        if (patientOp.isEmpty()) { return new SearchType.Failed<Patient>(); }
-        return new SearchType.Found<Patient>(patientOp.get());
+        if (patientOp.isEmpty()) { throw ErrorCode.NOT_FOUND.throwIt(); }
+        return patientOp.get();
     }
 
     @Override
