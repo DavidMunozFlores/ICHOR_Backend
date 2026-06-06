@@ -53,4 +53,12 @@ public final class Errors {
         User(int httpStatus) { this.httpStatus = httpStatus; }
         @Override public int getHttpStatus() { return this.httpStatus; }
     }
+    
+    public enum Coordinator implements ErrorDetails {
+        NULL_HOSPITAL(400);
+
+        private final int httpStatus;
+        Coordinator(int httpStatus) { this.httpStatus = httpStatus; }
+        @Override public int getHttpStatus() { return this.httpStatus; }
+    }
 }
