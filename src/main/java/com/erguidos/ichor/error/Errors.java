@@ -49,7 +49,9 @@ public final class Errors {
         WRONG_ROLE(400),
         ALREADY_EXISTS(409),
         NULL_USERNAME(400),
-        INVALID_USERNAME(400);
+        INVALID_USERNAME(400),
+        NULL_PASSWORD(400),
+        INVALID_PASSWORD(400);
 
         private final int httpStatus;
         User(int httpStatus) { this.httpStatus = httpStatus; }

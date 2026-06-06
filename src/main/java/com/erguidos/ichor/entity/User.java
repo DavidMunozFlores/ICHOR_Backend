@@ -68,8 +68,17 @@ public abstract class User {
 	}
 
 	private void setPassword(String password) {
+	    if (password == null) {
+            throw Errors.User.NULL_PASSWORD.asException();
+        }
+	        
 		if(password.isEmpty())
 			throw new IllegalArgumentException(EMPTY_PASSWORD_MSJ);
+		
+
+        if (! RegexMatching.isValidUsername(password)) {
+            throw Errors.User.INVALID_PASSWORD.asException();
+        }
 		this.password = password;
 	}
 }
