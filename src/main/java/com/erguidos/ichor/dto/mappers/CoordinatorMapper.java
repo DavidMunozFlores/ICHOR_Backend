@@ -6,8 +6,8 @@ import com.erguidos.ichor.dto.response.CoordinatorResponse;
 import com.erguidos.ichor.entity.Coordinator;
 
 public final class CoordinatorMapper {
-    private CoordinatorMapper() throws IllegalAccessException {
-        throw new IllegalAccessException("Don't instantiate CoordinatorMapper");
+    private CoordinatorMapper() {
+        throw new UnsupportedOperationException("Don't instantiate CoordinatorMapper");
     }
     
     public static CoordinatorResponse toCoordinatorResponse(Coordinator coordinator) {
