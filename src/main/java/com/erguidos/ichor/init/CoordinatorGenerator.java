@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CoordinatorGenerator {
     private static final int COORDINATOR_COUNT = 20;
+    private static final String DEFAULT_PASSWORD = "1234Abc@";
 
     private final CoordinatorRepository coordinatorRepository;
     private final UserRepository userRepository;
@@ -36,7 +37,7 @@ public class CoordinatorGenerator {
 
             Coordinator coordinator = Coordinator.builder()
                     .setUsername(name)
-                    .setPassword(this.hashing.hashPassword("1234"))
+                    .setPassword(this.hashing.hashPassword(DEFAULT_PASSWORD))
                     .setHospital(this.hospitalGenerator.getRandomHospital())
                     .build();
             

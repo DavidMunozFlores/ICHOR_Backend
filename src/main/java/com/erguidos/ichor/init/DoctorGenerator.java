@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DoctorGenerator {
     private static final int DOCTOR_COUNT = 20;
+    private static final String DEFAULT_PASSWORD = "1234Abc@";
 
     private final DoctorRepository doctorRepository;
     private final HospitalGenerator hospitalGenerator;
@@ -32,7 +33,7 @@ public class DoctorGenerator {
 
             Doctor doctor = Doctor.create(
                     name,
-                    hashing.hashPassword("1234"),
+                    hashing.hashPassword(DEFAULT_PASSWORD),
                     this.hospitalGenerator.getRandomHospital()
             );
             

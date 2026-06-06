@@ -11,6 +11,8 @@ import com.erguidos.ichor.repository.ManagerRepository;
 
 @Component
 public class ManagerGenerator {
+    private static final String DEFAULT_PASSWORD = "1234Abc@";
+    
     private final ManagerRepository managerRepository;
     private final UserRepository userRepository;
     private final HashInterface hashing;
@@ -29,7 +31,7 @@ public class ManagerGenerator {
         if (this.userRepository.findUserByUsername("managerCreator").isEmpty()) {
             Manager manager = Manager.builder()
                     .setUsername("managerCreator")
-                    .setPassword(this.hashing.hashPassword("1234"))
+                    .setPassword(this.hashing.hashPassword(DEFAULT_PASSWORD))
                     .build();
             
             this.managerRepository.save(manager);
