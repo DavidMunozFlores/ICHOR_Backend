@@ -27,6 +27,14 @@ public class DoctorGenerator {
     }
 
     public void generate() {
+        Doctor basicDoctor = Doctor.create(
+                "doctor",
+                this.hashing.hashPassword("1234"),
+                this.hospitalGenerator.getRandomHospital()
+        );
+        
+        this.doctorRepository.save(basicDoctor);
+        
         for (String name : IchorUtils.generateFullNames(DOCTOR_COUNT)) {
             if (doctorRepository.existsByUsername(name)) continue;
 
