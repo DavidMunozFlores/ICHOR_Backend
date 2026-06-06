@@ -16,4 +16,6 @@ public interface PatientServiceInterface {
     PatientCreationType createPatient(PatientCreationRequest data);
 
     PatientUpdateType updatePatient(PatientUpdateRequest pur);
+    
+    SearchType<PatientResponse> findPatitentByIdentification(String identification);
 }

@@ -45,6 +45,15 @@ public class PatientService implements PatientServiceInterface {
                 PatientMapper.toPatientResponse(patientOp.get())
         );
     }
+    
+	@Override
+	public SearchType<PatientResponse> findPatitentByIdentification(String identification) {
+		Optional<Patient> patientOp = this.patientRepository.findByIdentification(identification);
+		
+		if(patientOp.isEmpty()) return new SearchType.Failed<PatientResponse>();
+		
+		return new SearchType.Found<PatientResponse>(PatientMapper.toPatientResponse(patientOp.get()));
+	}
 
     @Override
     public PatientCreationType createPatient(PatientCreationRequest data) {
@@ -91,4 +100,6 @@ public class PatientService implements PatientServiceInterface {
             return new PatientUpdateType.Failure();
         }
     }
+
+
 }

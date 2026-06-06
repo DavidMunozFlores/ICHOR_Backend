@@ -2,8 +2,6 @@ package com.erguidos.ichor.dto.response;
 
 import java.util.List;
 
-import com.erguidos.ichor.entity.OrganPetition;
-
 public record PatientResponse(
 	Long idPatient,
     String internalID,
