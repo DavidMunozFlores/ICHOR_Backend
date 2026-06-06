@@ -12,5 +12,7 @@ public class ErrorCodeException extends RuntimeException {
         this.errorDetails = errorDetails;
     }
     
-    public ErrorDetails getErrorDetails() { return errorDetails; }
+    public int getHttpStatus() { return this.errorDetails.getHttpStatus(); }
+    
+    public ErrorDetails getErrorDetails() { return this.errorDetails; }
 }
