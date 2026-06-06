@@ -1,8 +1,8 @@
 package com.erguidos.ichor.entity;
 
-import java.util.Objects;
-
 import com.erguidos.ichor.enums.Role;
+import com.erguidos.ichor.error.Errors;
+import com.erguidos.ichor.utils.RegexMatching;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,10 +37,8 @@ public abstract class User {
     protected User() {}
     
     protected User(String username, String password) {
-    	Objects.requireNonNull(username);
-    	Objects.requireNonNull(password);
-    	setUsername(username);
-    	setPassword(password);
+    	this.setUsername(username);
+    	this.setPassword(password);
     }
     
     public abstract Role getRole();
@@ -51,13 +49,21 @@ public abstract class User {
     
     public String getPassword() { return this.password; }
 
-	public String getUsername() { return username; }
+	public String getUsername() { return this.username; }
 
 	public DischargedUser getDischargedUser() { return dischargedUser; }
 
 	private void setUsername(String username) {
+	    if (username == null) {
+	        throw Errors.User.NULL_USERNAME.asException();
+	    }
+	    
 		if(username.isEmpty())
 			throw new IllegalArgumentException(EMPTY_USERNAME_MSJ);
+		
+		if (! RegexMatching.isValidUsername(username)) {
+		    throw Errors.User.INVALID_USERNAME.asException();
+		}
 		this.username = username;
 	}
 
@@ -66,6 +72,4 @@ public abstract class User {
 			throw new IllegalArgumentException(EMPTY_PASSWORD_MSJ);
 		this.password = password;
 	}
-	
-	
 }

@@ -47,7 +47,9 @@ public final class Errors {
     public enum User implements ErrorDetails {
         NOT_EXISTS(404),
         WRONG_ROLE(400),
-        ALREADY_EXISTS(409);
+        ALREADY_EXISTS(409),
+        NULL_USERNAME(400),
+        INVALID_USERNAME(400);
 
         private final int httpStatus;
         User(int httpStatus) { this.httpStatus = httpStatus; }
