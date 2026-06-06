@@ -5,17 +5,17 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.erguidos.ichor.dto.mappers.PatientMapper;
 import com.erguidos.ichor.dto.request.PatientCreationRequest;
 import com.erguidos.ichor.dto.request.PatientUpdateRequest;
-import com.erguidos.ichor.dto.response.PatientResponse;
 import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.entity.Patient;
+import com.erguidos.ichor.enums.ErrorCode;
 import com.erguidos.ichor.enums.BloodType;
+import com.erguidos.ichor.exceptions.BlankStringException;
+import com.erguidos.ichor.exceptions.ImproperHeightException;
+import com.erguidos.ichor.exceptions.ImproperWeightException;
 import com.erguidos.ichor.repository.HospitalRepository;
 import com.erguidos.ichor.repository.PatientRepository;
-import com.erguidos.ichor.types.PatientCreationType;
-import com.erguidos.ichor.types.SearchType;
 
 import jakarta.transaction.Transactional;
 
@@ -30,65 +30,69 @@ public class PatientService implements PatientServiceInterface {
     }
     
     @Override
-    public List<PatientResponse> getAllPatients() {
-        return this.patientRepository.findAll()
-                        .stream()
-                        .map(PatientMapper::toPatientResponse)
-                        .toList();
+    public List<Patient> getAllPatients() {
+        return this.patientRepository.findAll();
     }
     
     @Override
-    public SearchType<PatientResponse> getPatient(Long id) {
+    public Patient getPatient(Long id) {
         Optional<Patient> patientOp = this.patientRepository.findById(id);
-        if (patientOp.isEmpty()) { return new SearchType.Failed<PatientResponse>(); }
-        return new SearchType.Found<PatientResponse>(
-                PatientMapper.toPatientResponse(patientOp.get())
-        );
+        if (patientOp.isEmpty()) { throw ErrorCode.NOT_FOUND.throwIt(); }
+        return patientOp.get();
     }
 
     @Override
-    public PatientCreationType createPatient(PatientCreationRequest data) {
+    public Patient createPatient(PatientCreationRequest data) {
         Optional<Patient> gotByInternalID = this.patientRepository.getByInternalID(data.internalID());
-        if (gotByInternalID.isPresent()) { return new PatientCreationType.Exists(); }
+        if (gotByInternalID.isPresent()) { throw ErrorCode.ALREADY_EXISTS.throwIt(); }
         
         Optional<Patient> getByIndetification = this.patientRepository.getByIdentification(data.identification());
-        if (getByIndetification.isPresent()) { return new PatientCreationType.Exists(); }
+        if (getByIndetification.isPresent()) { throw ErrorCode.ALREADY_EXISTS.throwIt(); }
         
         Optional<BloodType> bloodType = BloodType.tryParse(data.bloodType());
-        if (bloodType.isEmpty()) { return new PatientCreationType.BadBlood(); }
+        if (bloodType.isEmpty()) { throw ErrorCode.BLOOD_TYPE_NOT_EXISTS.throwIt(); }
         
         Optional<Hospital> hospital = this.hospitalRepository.findById(data.idHospital());
-        if (hospital.isEmpty()) { return new PatientCreationType.NoHospital(); }
+        if (hospital.isEmpty()) { throw ErrorCode.HOSPITAL_NOT_EXISTS.throwIt(); }
         
-        Patient patient = Patient.builder()
-                .setInternalID(data.internalID())
-                .setName(data.name())
-                .setIdentification(data.identification())
-                .setBloodType(bloodType.get())
-                .setHeight(data.height())
-                .setWeight(data.weight())
-                .setHospital(hospital.get())
-                .build();
-        
-        this.patientRepository.save(patient);
-        
-        return new PatientCreationType.Created(PatientMapper.toPatientResponse(patient));
+        try {
+            Patient patient = Patient.builder()
+                    .setInternalID(data.internalID())
+                    .setName(data.name())
+                    .setIdentification(data.identification())
+                    .setBloodType(bloodType.get())
+                    .setHeight(data.height())
+                    .setWeight(data.weight())
+                    .setHospital(hospital.get())
+                    .build();
+            
+            this.patientRepository.save(patient);
+            
+            return patient;
+        } catch (BlankStringException bse) {
+            throw ErrorCode.BLANK_STRING.throwIt();
+        } catch (ImproperHeightException ihe) {
+            throw ErrorCode.IMPROPER_HEIGHT.throwIt();
+        } catch (ImproperWeightException iwe) {
+            throw ErrorCode.IMPROPER_WEIGHT.throwIt();
+        }
     }
 
     @Override
     @Transactional
-    public PatientUpdateType updatePatient(PatientUpdateRequest pur) {
+    public Patient updatePatient(PatientUpdateRequest pur) {
         Optional<Patient> patientOp = this.patientRepository.findById(pur.id());
-        if (patientOp.isEmpty()) { return new PatientUpdateType.NotExists(); }
-        
+        if (patientOp.isEmpty()) { throw ErrorCode.USER_NOT_EXISTS.throwIt(); }
         try {
             Patient patient = patientOp.get();
-            patient.setHeight(pur.height());
-            patient.setWeight(pur.weight());
+            patient.updateHeightAndWeight(pur.height(), pur.weight());
+            
             this.patientRepository.save(patient);
-            return new PatientUpdateType.Success(PatientMapper.toPatientResponse(patient));
-        } catch (NullPointerException e) {
-            return new PatientUpdateType.Failure();
+            return patient;
+        } catch (ImproperHeightException ihe) {
+            throw ErrorCode.IMPROPER_HEIGHT.throwIt();
+        } catch (ImproperWeightException iwe) {
+            throw ErrorCode.IMPROPER_WEIGHT.throwIt();
         }
     }
 }

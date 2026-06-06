@@ -3,16 +3,14 @@ package com.erguidos.ichor.service.coordinator;
 import java.util.List;
 
 import com.erguidos.ichor.dto.request.CoordinatorCreateRequest;
-import com.erguidos.ichor.dto.response.CoordinatorResponse;
-import com.erguidos.ichor.types.CoordinatorSearchType;
-import com.erguidos.ichor.types.CoordinatorCreationType;
+import com.erguidos.ichor.entity.Coordinator;
 
 public interface CoordinatorServiceInterface {
-    List<CoordinatorResponse> getAllCoordinators();
+    List<Coordinator> getAllCoordinators();
 
-    CoordinatorSearchType getCoordinator(Long id);
+    Coordinator getCoordinator(Long id);
 
-    CoordinatorCreationType createCoordinator(CoordinatorCreateRequest ccr);
+    Coordinator createCoordinator(CoordinatorCreateRequest ccr);
 
-    List<CoordinatorResponse> getCoordinatorsByName(String name);
+    List<Coordinator> getCoordinatorsByName(String name);
 }

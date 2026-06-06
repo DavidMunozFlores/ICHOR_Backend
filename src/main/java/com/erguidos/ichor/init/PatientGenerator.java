@@ -1,8 +1,13 @@
 package com.erguidos.ichor.init;
 
 import com.erguidos.ichor.entity.Patient;
+import com.erguidos.ichor.exceptions.BlankStringException;
+import com.erguidos.ichor.exceptions.ImproperHeightException;
+import com.erguidos.ichor.exceptions.ImproperWeightException;
 import com.erguidos.ichor.repository.PatientRepository;
 import com.erguidos.ichor.utils.IchorUtils;
+
+import jakarta.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
@@ -21,21 +26,23 @@ public class PatientGenerator {
         this.hospitalGenerator = hospitalGenerator;
     }
 
+    @Transactional
     public void generate() {
         if (patientRepository.count() > 0) return;
 
-        for (String name : IchorUtils.generateFullNames(PATIENT_COUNT)) {
-            Patient patient = Patient.builder()
-                    .setInternalID(IchorUtils.randomInternalID())
-                    .setName(name)
-                    .setIdentification(IchorUtils.randomIdentification())
-                    .setBloodType(IchorUtils.randomBloodType())
-                    .setHeight(IchorUtils.randomHeight())
-                    .setWeight(IchorUtils.randomWeight())
-                    .setHospital(this.hospitalGenerator.getRandomHospital())
-                    .build();
-
-            patientRepository.save(patient);
-        }
+        try {
+            for (String name : IchorUtils.generateFullNames(PATIENT_COUNT)) {
+                Patient patient = Patient.builder()
+                        .setInternalID(IchorUtils.randomInternalID())
+                        .setName(name)
+                        .setIdentification(IchorUtils.randomIdentification())
+                        .setBloodType(IchorUtils.randomBloodType())
+                        .setHeight(IchorUtils.randomHeight())
+                        .setWeight(IchorUtils.randomWeight())
+                        .setHospital(this.hospitalGenerator.getRandomHospital())
+                        .build();
+                patientRepository.save(patient);
+            }
+        } catch (BlankStringException | ImproperHeightException | ImproperWeightException ignored) {}
     }
 }
