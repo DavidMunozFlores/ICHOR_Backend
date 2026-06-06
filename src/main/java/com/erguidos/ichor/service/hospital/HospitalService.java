@@ -1,7 +1,7 @@
 package com.erguidos.ichor.service.hospital;
 
 import com.erguidos.ichor.entity.Hospital;
-import com.erguidos.ichor.enums.ErrorCode;
+import com.erguidos.ichor.error.Errors;
 import com.erguidos.ichor.repository.HospitalRepository;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class HospitalService implements HospitalServiceInterface {
     @Override
     public Hospital getHospital(Long id) {
         Optional<Hospital> hospitalOp = this.hospitalRepository.findById(id);
-        if (hospitalOp.isEmpty()) { throw ErrorCode.NOT_FOUND.throwIt(); }
+        if (hospitalOp.isEmpty()) { throw Errors.Hospital.NOT_EXISTS.asException(); }
         return hospitalOp.get();
     }
 }

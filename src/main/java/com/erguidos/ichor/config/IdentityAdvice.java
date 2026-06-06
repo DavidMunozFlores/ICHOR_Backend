@@ -19,8 +19,8 @@ import com.erguidos.ichor.dto.request.AuthCredentialsRequest;
 import com.erguidos.ichor.dto.request.DecryptRequest;
 import com.erguidos.ichor.dto.request.EntityId;
 import com.erguidos.ichor.dto.request.UserIdentity;
-import com.erguidos.ichor.enums.ErrorCode;
 import com.erguidos.ichor.enums.Role;
+import com.erguidos.ichor.error.Errors;
 import com.erguidos.ichor.exceptions.IncorrectPasswordException;
 import com.erguidos.ichor.exceptions.UserNotFoundException;
 import com.erguidos.ichor.service.auth.AuthServiceInterface;
@@ -70,7 +70,7 @@ public class IdentityAdvice extends RequestBodyAdviceAdapter {
             AuthCredentialsRequest credentials = this.keyService.decryptToObject(decryptRequest, AuthCredentialsRequest.class);
             UserIdentity userIdentity = this.authService.identify(credentials);
 
-            if (roleAllowed != userIdentity.role()) { throw ErrorCode.UNAUTHORIZED.throwIt(); }
+            if (roleAllowed != userIdentity.role()) { throw Errors.Auth.UNAUTHORIZED.asException(); }
             EntityId identity = new EntityId(userIdentity.id());
             String forwardJson = this.objectMapper.writeValueAsString(identity);
             
@@ -86,9 +86,9 @@ public class IdentityAdvice extends RequestBodyAdviceAdapter {
                 }
             };
         } catch (UserNotFoundException | IncorrectPasswordException e) {
-            throw ErrorCode.USER_NOT_EXISTS.throwIt();
+            throw Errors.User.NOT_EXISTS.asException();
         } catch (JsonProcessingException | GeneralSecurityException e) {
-            throw ErrorCode.FAILED_DECRYPTION.throwIt();
+            throw Errors.Auth.FAILED_DECRYPTION.asException();
         }
     }
 }
