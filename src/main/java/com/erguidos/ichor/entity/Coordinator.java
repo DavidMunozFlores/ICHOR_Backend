@@ -3,6 +3,7 @@ package com.erguidos.ichor.entity;
 import java.util.List;
 
 import com.erguidos.ichor.enums.Role;
+import com.erguidos.ichor.error.Errors;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -37,6 +38,9 @@ public class Coordinator extends User {
 
 	public Hospital getHospital() { return this.hospital; }
 	private void setHospital(Hospital hospital) {
+	    if (hospital == null) {
+	        throw Errors.Coordinator.NULL_HOSPITAL.asException();
+	    }
 	    this.hospital = hospital;
 	}
 	
