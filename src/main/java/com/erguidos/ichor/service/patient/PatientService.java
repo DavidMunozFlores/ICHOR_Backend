@@ -42,6 +42,7 @@ public class PatientService implements PatientServiceInterface {
     }
 
     @Override
+    @Transactional
     public Patient createPatient(PatientCreationRequest data) {
         Optional<Patient> gotByInternalID = this.patientRepository.getByInternalID(data.internalID());
         if (gotByInternalID.isPresent()) { throw ErrorCode.ALREADY_EXISTS.throwIt(); }
