@@ -61,7 +61,7 @@ public class DoctorService implements DoctorServiceInterface {
 			throws JsonProcessingException, GeneralSecurityException {
 	    AuthenticatedRequest<CreateWorkerRequest> autReq = this.keyService.decryptToAuthenticatedRequest(decReq, CreateWorkerRequest.class);
 		
-		Role authCredentialsRole = authService.isAuthorized(autReq.authCredentials()).role();
+		Role authCredentialsRole = authService.getRole(autReq.authCredentials()).role();
 		
 		if(authCredentialsRole != Role.MANAGER)
 			throw new NotAuthorizedExecption(NOT_AUTHORIZED_MSJ);

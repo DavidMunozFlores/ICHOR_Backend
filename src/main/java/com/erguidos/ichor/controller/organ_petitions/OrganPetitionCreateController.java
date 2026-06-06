@@ -38,7 +38,7 @@ public class OrganPetitionCreateController {
 			@RequestBody AuthenticatedRequest<OrganPetitionRequest> ar
 			) {
 		
-        this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
+        this.authService.validRoleOrThrow(ar.authCredentials(), Role.DOCTOR);
 		
 		return ResponseEntity.ok(organPetitionService.createOrganPetition(ar));
 	}
@@ -48,7 +48,7 @@ public class OrganPetitionCreateController {
 			@RequestBody AuthenticatedRequest<OrganPetitionUpdateRequest> ar
 			) {
 		
-		this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
+		this.authService.validRoleOrThrow(ar.authCredentials(), Role.DOCTOR);
 		
 		return ResponseEntity.ok(organPetitionService.updateOrganPetition(ar));
 	}
@@ -58,7 +58,7 @@ public class OrganPetitionCreateController {
 			@RequestBody AuthenticatedRequest<IdOrganPetitionRequest> ar
 			) {
 		
-		this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
+		this.authService.validRoleOrThrow(ar.authCredentials(), Role.DOCTOR);
 		
 		return ResponseEntity.ok(organPetitionService.deleteOrganPetition(ar));
 	}
@@ -68,7 +68,7 @@ public class OrganPetitionCreateController {
 			@RequestBody AuthenticatedRequest<IdOrganPetitionRequest> ar
 			) {
 		
-        this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
+        this.authService.validRoleOrThrow(ar.authCredentials(), Role.DOCTOR);
 		
 		return ResponseEntity.ok(organPetitionService.acceptOrganPetition(ar));
 	}
@@ -78,7 +78,7 @@ public class OrganPetitionCreateController {
 			@RequestBody AuthenticatedRequest<IdOrganPetitionRequest> ar
 			) {
 		
-		this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
+		this.authService.validRoleOrThrow(ar.authCredentials(), Role.DOCTOR);
 		
 		return ResponseEntity.ok(organPetitionService.cancelOrganPetition(ar));
 	}
@@ -88,7 +88,7 @@ public class OrganPetitionCreateController {
 			@RequestBody AuthenticatedRequest<IdOrganPetitionRequest> ar
 			) {
 		
-		this.authService.authenticate(ar.authCredentials(), Role.DOCTOR);
+		this.authService.validRoleOrThrow(ar.authCredentials(), Role.DOCTOR);
 		
 		return ResponseEntity.ok(organPetitionService.checkOrganPetition(ar));
 	}

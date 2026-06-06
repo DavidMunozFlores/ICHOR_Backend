@@ -1,11 +1,13 @@
 package com.erguidos.ichor.dto.mappers;
 
+import java.util.List;
+
 import com.erguidos.ichor.dto.response.PatientResponse;
 import com.erguidos.ichor.entity.Patient;
 
 public final class PatientMapper {
-    private PatientMapper() throws IllegalAccessException {
-        throw new IllegalAccessException("Don't instantiate PatientMapper");
+    private PatientMapper() {
+        throw new UnsupportedOperationException("Don't instantiate PatientMapper");
     }
     
     public static PatientResponse toPatientResponse(Patient patient) {
@@ -20,5 +22,11 @@ public final class PatientMapper {
             patient.getHospital().getId(),
             patient.getOrganPetitions().stream().map(OrganPetitionMapper::toOrganPetitionResponse).toList()
         );
+    }
+    
+    public static List<PatientResponse> toPatientResponse(List<Patient> patients) {
+        return patients.stream()
+                .map(PatientMapper::toPatientResponse)
+                .toList();
     }
 }

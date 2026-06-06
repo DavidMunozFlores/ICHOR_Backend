@@ -37,7 +37,7 @@ public class OrganRegisterController {
 			@RequestBody AuthenticatedRequest<RegisterOrganRequest> ar
 			) {
 		
-        this.authService.authenticate(ar.authCredentials(), Role.COORDINATOR);
+        this.authService.validRoleOrThrow(ar.authCredentials(), Role.COORDINATOR);
 		
 		return ResponseEntity.ok(organService.registerOrgan(ar));
 	}
