@@ -45,8 +45,6 @@ public abstract class User {
     
     public Long getId() { return this.id; }
     
-    public String getUser() { return this.username; }
-    
     public String getPassword() { return this.password; }
 
 	public String getUsername() { return this.username; }
@@ -71,11 +69,10 @@ public abstract class User {
 	    if (password == null) {
             throw Errors.User.NULL_PASSWORD.asException();
         }
-	        
+	    
 		if(password.isEmpty())
 			throw new IllegalArgumentException(EMPTY_PASSWORD_MSJ);
 		
-
         if (! RegexMatching.isValidUsername(password)) {
             throw Errors.User.INVALID_PASSWORD.asException();
         }
