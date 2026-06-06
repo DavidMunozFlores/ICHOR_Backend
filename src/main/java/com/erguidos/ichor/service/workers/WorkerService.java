@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.erguidos.ichor.entity.User;
+import com.erguidos.ichor.enums.ErrorCode;
 import com.erguidos.ichor.enums.Role;
+import com.erguidos.ichor.exceptions.ErrorCodeException;
 import com.erguidos.ichor.repository.UserRepository;
 
 @Service
@@ -23,4 +25,11 @@ public class WorkerService implements WorkerServiceInterface {
                 .filter(u -> u.getRole() == Role.COORDINATOR || u.getRole() == Role.DOCTOR)
                 .toList();
     }
+
+	@Override
+	public User findWorkerByUsername(String username) {
+		return userRepository
+				.findUserByUsername(username)
+				.orElseThrow(ErrorCode.NOT_FOUND::throwIt);
+	}
 }

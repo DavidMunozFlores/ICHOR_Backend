@@ -6,4 +6,5 @@ import com.erguidos.ichor.entity.User;
 
 public interface WorkerServiceInterface {
     List<User> getAllWorkers();
+    User findWorkerByUsername(String username);
 }
