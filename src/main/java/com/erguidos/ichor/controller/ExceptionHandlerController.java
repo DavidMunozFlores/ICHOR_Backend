@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.erguidos.ichor.dto.mappers.ErrorCodeMapper;
 import com.erguidos.ichor.dto.response.ErrorCodeResponse;
 import com.erguidos.ichor.exceptions.BadBloodTypeException;
 import com.erguidos.ichor.exceptions.ErrorCodeException;
@@ -94,11 +95,11 @@ public class ExceptionHandlerController {
 
 	@ExceptionHandler(ResponseStatusException.class)
 	public ResponseEntity<ErrorCodeResponse> handleResponseStatusException(ResponseStatusException e) {
-	    return ErrorCodeResponse.of(e.getStatusCode().value(), e.getMessage()).getResponse();
+	    return ErrorCodeMapper.of(e.getStatusCode().value(), e.getMessage()).toResponse();
 	}
 	
 	@ExceptionHandler(ErrorCodeException.class)
 	public ResponseEntity<ErrorCodeResponse> handleErrorCodeException(ErrorCodeException e) {
-	    return ErrorCodeResponse.of(e.getHttpStatus(), e.getMessage()).getResponse();
+	    return ErrorCodeMapper.of(e.getHttpStatus(), e.getMessage()).toResponse();
 	}
 }
