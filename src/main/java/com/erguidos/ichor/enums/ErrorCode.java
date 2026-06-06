@@ -12,7 +12,7 @@ public enum ErrorCode {
     IMPROPER_WEIGHT(400),
     FAILED_DECRYPTION(400),
     UNAUTHORIZED(401),
-    NOT_FOUND(400),
+    NOT_FOUND(404),
     WRONG_ROLE(400);
     
     final int httpStatus;
