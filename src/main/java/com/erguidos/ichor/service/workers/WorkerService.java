@@ -5,22 +5,18 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.erguidos.ichor.entity.User;
-import com.erguidos.ichor.enums.Role;
-import com.erguidos.ichor.repository.UserRepository;
+import com.erguidos.ichor.repository.WorkerRepository;
 
 @Service
 public class WorkerService implements WorkerServiceInterface {
-    private final UserRepository userRepository;
+    private final WorkerRepository workerRepository;
 
-    WorkerService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    WorkerService(WorkerRepository workerRepository) {
+        this.workerRepository = workerRepository;
     }
 
     @Override
     public List<User> getAllWorkers() {
-        return this.userRepository.findAll()
-                .stream()
-                .filter(u -> u.getRole() == Role.COORDINATOR || u.getRole() == Role.DOCTOR)
-                .toList();
+        return this.workerRepository.findCoordinatorsAndDoctors();
     }
 }
