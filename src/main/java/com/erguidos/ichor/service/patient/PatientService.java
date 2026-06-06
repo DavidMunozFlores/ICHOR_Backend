@@ -42,12 +42,12 @@ public class PatientService implements PatientServiceInterface {
     }
     
 	@Override
-	public SearchType<PatientResponse> findPatitentByIdentification(String identification) {
+	public Patient findPatitentByIdentification(String identification) {
 		Optional<Patient> patientOp = this.patientRepository.findByIdentification(identification);
 		
-		if(patientOp.isEmpty()) return new SearchType.Failed<PatientResponse>();
+		if(patientOp.isEmpty()) throw ErrorCode.NOT_FOUND.throwIt();
 		
-		return new SearchType.Found<PatientResponse>(PatientMapper.toPatientResponse(patientOp.get()));
+		return patientOp.get();
 	}
 
     @Override

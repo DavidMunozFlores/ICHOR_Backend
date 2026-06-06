@@ -13,7 +13,7 @@ public interface PatientServiceInterface {
 
     Patient createPatient(PatientCreationRequest data);
 
-    SearchType<PatientResponse> findPatitentByIdentification(String identification);
+    Patient findPatitentByIdentification(String identification);
 
     Patient updatePatient(PatientUpdateRequest pur);
 

@@ -44,11 +44,7 @@ public class PatientGetController {
     
     @GetMapping("/identification/{identification}")
     public ResponseEntity<PatientResponse> findPatientByIdentification(@PathVariable String identification){
-    	SearchType<PatientResponse> response = this.patientService.findPatitentByIdentification(identification);
-    	
-		return switch(response) {
-			case SearchType.Found<PatientResponse>(PatientResponse pr) -> ResponseEntity.ok(pr);
-			case SearchType.Failed<PatientResponse>() -> ResponseEntity.notFound().build();
-		};
+        Patient patient = this.patientService.findPatitentByIdentification(identification);
+        return ResponseEntity.ok(PatientMapper.toPatientResponse(patient));
     }
 }
