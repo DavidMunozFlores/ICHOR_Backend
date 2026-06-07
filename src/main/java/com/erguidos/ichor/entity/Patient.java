@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import com.erguidos.ichor.enums.BloodType;
 import com.erguidos.ichor.error.Errors;
+import com.erguidos.ichor.utils.Validations;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,11 +24,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "patients")
 public class Patient {
-    public static final Double HEIGHT_MIN =  10.0d;
-    public static final Double HEIGHT_MAX = 250.0d;
-    public static final Double WEIGHT_MIN =   2.0d;
-    public static final Double WEIGHT_MAX = 400.0d;
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -126,10 +122,10 @@ public class Patient {
         if (height == null) {
             throw Errors.Patient.IMPROPER_HEIGHT.asException();
         }
-        if (height < HEIGHT_MIN) {
+        if (height < Validations.HEIGHT_MIN) {
             throw Errors.Patient.IMPROPER_HEIGHT.asException();
         }
-        if (height > HEIGHT_MAX) {
+        if (height > Validations.HEIGHT_MAX) {
             throw Errors.Patient.IMPROPER_HEIGHT.asException();
         }
         this.height = BigDecimal.valueOf(height)
@@ -142,10 +138,10 @@ public class Patient {
         if (weight == null) {
             throw Errors.Patient.IMPROPER_WEIGHT.asException();
         }
-        if (weight < WEIGHT_MIN) {
+        if (weight < Validations.WEIGHT_MAX) {
             throw Errors.Patient.IMPROPER_WEIGHT.asException();
         }
-        if (weight > WEIGHT_MAX) {
+        if (weight > Validations.WEIGHT_MAX) {
             throw Errors.Patient.IMPROPER_WEIGHT.asException();
         }
         this.weight = BigDecimal.valueOf(weight)
