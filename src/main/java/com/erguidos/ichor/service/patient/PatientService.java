@@ -33,20 +33,14 @@ public class PatientService implements PatientServiceInterface {
     
     @Override
     public Patient getPatient(Long id) {
-        Optional<Patient> patientOp = this.patientRepository.findById(id);
-        if (patientOp.isEmpty()) { throw Errors.Patient.NOT_EXISTS.asException(); }
-        return patientOp.get();
+        return this.patientRepository.findById(id)
+                                     .orElseThrow(Errors.Patient.NOT_EXISTS.asSupplier());
     }
     
 	@Override
 	public Patient findPatitentByIdentification(String identification) {
-		Optional<Patient> patientOp = this.patientRepository.findByIdentification(identification);
-		
-		if(patientOp.isEmpty()) {
-		    throw Errors.Patient.NOT_EXISTS.asException();
-		}
-		
-		return patientOp.get();
+		return this.patientRepository.findByIdentification(identification)
+		                             .orElseThrow(Errors.Patient.NOT_EXISTS.asSupplier());
 	}
 
     @Override
@@ -90,6 +84,4 @@ public class PatientService implements PatientServiceInterface {
         this.patientRepository.save(patient);
         return patient;
     }
-
-
 }
