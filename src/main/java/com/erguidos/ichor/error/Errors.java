@@ -12,7 +12,8 @@ public final class Errors {
         IMPROPER_WEIGHT(400),
         NULL_TEXT(400),
         NULL_BLOOD_TYPE(400),
-        ALREADY_EXISTS(409);
+        ALREADY_EXISTS(409),
+        INVALID_NAME(400);
 
         private final int httpStatus;
         Patient(int httpStatus) { this.httpStatus = httpStatus; }

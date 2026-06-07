@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import com.erguidos.ichor.enums.BloodType;
 import com.erguidos.ichor.error.Errors;
+import com.erguidos.ichor.utils.RegexMatching;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -98,6 +99,9 @@ public class Patient {
         }
         if (name.isBlank()) {
             throw Errors.Patient.BLANK_STRING.asException();
+        }
+        if (! RegexMatching.isValidUsername(name)) {
+            throw Errors.Patient.INVALID_NAME.asException();
         }
         this.name = name.trim();
     }
