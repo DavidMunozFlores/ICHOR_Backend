@@ -18,9 +18,6 @@ import jakarta.persistence.Table;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "users")
 public abstract class User {
-	private static final String EMPTY_USERNAME_MSJ = "Username cannot be empty";
-	private static final String EMPTY_PASSWORD_MSJ = "Password cannot be empty";
-	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -55,10 +52,6 @@ public abstract class User {
 	    if (username == null) {
 	        throw Errors.User.NULL_USERNAME.asException();
 	    }
-	    
-		if(username.isEmpty())
-			throw new IllegalArgumentException(EMPTY_USERNAME_MSJ);
-		
 		if (! RegexMatching.isValidUsername(username)) {
 		    throw Errors.User.INVALID_USERNAME.asException();
 		}
@@ -69,10 +62,6 @@ public abstract class User {
 	    if (password == null) {
             throw Errors.User.NULL_PASSWORD.asException();
         }
-	    
-		if(password.isEmpty())
-			throw new IllegalArgumentException(EMPTY_PASSWORD_MSJ);
-		
         if (! RegexMatching.isValidUsername(password)) {
             throw Errors.User.INVALID_PASSWORD.asException();
         }
