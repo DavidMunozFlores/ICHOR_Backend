@@ -27,13 +27,6 @@ public class ORAPIService implements ORAPIServiceInterface {
 		BASE_URL = url;
 	}
 	
-//	public ORAPIService(
-//			String key,
-//			String url, String z) {
-//		rc = RestClient.create();
-//		KEY = key;
-//		BASE_URL = url;
-//	}
 
 	@Override
 	public double getDurationBetweenTwoHospitalPoints(
