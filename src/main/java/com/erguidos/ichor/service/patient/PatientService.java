@@ -51,8 +51,7 @@ public class PatientService implements PatientServiceInterface {
         Optional<Patient> getByIndetification = this.patientRepository.getByIdentification(data.identification());
         if (getByIndetification.isPresent()) { throw Errors.Patient.ALREADY_EXISTS.asException(); }
         
-        BloodType bloodType = BloodType.tryParse(data.bloodType())
-                                       .orElseThrow(Errors.BloodType.NOT_EXISTS.asSupplier());
+        BloodType bloodType = BloodType.parse(data.bloodType());
         
         Hospital hospital = this.hospitalRepository.findById(data.idHospital())
                                                    .orElseThrow(Errors.Hospital.NOT_EXISTS.asSupplier());
