@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.erguidos.ichor.error.Errors;
-import com.erguidos.ichor.utils.RegexMatcher;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -79,9 +78,6 @@ public class Hospital {
         if (name.isBlank()) {
             throw Errors.Hospital.BLANK_NAME.asException();
         }
-        if (! RegexMatcher.isValidUsername(name)) {
-            throw Errors.Hospital.INVALID_NAME.asException();
-        }
         this.name = name.trim();
     }
     
@@ -92,9 +88,6 @@ public class Hospital {
         }
         if (address.isBlank()) {
             throw Errors.Hospital.BLANK_ADDRESS.asException();
-        }
-        if (! RegexMatcher.isValidAddress(address)) {
-            throw Errors.Hospital.INVALID_ADDRESS.asException();
         }
         this.address = address.trim();
     }
