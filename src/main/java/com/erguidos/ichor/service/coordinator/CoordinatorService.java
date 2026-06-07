@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.erguidos.ichor.component.HashInterface;
 import com.erguidos.ichor.dto.request.CoordinatorCreateRequest;
@@ -17,7 +18,6 @@ import com.erguidos.ichor.repository.CoordinatorRepository;
 import com.erguidos.ichor.repository.HospitalRepository;
 import com.erguidos.ichor.repository.UserRepository;
 
-import jakarta.transaction.Transactional;
 
 @Service
 public class CoordinatorService

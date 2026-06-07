@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.erguidos.ichor.dto.request.PatientCreationRequest;
 import com.erguidos.ichor.dto.request.PatientUpdateRequest;
@@ -17,7 +18,6 @@ import com.erguidos.ichor.exceptions.ImproperWeightException;
 import com.erguidos.ichor.repository.HospitalRepository;
 import com.erguidos.ichor.repository.PatientRepository;
 
-import jakarta.transaction.Transactional;
 
 @Service
 public class PatientService implements PatientServiceInterface {
