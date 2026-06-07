@@ -25,4 +25,5 @@ public interface OrganPetitionServiceInterface {
 	OrganPetitionResponse checkOrganPetition(AuthenticatedRequest<IdOrganPetitionRequest> ar);
 	
 	Set<OrganPetitionResponse> findByOrganPetitionState(OrganPetitionState organPetitionState);
+	Set<OrganPetitionResponse> generateOPs();
 }

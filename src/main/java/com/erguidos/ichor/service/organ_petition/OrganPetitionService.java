@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.erguidos.ichor.component.HlaParser;
+import com.erguidos.ichor.component.MostCompatibleOPMatcher;
+import com.erguidos.ichor.component.OrganPetitionGenerator;
 import com.erguidos.ichor.dto.mappers.OrganPetitionMapper;
 import com.erguidos.ichor.dto.request.IdOrganPetitionRequest;
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
@@ -34,15 +36,21 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 	private OrganPetitionRepository organPetitionRepository;
 	private DoctorRepository doctorRepository;
 	private PatientRepository patientRepository;
+	private MostCompatibleOPMatcher matcher;
+	private OrganPetitionGenerator opg;
 	
 	OrganPetitionService(
 			OrganPetitionRepository organPetitionRepository,
 			DoctorRepository doctorRepository,
-			PatientRepository patientRepository
+			PatientRepository patientRepository,
+			MostCompatibleOPMatcher matcher,
+			OrganPetitionGenerator opg
 			) {
 		this.organPetitionRepository = organPetitionRepository;
 		this.doctorRepository = doctorRepository;
 		this.patientRepository = patientRepository;
+		this.matcher = matcher;
+		this.opg = opg;
 	}
 
 	@Override
@@ -128,6 +136,8 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 		
 		organPetitionRepository.save(op);
 		
+		matcher.matchOrgansWithOP();
+		
 		return OrganPetitionMapper.toOrganPetitionResponse(op);
 	}
 
@@ -166,5 +176,10 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 				.stream()
 				.map(OrganPetitionMapper::toOrganPetitionResponse)
 				.collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<OrganPetitionResponse> generateOPs() {
+		return opg.generate();
 	}
 }
