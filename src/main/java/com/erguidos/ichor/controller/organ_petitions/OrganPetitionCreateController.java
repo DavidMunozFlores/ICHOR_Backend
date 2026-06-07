@@ -8,14 +8,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.erguidos.ichor.dto.request.IdOrganPetitionRequest;
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
+import com.erguidos.ichor.dto.request.IdOrganPetitionRequest;
+import com.erguidos.ichor.annotations.AuthenticatedRequestPayload;
+import com.erguidos.ichor.annotations.AuthenticatedPayload;
 import com.erguidos.ichor.dto.request.OrganPetitionRequest;
 import com.erguidos.ichor.dto.request.OrganPetitionUpdateRequest;
 import com.erguidos.ichor.dto.response.OPDeleted;
 import com.erguidos.ichor.dto.response.OrganPetitionResponse;
 import com.erguidos.ichor.enums.Role;
-import com.erguidos.ichor.service.auth.AuthServiceInterface;
 import com.erguidos.ichor.service.organ_petition.OrganPetitionServiceInterface;
 
 @RestController
@@ -23,73 +24,50 @@ import com.erguidos.ichor.service.organ_petition.OrganPetitionServiceInterface;
 @CrossOrigin(origins = {"${app.cors.allowed}"})
 public class OrganPetitionCreateController {
 	private final OrganPetitionServiceInterface organPetitionService;
-	private final AuthServiceInterface authService;
 	
-	OrganPetitionCreateController(
-			OrganPetitionServiceInterface organPetitionService,
-			AuthServiceInterface authService
-			) {
+	OrganPetitionCreateController(OrganPetitionServiceInterface organPetitionService) {
 		this.organPetitionService = organPetitionService;
-		this.authService = authService;
 	}
 	
 	@PostMapping("/create")
 	public ResponseEntity<OrganPetitionResponse> createOrganPetition(
-			@RequestBody AuthenticatedRequest<OrganPetitionRequest> ar
-			) {
-		
-        this.authService.validRoleOrThrow(ar.authCredentials(), Role.DOCTOR);
-		
+		@RequestBody @AuthenticatedRequestPayload(Role.DOCTOR) AuthenticatedRequest<OrganPetitionRequest> ar
+	) {
 		return ResponseEntity.ok(organPetitionService.createOrganPetition(ar));
 	}
 	
 	@PostMapping("/update")
 	public ResponseEntity<OrganPetitionResponse> updateOrganPetition(
-			@RequestBody AuthenticatedRequest<OrganPetitionUpdateRequest> ar
-			) {
-		
-		this.authService.validRoleOrThrow(ar.authCredentials(), Role.DOCTOR);
-		
+		@RequestBody @AuthenticatedRequestPayload(Role.DOCTOR) AuthenticatedRequest<OrganPetitionUpdateRequest> ar
+	) {
 		return ResponseEntity.ok(organPetitionService.updateOrganPetition(ar));
 	}
 	
 	@PostMapping("/delete")
 	public ResponseEntity<OPDeleted> deleteOrganPetition(
-			@RequestBody AuthenticatedRequest<IdOrganPetitionRequest> ar
-			) {
-		
-		this.authService.validRoleOrThrow(ar.authCredentials(), Role.DOCTOR);
-		
-		return ResponseEntity.ok(organPetitionService.deleteOrganPetition(ar));
+		@RequestBody @AuthenticatedPayload(Role.DOCTOR) IdOrganPetitionRequest idOrganPetitionRequest
+	) {
+		return ResponseEntity.ok(organPetitionService.deleteOrganPetition(idOrganPetitionRequest));
 	}
 	
 	@PatchMapping("/accept")
 	public ResponseEntity<OrganPetitionResponse> acceptOrganPetition(
-			@RequestBody AuthenticatedRequest<IdOrganPetitionRequest> ar
-			) {
-		
-        this.authService.validRoleOrThrow(ar.authCredentials(), Role.DOCTOR);
-		
-		return ResponseEntity.ok(organPetitionService.acceptOrganPetition(ar));
+		@RequestBody @AuthenticatedPayload(Role.DOCTOR) IdOrganPetitionRequest idOrganPetitionRequest
+	) {
+		return ResponseEntity.ok(organPetitionService.acceptOrganPetition(idOrganPetitionRequest));
 	}
 	
 	@PatchMapping("/cancel")
 	public ResponseEntity<OrganPetitionResponse> cancellOrganPetition(
-			@RequestBody AuthenticatedRequest<IdOrganPetitionRequest> ar
-			) {
-		
-		this.authService.validRoleOrThrow(ar.authCredentials(), Role.DOCTOR);
-		
-		return ResponseEntity.ok(organPetitionService.cancelOrganPetition(ar));
+		@RequestBody @AuthenticatedPayload(Role.DOCTOR) IdOrganPetitionRequest idOrganPetitionRequest
+    ) {
+		return ResponseEntity.ok(organPetitionService.cancelOrganPetition(idOrganPetitionRequest));
 	}
 	
 	@PatchMapping("/check")
 	public ResponseEntity<OrganPetitionResponse> checkOrganPetition(
-			@RequestBody AuthenticatedRequest<IdOrganPetitionRequest> ar
-			) {
-		
-		this.authService.validRoleOrThrow(ar.authCredentials(), Role.DOCTOR);
-		
-		return ResponseEntity.ok(organPetitionService.checkOrganPetition(ar));
+		@RequestBody @AuthenticatedPayload(Role.DOCTOR) IdOrganPetitionRequest idOrganPetitionRequest
+	) {
+		return ResponseEntity.ok(organPetitionService.checkOrganPetition(idOrganPetitionRequest));
 	}
 }
