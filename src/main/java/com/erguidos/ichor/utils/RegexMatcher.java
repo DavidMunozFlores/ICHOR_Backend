@@ -2,9 +2,9 @@ package com.erguidos.ichor.utils;
 
 import java.util.regex.Pattern;
 
-public final class RegexMatching {
-    private RegexMatching() {
-        throw new UnsupportedOperationException("Don't instantiate RegexMatching");
+public final class RegexMatcher {
+    private RegexMatcher() {
+        throw new UnsupportedOperationException("Don't instantiate RegexMatcher");
     }
     
     private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžæÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{10,50}$");
@@ -30,16 +30,16 @@ public final class RegexMatching {
     
     public static boolean isValidUsername(String username) {
         if (username == null) { return false; }
-        return RegexMatching.match(USERNAME_PATTERN, username);
+        return RegexMatcher.match(USERNAME_PATTERN, username);
     }
     
     public static boolean isValidPassword(String password) {
         if (password == null) { return false; }
-        return RegexMatching.match(PASSWORD_PATTERN, password);
+        return RegexMatcher.match(PASSWORD_PATTERN, password);
     }
     
     public static boolean isValidAddress(String address) {
         if (address == null) { return false; }
-        return RegexMatching.match(ADDRESS_PATTERN, address.trim());
+        return RegexMatcher.match(ADDRESS_PATTERN, address.trim());
     }
 }

@@ -2,7 +2,7 @@ package com.erguidos.ichor.entity;
 
 import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.error.Errors;
-import com.erguidos.ichor.utils.RegexMatching;
+import com.erguidos.ichor.utils.RegexMatcher;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,7 +52,7 @@ public abstract class User {
 	    if (username == null) {
 	        throw Errors.User.NULL_USERNAME.asException();
 	    }
-		if (! RegexMatching.isValidUsername(username)) {
+		if (! RegexMatcher.isValidUsername(username)) {
 		    throw Errors.User.INVALID_USERNAME.asException();
 		}
 		this.username = username;
@@ -62,7 +62,7 @@ public abstract class User {
 	    if (password == null) {
             throw Errors.User.NULL_PASSWORD.asException();
         }
-        if (! RegexMatching.isValidUsername(password)) {
+        if (! RegexMatcher.isValidUsername(password)) {
             throw Errors.User.INVALID_PASSWORD.asException();
         }
 		this.password = password;
