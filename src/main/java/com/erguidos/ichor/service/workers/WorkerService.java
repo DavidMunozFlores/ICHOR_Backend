@@ -19,4 +19,11 @@ public class WorkerService implements WorkerServiceInterface {
     public List<User> getAllWorkers() {
         return this.workerRepository.findCoordinatorsAndDoctors();
     }
+
+	@Override
+	public User findWorkerByUsername(String username) {
+		return userRepository
+				.findUserByUsername(username)
+				.orElseThrow(ErrorCode.NOT_FOUND::throwIt);
+	}
 }

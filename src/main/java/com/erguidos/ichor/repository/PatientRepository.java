@@ -15,6 +15,8 @@ import com.erguidos.ichor.enums.BloodType;
 public interface PatientRepository
          extends JpaRepository<Patient, Long> {
     Optional<Patient> getByInternalID(String internalID);
+    
+    Optional<Patient> findByIdentification(String identification);
 
     Optional<Patient> getByIdentification(String identification);
     

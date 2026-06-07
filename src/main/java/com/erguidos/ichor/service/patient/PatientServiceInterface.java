@@ -13,5 +13,8 @@ public interface PatientServiceInterface {
 
     Patient createPatient(PatientCreationRequest data);
 
+    Patient findPatitentByIdentification(String identification);
+
     Patient updatePatient(PatientUpdateRequest pur);
+
 }
