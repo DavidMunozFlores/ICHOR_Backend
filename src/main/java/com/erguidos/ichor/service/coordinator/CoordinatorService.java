@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.erguidos.ichor.component.HashInterface;
 import com.erguidos.ichor.dto.request.CoordinatorCreateRequest;
@@ -16,6 +17,7 @@ import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.repository.CoordinatorRepository;
 import com.erguidos.ichor.repository.HospitalRepository;
 import com.erguidos.ichor.repository.UserRepository;
+
 
 @Service
 public class CoordinatorService
@@ -53,6 +55,7 @@ public class CoordinatorService
     }
 
     @Override
+    @Transactional
     public Coordinator createCoordinator(CoordinatorCreateRequest ccr) {
         Optional<User> user = this.userRepository.findUserByUsername(ccr.username());
         if (user.isPresent()) { throw ErrorCode.ALREADY_EXISTS.throwIt(); }
