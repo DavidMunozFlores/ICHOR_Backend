@@ -57,20 +57,20 @@ public class PatientService implements PatientServiceInterface {
         Optional<Patient> getByIndetification = this.patientRepository.getByIdentification(data.identification());
         if (getByIndetification.isPresent()) { throw Errors.Patient.ALREADY_EXISTS.asException(); }
         
-        Optional<BloodType> bloodType = BloodType.tryParse(data.bloodType());
-        if (bloodType.isEmpty()) { throw Errors.BloodType.NOT_EXISTS.asException(); }
+        BloodType bloodType = BloodType.tryParse(data.bloodType())
+                                       .orElseThrow(Errors.BloodType.NOT_EXISTS.asSupplier());
         
-        Optional<Hospital> hospital = this.hospitalRepository.findById(data.idHospital());
-        if (hospital.isEmpty()) { throw Errors.Hospital.NOT_EXISTS.asException(); }
+        Hospital hospital = this.hospitalRepository.findById(data.idHospital())
+                                                   .orElseThrow(Errors.Hospital.NOT_EXISTS.asSupplier());
         
         Patient patient = Patient.builder()
                 .setInternalID(data.internalID())
                 .setName(data.name())
                 .setIdentification(data.identification())
-                .setBloodType(bloodType.get())
+                .setBloodType(bloodType)
                 .setHeight(data.height())
                 .setWeight(data.weight())
-                .setHospital(hospital.get())
+                .setHospital(hospital)
                 .build();
         
         this.patientRepository.save(patient);
