@@ -3,6 +3,9 @@ package com.erguidos.ichor.entity;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.erguidos.ichor.error.Errors;
+import com.erguidos.ichor.utils.RegexMatching;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -70,16 +73,28 @@ public class Hospital {
     
     public String getName() { return this.name; }
     private void setName(String name) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Bad name: " + name);
+        if (name == null) {
+            throw Errors.Hospital.NULL_NAME.asException();
+        }
+        if (name.isBlank()) {
+            throw Errors.Hospital.BLANK_NAME.asException();
+        }
+        if (! RegexMatching.isValidUsername(name)) {
+            throw Errors.Hospital.INVALID_NAME.asException();
         }
         this.name = name.trim();
     }
     
     public String getAddress() { return this.address; }
     private void setAddress(String address) {
-        if (address == null || address.isBlank()) {
-            throw new IllegalArgumentException("Bad address: " + address);
+        if (address == null) {
+            throw Errors.Hospital.NULL_ADDRESS.asException();
+        }
+        if (address.isBlank()) {
+            throw Errors.Hospital.BLANK_ADDRESS.asException();
+        }
+        if (! RegexMatching.isValidAddress(address)) {
+            throw Errors.Hospital.INVALID_ADDRESS.asException();
         }
         this.address = address.trim();
     }
@@ -87,7 +102,7 @@ public class Hospital {
     public BigDecimal getLongitude() { return this.longitude; }
     private void setLongitude(BigDecimal longitude) {
         if (longitude == null) {
-            throw new IllegalArgumentException("Bad longitude: " + longitude);
+            throw Errors.Hospital.NULL_LONGITUDE.asException();
         }
         this.longitude = this.wrapLongitudeAroundGlobe(longitude);
     }
@@ -105,11 +120,13 @@ public class Hospital {
     public BigDecimal getLatitude() { return this.latitude; }
     private void setLatitude(BigDecimal latitude) {
         if (latitude == null) {
-            throw new IllegalArgumentException("Bad latitude: " + latitude);
+            throw Errors.Hospital.NULL_LATITUDE.asException();
         }
-        if (latitude.compareTo(LATITUDE_MAX) > 0
-         || latitude.compareTo(LATITUDE_MIN) < 0) {
-            throw new IllegalArgumentException("Bad latitude: " + latitude + ", must be -90 <= latitude <= 90");
+        if (latitude.compareTo(LATITUDE_MAX) > 0) {
+            throw Errors.Hospital.OUT_OF_BOUNDS_LATITUDE.asException();
+        }
+        if (latitude.compareTo(LATITUDE_MIN) < 0) {
+            throw Errors.Hospital.OUT_OF_BOUNDS_LATITUDE.asException();
         }
         this.latitude = latitude;
     }

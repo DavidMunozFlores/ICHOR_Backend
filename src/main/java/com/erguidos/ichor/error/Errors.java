@@ -29,7 +29,16 @@ public final class Errors {
     }
 
     public enum Hospital implements ErrorDetails {
-        NOT_EXISTS(404);
+        NOT_EXISTS(404),
+        NULL_NAME(400),
+        BLANK_NAME(400),
+        INVALID_NAME(400),
+        NULL_ADDRESS(400),
+        BLANK_ADDRESS(400),
+        INVALID_ADDRESS(400),
+        NULL_LONGITUDE(400),
+        NULL_LATITUDE(400),
+        OUT_OF_BOUNDS_LATITUDE(400);
 
         private final int httpStatus;
         Hospital(int httpStatus) { this.httpStatus = httpStatus; }
