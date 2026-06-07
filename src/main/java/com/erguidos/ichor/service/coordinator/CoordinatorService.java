@@ -57,13 +57,13 @@ public class CoordinatorService
         Optional<User> user = this.userRepository.findUserByUsername(ccr.username());
         if (user.isPresent()) { throw Errors.User.ALREADY_EXISTS.asException(); }
         
-        Optional<Hospital> hospital = this.hospitalRepository.findById(ccr.idHospital());
-        if (hospital.isEmpty()) { throw Errors.Hospital.NOT_EXISTS.asException(); }
+        Hospital hospital = this.hospitalRepository.findById(ccr.idHospital())
+                                                   .orElseThrow(Errors.Hospital.NOT_EXISTS.asSupplier());
         
         Coordinator coordinator = Coordinator.builder()
                 .setUsername(ccr.username())
                 .setPassword(this.hashing.hashPassword(ccr.password()))
-                .setHospital(hospital.get())
+                .setHospital(hospital)
                 .build();
         
         this.coordinatorRepository.save(coordinator);
