@@ -10,6 +10,6 @@ import com.erguidos.ichor.enums.Role;
 
 @Retention(RUNTIME)
 @Target(PARAMETER)
-public @interface AuthenticatedIdentity {
+public @interface AuthenticatedRequestPayload {
     Role value();
 }

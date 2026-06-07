@@ -118,9 +118,9 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 	
 	@Transactional
 	@Override
-	public OPDeleted deleteOrganPetition(AuthenticatedRequest<IdOrganPetitionRequest> ar) {
+	public OPDeleted deleteOrganPetition(IdOrganPetitionRequest ar) {
 		OrganPetition op = organPetitionRepository
-				.findById(ar.data().idOrganPetition())
+				.findById(ar.idOrganPetition())
 				.orElseThrow(() -> new OrganPetitionNotFoundException(ORGAN_PETITION_NOT_FOUND));
 		
 		organPetitionRepository.delete(op);
@@ -129,10 +129,9 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 	}
 
 	@Override
-	public OrganPetitionResponse acceptOrganPetition(AuthenticatedRequest<IdOrganPetitionRequest> ar) {
-		
+	public OrganPetitionResponse acceptOrganPetition(IdOrganPetitionRequest ar) {
 		OrganPetition op = organPetitionRepository
-				.findById(ar.data().idOrganPetition())
+				.findById(ar.idOrganPetition())
 				.orElseThrow(() -> new OrganPetitionNotFoundException(ORGAN_PETITION_NOT_FOUND));
 		
 		// DRAFT -> WAITING
@@ -146,9 +145,9 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 	}
 
 	@Override
-	public OrganPetitionResponse cancelOrganPetition(AuthenticatedRequest<IdOrganPetitionRequest> ar) {
+	public OrganPetitionResponse cancelOrganPetition(IdOrganPetitionRequest ar) {
 		OrganPetition op = organPetitionRepository
-				.findById(ar.data().idOrganPetition())
+				.findById(ar.idOrganPetition())
 				.orElseThrow(() -> new OrganPetitionNotFoundException(ORGAN_PETITION_NOT_FOUND));
 		
 		// ASSIGNED -> CANCELLED
@@ -160,9 +159,9 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 	}
 
 	@Override
-	public OrganPetitionResponse checkOrganPetition(AuthenticatedRequest<IdOrganPetitionRequest> ar) {
+	public OrganPetitionResponse checkOrganPetition(IdOrganPetitionRequest ar) {
 		OrganPetition op = organPetitionRepository
-				.findById(ar.data().idOrganPetition())
+				.findById(ar.idOrganPetition())
 				.orElseThrow(() -> new OrganPetitionNotFoundException(ORGAN_PETITION_NOT_FOUND));
 		
 		// WAITING -> ASSIGNED
