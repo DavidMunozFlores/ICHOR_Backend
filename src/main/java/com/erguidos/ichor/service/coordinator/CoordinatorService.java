@@ -17,6 +17,8 @@ import com.erguidos.ichor.repository.CoordinatorRepository;
 import com.erguidos.ichor.repository.HospitalRepository;
 import com.erguidos.ichor.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class CoordinatorService
        implements CoordinatorServiceInterface {
@@ -53,6 +55,7 @@ public class CoordinatorService
     }
 
     @Override
+    @Transactional
     public Coordinator createCoordinator(CoordinatorCreateRequest ccr) {
         Optional<User> user = this.userRepository.findUserByUsername(ccr.username());
         if (user.isPresent()) { throw ErrorCode.ALREADY_EXISTS.throwIt(); }
