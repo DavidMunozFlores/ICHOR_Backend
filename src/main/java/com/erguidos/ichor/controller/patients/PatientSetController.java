@@ -16,7 +16,6 @@ import com.erguidos.ichor.dto.request.PatientUpdateRequest;
 import com.erguidos.ichor.dto.response.ErrorCodeResponse;
 import com.erguidos.ichor.dto.response.PatientResponse;
 import com.erguidos.ichor.entity.Patient;
-import com.erguidos.ichor.enums.ErrorCode;
 import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.service.patient.PatientServiceInterface;
 
@@ -26,6 +25,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 
 @RestController
@@ -68,7 +68,7 @@ public class PatientSetController {
     })
     @PostMapping("/create")
     public ResponseEntity<PatientResponse> createPatient(
-        @RequestBody @AuthenticatedPayload(Role.DOCTOR) PatientCreationRequest patientCreationRequest
+        @Valid @RequestBody @AuthenticatedPayload(Role.DOCTOR) PatientCreationRequest patientCreationRequest
     ) {
         Patient patient = this.patientService.createPatient(patientCreationRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(PatientMapper.toPatientResponse(patient));
@@ -84,12 +84,12 @@ public class PatientSetController {
         @ApiResponse(
             responseCode = "400", 
             description = "Invalid request payload",
-            content = @Content(schema = @Schema(implementation = ErrorCode.class))
+            content = @Content(schema = @Schema(implementation = ErrorCodeResponse.class))
         )
     })
     @PatchMapping
     public ResponseEntity<PatientResponse> updatePatient(
-        @RequestBody @AuthenticatedPayload(Role.DOCTOR) PatientUpdateRequest patientUpdateRequest
+        @Valid @RequestBody @AuthenticatedPayload(Role.DOCTOR) PatientUpdateRequest patientUpdateRequest
     ) {
         Patient patient = this.patientService.updatePatient(patientUpdateRequest);
         return ResponseEntity.ok(PatientMapper.toPatientResponse(patient));

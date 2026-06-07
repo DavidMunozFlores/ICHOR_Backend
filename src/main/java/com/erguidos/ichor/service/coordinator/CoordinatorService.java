@@ -12,8 +12,8 @@ import com.erguidos.ichor.dto.request.CoordinatorCreateRequest;
 import com.erguidos.ichor.entity.Coordinator;
 import com.erguidos.ichor.entity.Hospital;
 import com.erguidos.ichor.entity.User;
-import com.erguidos.ichor.enums.ErrorCode;
 import com.erguidos.ichor.enums.Role;
+import com.erguidos.ichor.error.Errors;
 import com.erguidos.ichor.repository.CoordinatorRepository;
 import com.erguidos.ichor.repository.HospitalRepository;
 import com.erguidos.ichor.repository.UserRepository;
@@ -48,9 +48,9 @@ public class CoordinatorService
     @Override
     public Coordinator getCoordinator(Long id) {
         Optional<User> userOp = this.userRepository.findById(id);
-        if (userOp.isEmpty()) { throw ErrorCode.NOT_FOUND.throwIt(); }
+        if (userOp.isEmpty()) { throw Errors.User.NOT_EXISTS.asException(); }
         User user = userOp.get();
-        if (user.getRole() != Role.COORDINATOR) { throw ErrorCode.WRONG_ROLE.throwIt(); }
+        if (user.getRole() != Role.COORDINATOR) { throw Errors.User.WRONG_ROLE.asException(); }
         return (Coordinator) user;
     }
 
@@ -58,15 +58,15 @@ public class CoordinatorService
     @Transactional
     public Coordinator createCoordinator(CoordinatorCreateRequest ccr) {
         Optional<User> user = this.userRepository.findUserByUsername(ccr.username());
-        if (user.isPresent()) { throw ErrorCode.ALREADY_EXISTS.throwIt(); }
+        if (user.isPresent()) { throw Errors.User.ALREADY_EXISTS.asException(); }
         
-        Optional<Hospital> hospital = this.hospitalRepository.findById(ccr.idHospital());
-        if (hospital.isEmpty()) { throw ErrorCode.HOSPITAL_NOT_EXISTS.throwIt(); }
+        Hospital hospital = this.hospitalRepository.findById(ccr.idHospital())
+                                                   .orElseThrow(Errors.Hospital.NOT_EXISTS.asSupplier());
         
         Coordinator coordinator = Coordinator.builder()
                 .setUsername(ccr.username())
                 .setPassword(this.hashing.hashPassword(ccr.password()))
-                .setHospital(hospital.get())
+                .setHospital(hospital)
                 .build();
         
         this.coordinatorRepository.save(coordinator);

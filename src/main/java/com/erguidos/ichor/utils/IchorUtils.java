@@ -5,7 +5,6 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
-import com.erguidos.ichor.entity.Patient;
 import com.erguidos.ichor.enums.BloodType;
 
 public final class IchorUtils {
@@ -85,10 +84,10 @@ public final class IchorUtils {
     }
     
     public static Double randomHeight() {
-        return IchorUtils.RANDOM.nextDouble(Patient.HEIGHT_MIN, Patient.HEIGHT_MAX);
+        return IchorUtils.RANDOM.nextDouble(Validations.HEIGHT_MIN, Validations.HEIGHT_MAX);
     }
     
     public static Double randomWeight() {
-        return IchorUtils.RANDOM.nextDouble(Patient.WEIGHT_MIN, Patient.WEIGHT_MAX);
+        return IchorUtils.RANDOM.nextDouble(Validations.WEIGHT_MIN, Validations.WEIGHT_MAX);
     }
 }

@@ -9,9 +9,9 @@ import com.erguidos.ichor.dto.request.RoleResponse;
 import com.erguidos.ichor.dto.request.UserIdentity;
 import com.erguidos.ichor.entity.User;
 import com.erguidos.ichor.enums.Role;
+import com.erguidos.ichor.error.Errors;
 import com.erguidos.ichor.repository.UserRepository;
 import com.erguidos.ichor.exceptions.IncorrectPasswordException;
-import com.erguidos.ichor.exceptions.NotAuthorizedExecption;
 import com.erguidos.ichor.exceptions.UserNotFoundException;
 
 
@@ -19,7 +19,6 @@ import com.erguidos.ichor.exceptions.UserNotFoundException;
 public class AuthService implements AuthServiceInterface {
     private static final String USER_NOT_EXISTS_MSJ = "That user doesn't exist";
     private static final String PASSWORD_INCORRECT_MSJ = "The password isn't correct";
-    private static final String INVALID_ROLE_MSG = "Not authorized with current role";
    
     private final UserRepository userRepository;
     private final HashInterface hashing;
@@ -62,7 +61,7 @@ public class AuthService implements AuthServiceInterface {
     @Override
     public void validRoleOrThrow(AuthCredentialsRequest acr, Role roleAllowed) {
         if (! this.hasValidRole(acr, roleAllowed)) {
-            throw new NotAuthorizedExecption(INVALID_ROLE_MSG);
+            throw Errors.Auth.UNAUTHORIZED.asException();
         }
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.erguidos.ichor.dto.mappers.ErrorCodeMapper;
 import com.erguidos.ichor.dto.response.ErrorCodeResponse;
-import com.erguidos.ichor.exceptions.BadBloodTypeException;
 import com.erguidos.ichor.exceptions.ErrorCodeException;
 import com.erguidos.ichor.exceptions.IncorrectPasswordException;
 import com.erguidos.ichor.exceptions.ORAPIException;
@@ -42,13 +41,6 @@ public class ExceptionHandlerController {
 		ErrorCodeResponse responseDTO = new ErrorCodeResponse(401,e.getMessage(),LocalDateTime.now());
 		
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseDTO);
-	}
-	
-	@ExceptionHandler(BadBloodTypeException.class)
-	public ResponseEntity<ErrorCodeResponse> handleBadBloodType(BadBloodTypeException e){
-		ErrorCodeResponse responseDTO = new ErrorCodeResponse(422,e.getMessage(),LocalDateTime.now());
-		
-		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(responseDTO);
 	}
 	
 	@ExceptionHandler(IllegalArgumentException.class)

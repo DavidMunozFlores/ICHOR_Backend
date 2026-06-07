@@ -1,8 +1,7 @@
 package com.erguidos.ichor.entity;
 
-import java.util.Objects;
-
 import com.erguidos.ichor.enums.Role;
+import com.erguidos.ichor.error.Errors;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,9 +17,6 @@ import jakarta.persistence.Table;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "users")
 public abstract class User {
-	private static final String EMPTY_USERNAME_MSJ = "Username cannot be empty";
-	private static final String EMPTY_PASSWORD_MSJ = "Password cannot be empty";
-	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,35 +33,37 @@ public abstract class User {
     protected User() {}
     
     protected User(String username, String password) {
-    	Objects.requireNonNull(username);
-    	Objects.requireNonNull(password);
-    	setUsername(username);
-    	setPassword(password);
+    	this.setUsername(username);
+    	this.setPassword(password);
     }
     
     public abstract Role getRole();
     
     public Long getId() { return this.id; }
     
-    public String getUser() { return this.username; }
-    
     public String getPassword() { return this.password; }
 
-	public String getUsername() { return username; }
+	public String getUsername() { return this.username; }
 
 	public DischargedUser getDischargedUser() { return dischargedUser; }
 
 	private void setUsername(String username) {
-		if(username.isEmpty())
-			throw new IllegalArgumentException(EMPTY_USERNAME_MSJ);
+	    if (username == null) {
+	        throw Errors.User.NULL_USERNAME.asException();
+	    }
+		if (username.isBlank()) {
+		    throw Errors.User.BLANK_USERNAME.asException();
+		}
 		this.username = username;
 	}
 
 	private void setPassword(String password) {
-		if(password.isEmpty())
-			throw new IllegalArgumentException(EMPTY_PASSWORD_MSJ);
+	    if (password == null) {
+            throw Errors.User.NULL_PASSWORD.asException();
+        }
+        if (password.isBlank()) {
+            throw Errors.User.BLANK_PASSWORD.asException();
+        }
 		this.password = password;
 	}
-	
-	
 }

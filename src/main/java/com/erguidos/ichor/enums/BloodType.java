@@ -2,9 +2,8 @@ package com.erguidos.ichor.enums;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
-import com.erguidos.ichor.exceptions.BadBloodTypeException;
+import com.erguidos.ichor.error.Errors;
 
 public enum BloodType {
      O_POSITIVE(ABOGroup.O,  RHFactor.POSITIVE),
@@ -98,7 +97,7 @@ public enum BloodType {
      * match any known blood type
      */
     public static BloodType parse(String value) {
-        if (value == null) { throw new BadBloodTypeException(); }
+        if (value == null) { throw Errors.BloodType.NOT_EXISTS.asException(); }
 
         String normalized = value.trim()
                                  .toUpperCase()
@@ -112,24 +111,7 @@ public enum BloodType {
             }
         }
 
-        throw new BadBloodTypeException(value);
-    }
-
-    /**
-     * Attempts to parse a string into a {@link BloodType}, returning an empty
-     * {@link Optional} instead of throwing if the input is invalid.
-     *
-     * @param value the string to parse; may be {@code null}
-     * @return an {@link Optional} containing the matched {@link BloodType}, or
-     *         {@link Optional#empty()} if the input is unrecognized or
-     *         {@code null}
-     */
-    public static Optional<BloodType> tryParse(String value) {
-        try {
-            return Optional.of(BloodType.parse(value));
-        } catch (BadBloodTypeException bbte) {
-            return Optional.empty();
-        }
+        throw Errors.BloodType.NOT_EXISTS.asException();
     }
     
     public static List<BloodType> getCompatibleBloodTypes(BloodType donorBlood) {
