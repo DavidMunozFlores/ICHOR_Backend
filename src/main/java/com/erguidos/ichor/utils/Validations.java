@@ -1,5 +1,7 @@
 package com.erguidos.ichor.utils;
 
+import java.math.BigDecimal;
+
 public final class Validations {
     private Validations() {
         throw new UnsupportedOperationException("Don't instantiate Validations");
@@ -23,12 +25,16 @@ public final class Validations {
         + "(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}"
         + "\\s+[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\\s.-]{2,50}$";
 
-    public static final String HEIGHT_MIN_STRING = "10";
-    public static final Double HEIGHT_MIN        = Double.valueOf(HEIGHT_MIN_STRING);
-    public static final String HEIGHT_MAX_STRING = "250";
-    public static final Double HEIGHT_MAX        = Double.valueOf(HEIGHT_MAX_STRING);
-    public static final String WEIGHT_MIN_STRING = "2";
-    public static final Double WEIGHT_MIN        = Double.valueOf(WEIGHT_MIN_STRING);
-    public static final String WEIGHT_MAX_STRING = "400";
-    public static final Double WEIGHT_MAX        = Double.valueOf(WEIGHT_MAX_STRING);
+    public static final String     HEIGHT_MIN_STRING = "10";
+    public static final Double     HEIGHT_MIN        = Double.valueOf(HEIGHT_MIN_STRING);
+    public static final String     HEIGHT_MAX_STRING = "250";
+    public static final Double     HEIGHT_MAX        = Double.valueOf(HEIGHT_MAX_STRING);
+    public static final String     WEIGHT_MIN_STRING = "2";
+    public static final Double     WEIGHT_MIN        = Double.valueOf(WEIGHT_MIN_STRING);
+    public static final String     WEIGHT_MAX_STRING = "400";
+    public static final Double     WEIGHT_MAX        = Double.valueOf(WEIGHT_MAX_STRING);
+    public static final BigDecimal LONGITUDE_MAX     = BigDecimal.valueOf(180);
+    public static final BigDecimal LONGITUDE_MIN     = BigDecimal.valueOf(-180);
+    public static final BigDecimal LATITUDE_MAX      = BigDecimal.valueOf(90);
+    public static final BigDecimal LATITUDE_MIN      = BigDecimal.valueOf(-90);
 }

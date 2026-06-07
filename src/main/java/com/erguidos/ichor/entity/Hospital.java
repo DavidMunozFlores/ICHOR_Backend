@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.erguidos.ichor.error.Errors;
+import com.erguidos.ichor.utils.Validations;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,11 +17,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "hospitals")
 public class Hospital {
-    private static final BigDecimal LONGITUDE_MAX = BigDecimal.valueOf( 180);
-    private static final BigDecimal LONGITUDE_MIN = BigDecimal.valueOf(-180);
-    private static final BigDecimal LATITUDE_MAX  = BigDecimal.valueOf(  90);
-    private static final BigDecimal LATITUDE_MIN  = BigDecimal.valueOf( -90);
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -101,11 +97,11 @@ public class Hospital {
     }
     private BigDecimal wrapLongitudeAroundGlobe(final BigDecimal longitude) {
         BigDecimal transformed = longitude;
-        while(transformed.compareTo(LONGITUDE_MAX) > 0) {
-            transformed.subtract(LONGITUDE_MAX);
+        while(transformed.compareTo(Validations.LONGITUDE_MAX) > 0) {
+            transformed.subtract(Validations.LONGITUDE_MAX);
         }
-        while(transformed.compareTo(LONGITUDE_MIN) < 0) {
-            transformed.subtract(LONGITUDE_MIN);
+        while(transformed.compareTo(Validations.LONGITUDE_MIN) < 0) {
+            transformed.subtract(Validations.LONGITUDE_MIN);
         }
         return transformed;
     }
@@ -115,10 +111,10 @@ public class Hospital {
         if (latitude == null) {
             throw Errors.Hospital.NULL_LATITUDE.asException();
         }
-        if (latitude.compareTo(LATITUDE_MAX) > 0) {
+        if (latitude.compareTo(Validations.LATITUDE_MAX) > 0) {
             throw Errors.Hospital.OUT_OF_BOUNDS_LATITUDE.asException();
         }
-        if (latitude.compareTo(LATITUDE_MIN) < 0) {
+        if (latitude.compareTo(Validations.LATITUDE_MIN) < 0) {
             throw Errors.Hospital.OUT_OF_BOUNDS_LATITUDE.asException();
         }
         this.latitude = latitude;
