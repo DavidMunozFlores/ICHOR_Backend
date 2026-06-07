@@ -31,4 +31,9 @@ public class OrganPetitionGetController {
     public ResponseEntity<Set<OrganPetitionResponse>> findByOrganPetitionState(@PathVariable OrganPetitionState state) {
         return ResponseEntity.ok(this.organPetitionService.findByOrganPetitionState(state));
     }
+    
+    @GetMapping("/populate")
+    public ResponseEntity<Set<OrganPetitionResponse>> generateOPs() {
+        return ResponseEntity.ok(this.organPetitionService.generateOPs());
+    }
 }

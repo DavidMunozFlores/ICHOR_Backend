@@ -37,6 +37,15 @@ public class PatientService implements PatientServiceInterface {
         if (patientOp.isEmpty()) { throw Errors.Patient.NOT_EXISTS.asException(); }
         return patientOp.get();
     }
+    
+	@Override
+	public Patient findPatitentByIdentification(String identification) {
+		Optional<Patient> patientOp = this.patientRepository.findByIdentification(identification);
+		
+		if(patientOp.isEmpty()) throw ErrorCode.NOT_FOUND.throwIt();
+		
+		return patientOp.get();
+	}
 
     @Override
     public Patient createPatient(PatientCreationRequest data) {
@@ -79,4 +88,6 @@ public class PatientService implements PatientServiceInterface {
         this.patientRepository.save(patient);
         return patient;
     }
+
+
 }

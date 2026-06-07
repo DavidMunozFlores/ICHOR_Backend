@@ -32,6 +32,14 @@ public class CoordinatorGenerator {
     }
 
     public void generate() {
+        Coordinator basicCoordinator = Coordinator.builder()
+                .setUsername("coordinator")
+                .setPassword(this.hashing.hashPassword("1234"))
+                .setHospital(this.hospitalGenerator.getRandomHospital())
+                .build();
+        
+        this.coordinatorRepository.save(basicCoordinator);
+        
         for (String name : IchorUtils.generateFullNames(COORDINATOR_COUNT)) {
             if (this.userRepository.findUserByUsername(name).isPresent()) continue;
 
