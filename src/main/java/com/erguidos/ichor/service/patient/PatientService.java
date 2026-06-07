@@ -42,7 +42,9 @@ public class PatientService implements PatientServiceInterface {
 	public Patient findPatitentByIdentification(String identification) {
 		Optional<Patient> patientOp = this.patientRepository.findByIdentification(identification);
 		
-		if(patientOp.isEmpty()) throw ErrorCode.NOT_FOUND.throwIt();
+		if(patientOp.isEmpty()) {
+		    throw Errors.Patient.NOT_EXISTS.asException();
+		}
 		
 		return patientOp.get();
 	}
