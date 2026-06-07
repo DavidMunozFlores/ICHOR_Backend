@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.erguidos.ichor.annotations.UnauthenticatedPayload;
 import com.erguidos.ichor.dto.request.AuthCredentialsRequest;
+import com.erguidos.ichor.dto.request.RoleResponse;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -24,7 +25,7 @@ public class AuthController {
 	}
 	
 	@PostMapping("/log-in")
-	public ResponseEntity<?> isAuthorized(
+	public ResponseEntity<RoleResponse> isAuthorized(
         @RequestBody AuthCredentialsRequest acr
     ) {
 	    return ResponseEntity.ok(this.authService.getRole(acr));

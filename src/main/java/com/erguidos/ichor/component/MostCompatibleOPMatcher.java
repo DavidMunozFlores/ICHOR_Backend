@@ -15,6 +15,7 @@ import com.erguidos.ichor.enums.BloodType;
 import com.erguidos.ichor.enums.OrganPetitionState;
 import com.erguidos.ichor.repository.HospitalRepository;
 import com.erguidos.ichor.repository.OrganPetitionRepository;
+import com.erguidos.ichor.repository.OrganRepository;
 import com.erguidos.ichor.service.open_route_api.ORAPIServiceInterface;
 
 @Component
@@ -23,16 +24,19 @@ public class MostCompatibleOPMatcher {
 	private static final int MIN_GENE = 2;
 
 	private OrganPetitionRepository opRep;
+	private OrganRepository organRep;
 	private ORAPIServiceInterface apiRep;
 	private HospitalRepository hospRep;
 	
 	
 	 MostCompatibleOPMatcher(
 			OrganPetitionRepository opRep,
+			OrganRepository organRep,
 			ORAPIServiceInterface apiRep,
 			HospitalRepository hospRep
 			){
 		this.opRep = opRep;
+		this.organRep = organRep;
 		this.apiRep = apiRep;
 		this.hospRep = hospRep;
 	}
@@ -70,7 +74,16 @@ public class MostCompatibleOPMatcher {
 		return true;
 	}
 	
-	public List<Hospital> getCompatibleHospitals(Organ o) {
+	
+	public void matchOrgansWithOP() {
+		organRep.findByOrganPetitionIsNull()
+				.stream()
+				.filter(this::addOrganToMostCompatibleOP)
+				.forEach(organRep::saveAndFlush);
+	}
+	
+	
+	private List<Hospital> getCompatibleHospitals(Organ o) {
 		Hospital oh = o.getDonorHospital();
 		BigDecimal ohLo = oh.getLongitude();
 		BigDecimal ohLa = oh.getLatitude();

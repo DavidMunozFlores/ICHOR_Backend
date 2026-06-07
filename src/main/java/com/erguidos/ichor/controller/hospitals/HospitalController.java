@@ -13,6 +13,7 @@ import com.erguidos.ichor.service.hospital.HospitalServiceInterface;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api/v1/hospitals")
@@ -34,7 +35,8 @@ public class HospitalController {
         );
     }
     
-    public ResponseEntity<HospitalResponse> getHospital(Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<HospitalResponse> getHospital(@PathVariable Long id) {
         Hospital hospital = this.hospitalService.getHospital(id);
         return ResponseEntity.ok(HospitalMapper.toHospitalResponse(hospital));
     }

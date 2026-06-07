@@ -41,4 +41,10 @@ public class PatientGetController {
         Patient patient = this.patientService.getPatient(id);
         return ResponseEntity.ok(PatientMapper.toPatientResponse(patient));
     }  
+    
+    @GetMapping("/identification/{identification}")
+    public ResponseEntity<PatientResponse> findPatientByIdentification(@PathVariable String identification){
+        Patient patient = this.patientService.findPatitentByIdentification(identification);
+        return ResponseEntity.ok(PatientMapper.toPatientResponse(patient));
+    }
 }
