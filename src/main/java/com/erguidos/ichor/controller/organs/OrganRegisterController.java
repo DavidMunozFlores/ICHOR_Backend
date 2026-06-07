@@ -28,7 +28,7 @@ public class OrganRegisterController {
 	
 	@PostMapping("/register-organ")
 	public ResponseEntity<RegisterOrganResponse> registerOrgan(
-		@RequestBody @AuthenticatedRequestPayload(Role.COORDINATOR) AuthenticatedRequest<RegisterOrganRequest> ar
+		@RequestBody AuthenticatedRequest<RegisterOrganRequest> ar
 	) {
 		return ResponseEntity.ok(organService.registerOrgan(ar));
 	}
