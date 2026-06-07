@@ -34,7 +34,7 @@ public class CoordinatorGenerator {
     public void generate() {
         Coordinator basicCoordinator = Coordinator.builder()
                 .setUsername("coordinator")
-                .setPassword(this.hashing.hashPassword("1234"))
+                .setPassword(this.hashing.hashPassword(DEFAULT_PASSWORD))
                 .setHospital(this.hospitalGenerator.getRandomHospital())
                 .build();
         

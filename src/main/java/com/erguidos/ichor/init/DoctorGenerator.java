@@ -30,7 +30,7 @@ public class DoctorGenerator {
     public void generate() {
         Doctor basicDoctor = Doctor.create(
                 "doctor",
-                this.hashing.hashPassword("1234"),
+                this.hashing.hashPassword(DEFAULT_PASSWORD),
                 this.hospitalGenerator.getRandomHospital()
         );
         
