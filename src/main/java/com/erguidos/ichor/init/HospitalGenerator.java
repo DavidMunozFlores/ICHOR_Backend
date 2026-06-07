@@ -30,33 +30,51 @@ public class HospitalGenerator {
         List<Hospital> hospitals = List.of(
             Hospital.builder()
                 .setName("Hospital Universitario La Paz")
-                .setAddress("Paseo de la Castellana, 261, Madrid")
+                .setAddress("Paseo de la Castellana 261, 28046 Madrid")
                 .setLongitude(new BigDecimal("-3.68913000"))
                 .setLatitude(new BigDecimal("40.47743000"))
                 .build(),
             Hospital.builder()
                 .setName("Hospital Clinic de Barcelona")
-                .setAddress("Carrer de Villarroel, 170, Barcelona")
+                .setAddress("Calle de Villarroel 170, 08036 Barcelona")
                 .setLongitude(new BigDecimal("2.15250000"))
                 .setLatitude(new BigDecimal("41.38790000"))
                 .build(),
             Hospital.builder()
                 .setName("Hospital Universitario Virgen del Rocío")
-                .setAddress("Avenida Manuel Siurot, s/n, Sevilla")
+                .setAddress("Avenida Manuel Siurot s/n, 41013 Sevilla")
                 .setLongitude(new BigDecimal("-5.97730000"))
                 .setLatitude(new BigDecimal("37.36190000"))
                 .build(),
             Hospital.builder()
                 .setName("Hospital Universitario y Politécnico La Fe")
-                .setAddress("Avinguda de Fernando Abril Martorell, 106, Valencia")
+                .setAddress("Avenida de Fernando Abril Martorell 106, 46026 Valencia")
                 .setLongitude(new BigDecimal("-0.35441000"))
                 .setLatitude(new BigDecimal("39.45800000"))
                 .build(),
             Hospital.builder()
                 .setName("Complejo Hospitalario Universitario de A Coruña")
-                .setAddress("Xubias de Arriba, 84, A Coruña")
+                .setAddress("Carretera de las Xubias 84, 15006 A Coruna")
                 .setLongitude(new BigDecimal("-8.41600000"))
                 .setLatitude(new BigDecimal("43.37350000"))
+                .build(),
+            Hospital.builder()
+                .setName("Hospital General Universitario Gregorio Marañón")
+                .setAddress("Calle del Doctor Esquerdo 46, 28007 Madrid")
+                .setLongitude(new BigDecimal("-3.67050000"))
+                .setLatitude(new BigDecimal("40.41830000"))
+                .build(),
+            Hospital.builder()
+                .setName("Hospital Universitario Marqués de Valdecilla")
+                .setAddress("Avenida de Valdecilla 25, 39008 Santander")
+                .setLongitude(new BigDecimal("-3.82940000"))
+                .setLatitude(new BigDecimal("43.45420000"))
+                .build(),
+            Hospital.builder()
+                .setName("Hospital Universitario Miguel Servet")
+                .setAddress("Paseo de Isabel la Catolica 1, 50009 Zaragoza")
+                .setLongitude(new BigDecimal("-0.90150000"))
+                .setLatitude(new BigDecimal("41.63610000"))
                 .build()
         );
 
