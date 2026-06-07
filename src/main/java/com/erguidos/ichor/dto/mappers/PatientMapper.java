@@ -20,7 +20,7 @@ public final class PatientMapper {
             patient.getHeight(),
             patient.getWeight(),
             patient.getHospital().getId(),
-            patient.getOrganPetitions().stream().map(OrganPetitionMapper::toOrganPetitionResponse).toList()
+            OrganPetitionMapper.toOrganPetitionResponse(patient.getOrganPetitions())
         );
     }
     
