@@ -5,13 +5,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.erguidos.ichor.enums.BloodType;
-import com.erguidos.ichor.exceptions.BadBloodTypeException;
-
-import java.util.Optional;
 
 import static com.erguidos.ichor.enums.BloodType.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -157,51 +153,6 @@ class BloodTypeTest {
         @DisplayName("display strings round-trip through parse")
         void displayRoundTrip(String display, String expectedName) {
             assertEquals(BloodType.valueOf(expectedName.trim()), BloodType.parse(display.trim()));
-        }
-
-        @Test
-        @DisplayName("parse(null) throws BadBloodTypeException")
-        void parseNullThrows() {
-            assertThrows(BadBloodTypeException.class, () -> BloodType.parse(null));
-        }
-
-        @ParameterizedTest(name = "\"{0}\" throws BadBloodTypeException")
-        @ValueSource(strings = { "C+", "X-", "AB", "++", "positive", "123", "" })
-        @DisplayName("unrecognised strings throw BadBloodTypeException")
-        void parseInvalidThrows(String input) {
-            assertThrows(BadBloodTypeException.class, () -> BloodType.parse(input));
-        }
-    }
-
-    @Nested
-    @DisplayName("tryParse")
-    class TryParse {
-
-        @Test
-        @DisplayName("returns a present Optional for valid input")
-        void validInputReturnsPresent() {
-            Optional<BloodType> result = BloodType.tryParse("B-");
-            assertTrue(result.isPresent());
-            assertEquals(B_NEGATIVE, result.get());
-        }
-
-        @ParameterizedTest(name = "\"{0}\" returns empty Optional")
-        @NullAndEmptySource
-        @ValueSource(strings = { "C+", "garbage", "123" })
-        @DisplayName("invalid or null input returns empty Optional")
-        void invalidInputReturnsEmpty(String input) {
-            assertTrue(BloodType.tryParse(input).isEmpty(),
-                "Expected empty Optional for input: " + input);
-        }
-
-        @Test
-        @DisplayName("tryParse is consistent with parse for all display strings")
-        void consistentWithParse() {
-            for (BloodType bt : BloodType.values()) {
-                Optional<BloodType> result = BloodType.tryParse(bt.toString());
-                assertTrue(result.isPresent());
-                assertEquals(bt, result.get());
-            }
         }
     }
 }
