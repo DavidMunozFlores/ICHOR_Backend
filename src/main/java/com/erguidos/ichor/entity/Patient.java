@@ -138,7 +138,7 @@ public class Patient {
         if (weight == null) {
             throw Errors.Patient.IMPROPER_WEIGHT.asException();
         }
-        if (weight < Validations.WEIGHT_MAX) {
+        if (weight < Validations.WEIGHT_MIN) {
             throw Errors.Patient.IMPROPER_WEIGHT.asException();
         }
         if (weight > Validations.WEIGHT_MAX) {
