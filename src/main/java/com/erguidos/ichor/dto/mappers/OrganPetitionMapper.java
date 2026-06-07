@@ -12,6 +12,7 @@ public class OrganPetitionMapper {
 		return new OrganPetitionResponse(
 				op.getId(),
 				op.getPatient().getId(),
+				op.getPatient().getIdentification(),
 				op.getOrganType(),
 				op.getWeightGrams(),
 				op.getVolumeCC(),
