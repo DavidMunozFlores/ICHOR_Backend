@@ -30,7 +30,7 @@ public class CoordinatorSetController {
     
     @PostMapping("/create")
     public ResponseEntity<CoordinatorResponse> createCoordinator(
-        @RequestBody @AuthenticatedPayload(Role.MANAGER) CoordinatorCreateRequest coordinatorCreateRequest
+        @RequestBody CoordinatorCreateRequest coordinatorCreateRequest
     ) {
         Coordinator coordinator = this.coordinatorService.createCoordinator(coordinatorCreateRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(CoordinatorMapper.toCoordinatorResponse(coordinator));

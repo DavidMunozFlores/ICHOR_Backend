@@ -25,7 +25,7 @@ public class AuthController {
 	
 	@PostMapping("/log-in")
 	public ResponseEntity<?> isAuthorized(
-        @RequestBody @UnauthenticatedPayload AuthCredentialsRequest acr
+        @RequestBody AuthCredentialsRequest acr
     ) {
 	    return ResponseEntity.ok(this.authService.getRole(acr));
 	}

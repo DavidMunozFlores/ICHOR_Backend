@@ -68,7 +68,7 @@ public class PatientSetController {
     })
     @PostMapping("/create")
     public ResponseEntity<PatientResponse> createPatient(
-        @RequestBody @AuthenticatedPayload(Role.DOCTOR) PatientCreationRequest patientCreationRequest
+        @RequestBody PatientCreationRequest patientCreationRequest
     ) {
         Patient patient = this.patientService.createPatient(patientCreationRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(PatientMapper.toPatientResponse(patient));
