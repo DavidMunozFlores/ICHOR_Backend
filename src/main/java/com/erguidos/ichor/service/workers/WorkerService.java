@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.erguidos.ichor.entity.User;
-import com.erguidos.ichor.enums.ErrorCode;
+import com.erguidos.ichor.error.Errors;
 import com.erguidos.ichor.repository.WorkerRepository;
 
 @Service
@@ -28,6 +28,6 @@ public class WorkerService implements WorkerServiceInterface {
     public User findWorkerByUsername(String username) {
         return this.userRepository
                    .findUserByUsername(username)
-                   .orElseThrow(ErrorCode.NOT_FOUND::throwIt);
+                   .orElseThrow(Errors.User.NOT_EXISTS.asSupplier());
     }
 }

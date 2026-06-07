@@ -3,7 +3,7 @@ package com.erguidos.ichor.config;
 import com.erguidos.ichor.annotations.UnauthenticatedPayload;
 import com.erguidos.ichor.dto.request.AuthCredentialsRequest;
 import com.erguidos.ichor.dto.request.DecryptRequest;
-import com.erguidos.ichor.enums.ErrorCode;
+import com.erguidos.ichor.error.Errors;
 import com.erguidos.ichor.service.key.KeyServiceInterface;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -66,7 +66,7 @@ public class LoginDecryptionAdvice extends RequestBodyAdviceAdapter {
                 }
             };
         } catch (JsonProcessingException | GeneralSecurityException e) {
-            throw ErrorCode.FAILED_DECRYPTION.throwIt();
+            throw Errors.Auth.FAILED_DECRYPTION.asException();
         }
     }
 }

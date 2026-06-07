@@ -3,8 +3,8 @@ package com.erguidos.ichor.config;
 import com.erguidos.ichor.dto.request.AuthenticatedRequest;
 import com.erguidos.ichor.dto.request.DataRequestInterface;
 import com.erguidos.ichor.dto.request.DecryptRequest;
-import com.erguidos.ichor.enums.ErrorCode;
 import com.erguidos.ichor.enums.Role;
+import com.erguidos.ichor.error.Errors;
 import com.erguidos.ichor.exceptions.IncorrectPasswordException;
 import com.erguidos.ichor.exceptions.UserNotFoundException;
 import com.erguidos.ichor.service.auth.AuthServiceInterface;
@@ -62,7 +62,7 @@ public abstract class BaseDecryptionAdvice extends RequestBodyAdviceAdapter {
                 boolean isAuthenticated = this.authService.hasValidRole(authenticatedRequest.authCredentials(), permittedRole.get());
                 
                 if (!isAuthenticated) {
-                    throw ErrorCode.UNAUTHORIZED.throwIt();
+                    throw Errors.Auth.UNAUTHORIZED.asException();
                 }
             }
             
@@ -80,9 +80,9 @@ public abstract class BaseDecryptionAdvice extends RequestBodyAdviceAdapter {
                 }
             };
         } catch (UserNotFoundException | IncorrectPasswordException e) {
-            throw ErrorCode.USER_NOT_EXISTS.throwIt();
+            throw Errors.User.NOT_EXISTS.asException();
         } catch (JsonProcessingException | GeneralSecurityException e) {
-            throw ErrorCode.FAILED_DECRYPTION.throwIt();
+            throw Errors.Auth.FAILED_DECRYPTION.asException();
         }
     }
 

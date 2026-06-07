@@ -11,6 +11,7 @@ import com.erguidos.ichor.enums.OrganType;
 public record OrganPetitionResponse (
 		Long idOrganPetition,
 		Long idPatient,
+		String identification,
 		OrganType organType,
 		Double weightGrams,
 		Double volumeCC,

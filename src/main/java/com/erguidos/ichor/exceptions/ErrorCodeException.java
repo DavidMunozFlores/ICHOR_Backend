@@ -1,16 +1,18 @@
 package com.erguidos.ichor.exceptions;
 
-import com.erguidos.ichor.enums.ErrorCode;
+import com.erguidos.ichor.error.ErrorDetails;
 
 public class ErrorCodeException extends RuntimeException {
     private static final long serialVersionUID = 1L;
-
-    private final int httpStatus;
     
-    public ErrorCodeException(ErrorCode errorCode) {
-        super(errorCode.toString());
-        this.httpStatus = errorCode.getHttpStatus();
+    private final ErrorDetails errorDetails;
+    
+    public ErrorCodeException(ErrorDetails errorDetails) {
+        super(errorDetails.name());
+        this.errorDetails = errorDetails;
     }
     
-    public int getHttpStatus() { return this.httpStatus; }
+    public int getHttpStatus() { return this.errorDetails.getHttpStatus(); }
+    
+    public ErrorDetails getErrorDetails() { return this.errorDetails; }
 }

@@ -15,6 +15,8 @@ import com.erguidos.ichor.entity.Coordinator;
 import com.erguidos.ichor.enums.Role;
 import com.erguidos.ichor.service.coordinator.CoordinatorServiceInterface;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -30,7 +32,7 @@ public class CoordinatorSetController {
     
     @PostMapping("/create")
     public ResponseEntity<CoordinatorResponse> createCoordinator(
-        @RequestBody @AuthenticatedPayload(Role.MANAGER) CoordinatorCreateRequest coordinatorCreateRequest
+        @Valid @RequestBody @AuthenticatedPayload(Role.MANAGER) CoordinatorCreateRequest coordinatorCreateRequest
     ) {
         Coordinator coordinator = this.coordinatorService.createCoordinator(coordinatorCreateRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(CoordinatorMapper.toCoordinatorResponse(coordinator));

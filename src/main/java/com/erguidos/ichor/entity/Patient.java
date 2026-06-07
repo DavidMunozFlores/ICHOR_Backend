@@ -6,9 +6,8 @@ import java.util.List;
 import java.util.Objects;
 
 import com.erguidos.ichor.enums.BloodType;
-import com.erguidos.ichor.exceptions.BlankStringException;
-import com.erguidos.ichor.exceptions.ImproperHeightException;
-import com.erguidos.ichor.exceptions.ImproperWeightException;
+import com.erguidos.ichor.error.Errors;
+import com.erguidos.ichor.utils.Validations;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,11 +24,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "patients")
 public class Patient {
-    public static final Double HEIGHT_MIN =  10.0d;
-    public static final Double HEIGHT_MAX = 250.0d;
-    public static final Double WEIGHT_MIN =   2.0d;
-    public static final Double WEIGHT_MAX = 400.0d;
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -70,7 +64,7 @@ public class Patient {
         Double height,
         Double weight,
         Hospital hospital
-    ) throws BlankStringException, ImproperHeightException, ImproperWeightException {
+    ) {
         this.setInternalID(internalID);
         this.setName(name);
         this.setIdentification(identification);
@@ -84,30 +78,33 @@ public class Patient {
 
     public String getInternalID() { return this.internalID; }
     private void setInternalID(String internalID) {
-        if (internalID == null | internalID.isBlank()) {
-            throw new IllegalArgumentException("Bad internalID: " + internalID);
+        if (internalID == null) {
+            throw Errors.Patient.NULL_TEXT.asException();
+        }
+        if (internalID.isBlank()) {
+            throw Errors.Patient.BLANK_STRING.asException();
         }
         this.internalID = internalID.trim();
     }
 
     public String getName() { return this.name; }
-    private void setName(String name) throws BlankStringException {
+    private void setName(String name) {
         if (name == null) {
-            throw new NullPointerException("Bad name: " + name);
+            throw Errors.Patient.NULL_TEXT.asException();
         }
         if (name.isBlank()) {
-            throw new BlankStringException("Bad name: " + name);
+            throw Errors.Patient.BLANK_STRING.asException();
         }
         this.name = name.trim();
     }
 
     public String getIdentification() { return this.identification; }
-    private void setIdentification(String identification) throws BlankStringException {
+    private void setIdentification(String identification) {
         if (identification == null) {
-            throw new NullPointerException("Bad identification: " + identification);
+            throw Errors.Patient.NULL_TEXT.asException();
         }
         if (identification.isBlank()) {
-            throw new BlankStringException("Bad identification: " + identification);
+            throw Errors.Patient.BLANK_STRING.asException();
         }
         this.identification = identification;
     }
@@ -115,21 +112,21 @@ public class Patient {
     public BloodType getBloodType() { return this.bloodType; }
     private void setBloodType(BloodType bloodType) {
         if (bloodType == null) {
-            throw new NullPointerException("Bad bloodType: " + bloodType);
+            throw Errors.Patient.NULL_BLOOD_TYPE.asException();
         }
         this.bloodType = bloodType;
     }
 
     public Double getHeight() { return this.height; }
-    private void setHeight(Double height) throws ImproperHeightException {
+    private void setHeight(Double height) {
         if (height == null) {
-            throw new NullPointerException("Bad height: " + height);
+            throw Errors.Patient.IMPROPER_HEIGHT.asException();
         }
-        if (height < HEIGHT_MIN) {
-            throw new ImproperHeightException("Height must be at least " + HEIGHT_MIN);
+        if (height < Validations.HEIGHT_MIN) {
+            throw Errors.Patient.IMPROPER_HEIGHT.asException();
         }
-        if (height > HEIGHT_MAX) {
-            throw new ImproperHeightException("Height must be at most " + HEIGHT_MAX);
+        if (height > Validations.HEIGHT_MAX) {
+            throw Errors.Patient.IMPROPER_HEIGHT.asException();
         }
         this.height = BigDecimal.valueOf(height)
                                 .setScale(2, RoundingMode.HALF_UP)
@@ -137,23 +134,22 @@ public class Patient {
     }
 
     public Double getWeight() { return this.weight; }
-    private void setWeight(Double weight) throws ImproperWeightException {
+    private void setWeight(Double weight) {
         if (weight == null) {
-            throw new NullPointerException("Bad weight: " + weight);
+            throw Errors.Patient.IMPROPER_WEIGHT.asException();
         }
-        if (weight < WEIGHT_MIN) {
-            throw new ImproperWeightException("Weight must be at least " + WEIGHT_MIN);
+        if (weight < Validations.WEIGHT_MIN) {
+            throw Errors.Patient.IMPROPER_WEIGHT.asException();
         }
-        if (weight > WEIGHT_MAX) {
-            throw new ImproperWeightException("Weight must be at most " + WEIGHT_MAX);
+        if (weight > Validations.WEIGHT_MAX) {
+            throw Errors.Patient.IMPROPER_WEIGHT.asException();
         }
         this.weight = BigDecimal.valueOf(weight)
                                 .setScale(2, RoundingMode.HALF_UP)
                                 .doubleValue();
     }
     
-    public void updateHeightAndWeight(Double height, Double weight)
-            throws ImproperHeightException, ImproperWeightException {
+    public void updateHeightAndWeight(Double height, Double weight) {
         this.setHeight(height);
         this.setWeight(weight);
     }
@@ -225,7 +221,7 @@ public class Patient {
             return this;
         }
 
-        public Patient build() throws BlankStringException, ImproperHeightException, ImproperWeightException {
+        public Patient build() {
             return new Patient(
                 this.internalID,
                 this.name,

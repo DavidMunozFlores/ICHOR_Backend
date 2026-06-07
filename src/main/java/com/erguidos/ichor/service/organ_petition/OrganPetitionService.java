@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.erguidos.ichor.component.HlaParser;
 import com.erguidos.ichor.component.MostCompatibleOPMatcher;
@@ -53,6 +54,7 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 		this.opg = opg;
 	}
 
+	@Transactional
 	@Override
 	public OrganPetitionResponse createOrganPetition(AuthenticatedRequest<OrganPetitionRequest> ar) {
 		Doctor d = doctorRepository
@@ -81,6 +83,7 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 		return OrganPetitionMapper.toOrganPetitionResponse(op);
 	}
 	
+	@Transactional
 	@Override
 	public OrganPetitionResponse updateOrganPetition(AuthenticatedRequest<OrganPetitionUpdateRequest> ar) {
 		OrganPetitionUpdateRequest d = ar.data();
@@ -113,6 +116,7 @@ public class OrganPetitionService implements OrganPetitionServiceInterface {
 		return OrganPetitionMapper.toOrganPetitionResponse(op);
 	}
 	
+	@Transactional
 	@Override
 	public OPDeleted deleteOrganPetition(IdOrganPetitionRequest ar) {
 		OrganPetition op = organPetitionRepository
