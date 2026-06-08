@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.Set;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.erguidos.ichor.dto.mappers.OrganPetitionMapper;
 import com.erguidos.ichor.dto.response.OrganPetitionResponse;
@@ -43,6 +44,7 @@ public class OrganPetitionGenerator {
         this.doctorRepository = doctorRepository;
     }
 
+    @Transactional
     public Set<OrganPetitionResponse> generate() {
 
         Set<OrganPetitionResponse> responses = new HashSet<>();
