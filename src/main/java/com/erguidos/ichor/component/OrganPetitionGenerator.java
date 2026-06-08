@@ -77,6 +77,8 @@ public class OrganPetitionGenerator {
             );
 
             organPetitionRepository.save(op);
+            op.accept();
+            this.organPetitionRepository.save(op);
 
             responses.add(
                     OrganPetitionMapper.toOrganPetitionResponse(op)
