@@ -1,0 +1,122 @@
+package com.erguidos.ichor.enums;
+
+import java.util.Arrays;
+import java.util.List;
+
+import com.erguidos.ichor.error.Errors;
+
+public enum BloodType {
+     O_POSITIVE(ABOGroup.O,  RHFactor.POSITIVE),
+     O_NEGATIVE(ABOGroup.O,  RHFactor.NEGATIVE),
+     A_POSITIVE(ABOGroup.A,  RHFactor.POSITIVE),
+     A_NEGATIVE(ABOGroup.A,  RHFactor.NEGATIVE),
+     B_POSITIVE(ABOGroup.B,  RHFactor.POSITIVE),
+     B_NEGATIVE(ABOGroup.B,  RHFactor.NEGATIVE),
+    AB_POSITIVE(ABOGroup.AB, RHFactor.POSITIVE),
+    AB_NEGATIVE(ABOGroup.AB, RHFactor.NEGATIVE);
+
+    private enum ABOGroup {
+         O(false, false), // 00
+         B(false,  true), // 01
+        A ( true, false), // 10
+        AB( true,  true); // 11
+
+        private final int antigens;
+        
+        ABOGroup(boolean hasAntigenA, boolean hasAntigenB) {
+            int antigens = 0b00;
+            if (hasAntigenA) { antigens += 0b10; }
+            if (hasAntigenB) { antigens += 0b01; }
+            this.antigens = antigens;
+        }
+        
+        static boolean canDonate(ABOGroup donor, ABOGroup recipient) {
+            return (recipient.antigens | donor.antigens) == recipient.antigens;
+        }
+    }
+
+    private enum RHFactor {
+        POSITIVE("+"),
+        NEGATIVE("-");
+
+        final String symbol;
+
+        RHFactor(String symbol) { this.symbol = symbol; }
+
+        static boolean canDonate(RHFactor donor, RHFactor recipient) {
+            return switch (donor) {
+                case POSITIVE -> recipient == RHFactor.POSITIVE;
+                case NEGATIVE -> true;
+            };
+        }
+    }
+
+    private final ABOGroup aboGroup;
+    private final RHFactor rhFactor;
+    private final String display;
+
+    BloodType(ABOGroup aboGroup, RHFactor rhFactor) {
+        this.aboGroup = aboGroup;
+        this.rhFactor = rhFactor;
+        this.display  = aboGroup.name() + rhFactor.symbol;
+    }
+    
+    @Override
+    public String toString() {
+        return this.display;
+    }
+
+    public boolean canDonateTo(BloodType recipient) {
+        return recipient != null
+            && RHFactor.canDonate(this.rhFactor, recipient.rhFactor)
+            && ABOGroup.canDonate(this.aboGroup, recipient.aboGroup);
+    }
+
+    public boolean canReceiveFrom(BloodType donor) {
+        if (donor == null) { return false; }
+        return donor.canDonateTo(this);
+    }
+
+    /**
+     * Parses a string into a {@link BloodType}.
+     *
+     * <br>The input is normalized before matching: whitespace and underscores
+     * are stripped, the text is upper-cased, and the words {@code POSITIVE} /
+     * {@code NEGATIVE} are replaced with {@code +} / {@code -}. This means all
+     * of the following resolve to {@link #A_POSITIVE}:
+     * <ul>
+     *   <li>{@code "A+"}</li>
+     *   <li>{@code "a+"}</li>
+     *   <li>{@code "A_POSITIVE"}</li>
+     *   <li>{@code "A positive"}</li>
+     * </ul>
+     *
+     * @param value the string to parse
+     * @return the matching {@link BloodType}
+     * @throws BadBloodTypeException if {@code value} is {@code null} or does not
+     * match any known blood type
+     */
+    public static BloodType parse(String value) {
+        if (value == null) { throw Errors.BloodType.NOT_EXISTS.asException(); }
+
+        String normalized = value.trim()
+                                 .toUpperCase()
+                                 .replace("POSITIVE", "+")
+                                 .replace("NEGATIVE", "-")
+                                 .replaceAll("[ _]+", "");
+
+        for (BloodType bt : BloodType.values()) {
+            if (bt.display.equals(normalized)) {
+                return bt;
+            }
+        }
+
+        throw Errors.BloodType.NOT_EXISTS.asException();
+    }
+    
+    public static List<BloodType> getCompatibleBloodTypes(BloodType donorBlood) {
+    	return Arrays.stream(BloodType.values())
+    		   .filter(donorBlood::canDonateTo)
+    		   .toList();
+    }
+}
